@@ -1,13 +1,12 @@
 import Container from 'react-bootstrap/Container'
-import Image from 'react-bootstrap/Image'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import { Link, NavLink } from 'react-router-dom'
-import { useAuthContext } from '../../contexts/AuthContext'
+// import { useAuthContext } from '../../contexts/AuthContext'
 import { NavDropdown } from 'react-bootstrap'
 
 const Navigation = () => {
-	const {} = useAuthContext()
+	// const {} = useAuthContext()
 
 	return (
 		<Navbar bg="dark" variant="dark" expand="md">
@@ -20,7 +19,6 @@ const Navigation = () => {
 						className="d-inline-block align-top"
 						alt="Google Maps"
 					/>{' '}
-					Google Maps
 				</Navbar.Brand>
 
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
