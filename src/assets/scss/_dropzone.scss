@@ -1,0 +1,38 @@
+/**
+ * Dropzone
+ */
+
+ #dropzone-wrapper {
+	border: 2px dashed #ccc;
+	border-radius: 4px;
+	background-color: #f8f8f8;
+	text-align: center;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	padding: 2rem 1.25rem;
+
+	&.drag-accept {
+		background-color: #d4edda;
+		border-color: #c3e6cb;
+		color: #155724;
+	}
+
+	&.drag-reject {
+		background-color: #f8d7da;
+		border-color: #f5c6cb;
+		color: #721c24;
+	}
+
+	.indicator {
+		font-size: 2rem;
+
+		p {
+			margin-bottom: 0;
+		}
+	}
+
+	.progress {
+		font-size: 1rem;
+		height: 1.5rem;
+	}
+}
