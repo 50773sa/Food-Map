@@ -19,12 +19,20 @@ const get = async (endpoint) => {
 
 /* 
 *  GET the address for longitude and latitude
-	address as a place id
  */
-	const getAddress = (lat, lng) => {
-		return get(`json?latlng=${lat},${lng}&key=${API_KEY}`)
-	}
+const getAddress = (lat, lng) => {
+	return get(`json?latlng=${lat},${lng}&key=${API_KEY}`)
+}
+
+/* 
+*  GET the city for longitude and latitude
+ */
+const getCity = (lat, lng) => {
+	return get(`json?latlng=${lat},${lng}&result_type=locality&key=${API_KEY}`)
+}
+
 
 export default {
 	getAddress,
+	getCity,
 }
