@@ -26,6 +26,7 @@ const Navigation = () => {
 					<Nav className="ms-auto align-items-center">
 							
 						<Nav.Link as={NavLink} end to="/">Home</Nav.Link>
+						<Nav.Link as={NavLink} end to="/map">Map</Nav.Link>
 
 					</Nav>
 				</Navbar.Collapse>
