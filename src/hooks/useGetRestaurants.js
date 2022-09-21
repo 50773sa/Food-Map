@@ -1,25 +1,19 @@
 import { db } from '../firebase'
-import { collection, orderBy, query } from 'firebase/firestore'
+import { collection, query } from 'firebase/firestore'
 import { useFirestoreQueryData } from '@react-query-firebase/firestore'
 
 const useGetRestaurants = () => {
+    // Get reference of collection 'restaurants'
+    const queryRef = query(
+		collection(db, 'restaurants')
+	)
 
-    // Create referens to restaurants collection
-    const collectionRef = collection(db, 'restaurants')
+	const restaurantsQuery = useFirestoreQueryData(['restaurants'], queryRef, {
+		idField: 'id',
+		subscribe: 'true' //för att firebase ska uppdatera listan när något har ändrats
+	})
 
-    // Sort by city
-    const queryRef = query(collectionRef, orderBy('city'))
-    console.log('query ref', queryRef)
-
-    // Run query
-    const restQuery = useFirestoreQueryData(['restaurants'], queryRef,{
-        id : 'id'
-    }, {
-        // refetch if query is stale
-        refetchOnMount: 'always'
-    })
-
-  return restQuery
+    return restaurantsQuery
 }
 
 export default useGetRestaurants
