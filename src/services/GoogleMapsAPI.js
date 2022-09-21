@@ -6,6 +6,7 @@ import axios from 'axios'
 
 axios.defaults.baseURL = "https://maps.googleapis.com/maps/api/geocode"
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
+const language = "se"
 
 /* 
 *  GET an endpoint function
@@ -31,8 +32,13 @@ const getCity = async (lat, lng) => {
 	return get(`json?latlng=${lat},${lng}&result_type=locality&key=${API_KEY}`)
 }
 
+const getLatLng = async (street) => {
+	return get(`json?address=${street}&language=${language}&key=${API_KEY}`)
+}
+
 
 export default {
 	getAddress,
 	getCity,
+	getLatLng,
 }
