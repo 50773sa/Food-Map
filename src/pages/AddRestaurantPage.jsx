@@ -9,13 +9,17 @@ import Alert from 'react-bootstrap/Alert'
 import { useForm } from 'react-hook-form'
 import { db } from '../firebase'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
+import useAddress from '../hooks/useAddress'
 
 
 const AddRestaurantPage = () => {
 	const [error, setError] = useState(null)
 	const [loading, setLoading] = useState(false)
 	const [message, setMessage] = useState(null)
+	const [address, setAddress] = useState(null)
 	const { handleSubmit, formState: { errors }, reset } = useForm()
+	const { data: addressData, isLoading, isError } = useAddress(address)
+	
 	const nameRef = useRef()
 	const streetRef = useRef()
 	const postcodeRef = useRef()
@@ -29,9 +33,13 @@ const AddRestaurantPage = () => {
 	const facebookRef = useRef()
 	const instagramRef = useRef()
 
-	const createRestaurant = async (data) => {
+	const createRestaurant = async () => {
 		//get longitud and latitude from address
-
+		setAddress(streetRef.current.value)
+		
+		const lat = addressData.results[0].geometry.location.lat
+		const lng = addressData.results[0].geometry.location.lng
+		
 		const restaurantsRef = collection(db, 'restaurants')
 
 		//make firestore doc
@@ -49,6 +57,8 @@ const AddRestaurantPage = () => {
 			website: websiteRef.current.value,
 			facebook: facebookRef.current.value,
 			instagram: instagramRef.current.value,
+			latitude: lat,
+			longitude: lng,
 		})
 
 		console.log('restaurant created')
