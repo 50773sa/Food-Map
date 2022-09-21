@@ -37,9 +37,6 @@ const AddRestaurantPage = () => {
 		//get longitud and latitude from address
 		setAddress(streetRef.current.value)
 		
-		const lat = addressData.results[0].geometry.location.lat
-		const lng = addressData.results[0].geometry.location.lng
-		
 		const restaurantsRef = collection(db, 'restaurants')
 
 		//make firestore doc
@@ -57,8 +54,8 @@ const AddRestaurantPage = () => {
 			website: websiteRef.current.value,
 			facebook: facebookRef.current.value,
 			instagram: instagramRef.current.value,
-			latitude: lat,
-			longitude: lng,
+			latitude: addressData.results[0].geometry.location.lat,
+			longitude: addressData.results[0].geometry.location.lng,
 		})
 
 		console.log('restaurant created')
