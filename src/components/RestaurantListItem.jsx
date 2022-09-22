@@ -5,12 +5,15 @@ import { faEnvelope } from '@fortawesome/free-regular-svg-icons'
 import { faPhone, faGlobe } from '@fortawesome/free-solid-svg-icons'
 
 const RestaurantListItem = ({ restaurant }) => {
+	const linkGoogleMaps = "https://www.google.com/maps/search/?api=1&query="
+
 	return (
 		<ListGroup.Item>
 			<h1>{restaurant.name}</h1>
 			<div className="d-flex flex-column">
-				<p>{restaurant.address.street}, {restaurant.address.postcode} {restaurant.address.city}</p>
+				<a href={linkGoogleMaps + restaurant.postition.latitude + ',' + restaurant.postition.longitude} target="_blank">{restaurant.address.street}, {restaurant.address.postcode} {restaurant.address.city}</a>
 				<p>{restaurant.restaurant_info.restaurantInfo}</p>
+				<p>{restaurant.restaurant_info.restaurantType}</p>
 			</div>
 			<div>
 				{restaurant.social.facebook && (
