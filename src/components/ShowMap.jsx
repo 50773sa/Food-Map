@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react"
 import { GoogleMap,  MarkerF } from "@react-google-maps/api"
-import Restaurants from "./Restaurants"
+import RestaurantList from "./RestaurantList"
 
-
-const showMap = () => {
+const showMap = ({data, restaurants}) => {
 	const [currentPosition, setCurrentPosition] = useState({
 		lat: 55.603075505110425, 
 		lng: 13.00048440435288,
@@ -23,8 +22,7 @@ const showMap = () => {
 	}, [])
 	
 	
-
-    return (
+	return (
     	<GoogleMap 
 			mapContainerClassName="map-container vh-100"
 			zoom={13} 
@@ -34,7 +32,7 @@ const showMap = () => {
 				<MarkerF position={currentPosition} />
 			)}
 
-			<Restaurants />
+			<RestaurantList data={data}/>
 
      	</GoogleMap>
     );
