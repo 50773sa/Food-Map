@@ -43,19 +43,28 @@ const AddRestaurantPage = () => {
 		await addDoc(restaurantsRef, {
 			created: serverTimestamp(),
 			name: nameRef.current.value,
-			street: streetRef.current.value,
-			postcode: postcodeRef.current.value,
-			city: cityRef.current.value,
-			restaurantInfo: restaurantInfoRef.current.value,
-			restaurantType: restaurantTypeRef.current.value,
-			foodType: foodTypeRef.current.value,
-			email: emailRef.current.value,
-			phone: phoneRef.current.value,
-			website: websiteRef.current.value,
-			facebook: facebookRef.current.value,
-			instagram: instagramRef.current.value,
-			latitude: addressData.results[0].geometry.location.lat,
-			longitude: addressData.results[0].geometry.location.lng,
+			address: {
+				street: streetRef.current.value,
+				postcode: postcodeRef.current.value,
+				city: cityRef.current.value,
+			},
+			restaurant_info: {
+				restaurantInfo: restaurantInfoRef.current.value,
+				restaurantType: restaurantTypeRef.current.value,
+				foodType: foodTypeRef.current.value,
+			},
+			social: {
+				email: emailRef.current.value,
+				phone: phoneRef.current.value,
+				website: websiteRef.current.value,
+				facebook: facebookRef.current.value,
+				instagram: instagramRef.current.value,
+			},
+			postition: {
+				latitude: addressData.results[0].geometry.location.lat,
+				longitude: addressData.results[0].geometry.location.lng,
+			},
+			approved: false,
 		})
 
 		console.log('restaurant created')
