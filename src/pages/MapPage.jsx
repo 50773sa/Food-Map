@@ -10,6 +10,8 @@ const MapPage = () => {
    		googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
   	})
 	const {data: restaurantQuery , isError, isSuccess} = useGetRestaurants()
+	const { data } = useGetRestaurants()
+
 
  	return (
 
@@ -19,7 +21,7 @@ const MapPage = () => {
 			{isError && <Alert variant='warning'>Error...</Alert>}
 
     		{isSuccess && (
-				<ShowMap query={restaurantQuery}/>
+				<ShowMap query={restaurantQuery} data={data} />
     		)}	
     	</Container>
   	)
