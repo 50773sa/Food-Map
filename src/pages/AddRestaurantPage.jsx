@@ -10,7 +10,7 @@ import { useForm } from 'react-hook-form'
 import { db } from '../firebase'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 import useAddress from '../hooks/useAddress'
-
+import { toast } from 'react-toastify'
 
 const AddRestaurantPage = () => {
 	const [error, setError] = useState(null)
@@ -61,14 +61,14 @@ const AddRestaurantPage = () => {
 				facebook: facebookRef.current.value,
 				instagram: instagramRef.current.value,
 			},
-			postition: {
+			position: {
 				latitude: addressData.results[0].geometry.location.lat,
 				longitude: addressData.results[0].geometry.location.lng,
 			},
 			approved: false,
 		})
 
-		console.log('restaurant created')
+		toast.success('Tack för tipset!')
 		//reset()
 	}
 
