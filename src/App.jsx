@@ -4,6 +4,7 @@ import { ToastContainer } from 'react-toastify'
 import HomePage from './pages/HomePage'
 import MapPage from './pages/MapPage'
 import LoginPage from './pages/LoginPage'
+import LogoutPage from './pages/LogoutPage'
 import AdminPage from './pages/AdminPage'
 import Navigation from './pages/partials/Navigation'
 import RestaurantsPage from './pages/RestaurantsPage'
@@ -19,6 +20,7 @@ function App() {
 				<Route path="/" element={<HomePage />} />
 				<Route path="/map" element={<MapPage />} />
                 <Route path="/login" element={<LoginPage />} />
+                <Route path="/logout" element={<LogoutPage />} />
 				<Route path="/restaurants" element={<RestaurantsPage />} />
 				<Route path="/add-restaurant" element={<AddRestaurantPage />} />
 				<Route path="/admin" element={<AdminPage />} />
