@@ -11,7 +11,7 @@ const LogoutPage = () => {
     useEffect(() => {
         const logoutUser = async () => {
             await logout()
-            Navigate('/admin')
+            Navigate('/')
         }
         logoutUser()
     },[])

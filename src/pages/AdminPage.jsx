@@ -1,13 +1,17 @@
-import { auth } from '../firebase'
+import { useAuthContext } from '../contexts/AuthContext'
 
 const AdminPage = () => {
-  return (
-        <>
-            <div>AdminPage</div>
+    const { currentUser } = useAuthContext()
 
-            {auth.currentUser ? <p>You are logged in as {auth.currentUser.email}</p> : <p>Nils</p>}
-        </>
-    )
+    return (
+            <>
+                <div>AdminPage</div>
+
+                {currentUser 
+                    ? <p>You are logged in as {currentUser.email}</p> 
+                    : <p>Vem e du egentligen?</p>}
+            </>
+        )
 }
 
 export default AdminPage

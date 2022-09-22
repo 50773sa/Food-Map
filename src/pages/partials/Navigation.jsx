@@ -2,12 +2,12 @@ import Container from 'react-bootstrap/Container'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import { Link, NavLink } from 'react-router-dom'
-// import { useAuthContext } from '../../contexts/AuthContext'
-import { NavDropdown } from 'react-bootstrap'
+import { useAuthContext } from '../../contexts/AuthContext'
+// import { NavDropdown } from 'react-bootstrap'
 
 const Navigation = () => {
-	// const {} = useAuthContext()
-
+	const { currentUser} = useAuthContext()
+    
 	return (
 		<Navbar bg="dark" variant="dark" expand="md">
 			<Container>
@@ -22,6 +22,14 @@ const Navigation = () => {
 						<Nav.Link as={NavLink} end to="/map">Map</Nav.Link>
 						<Nav.Link as={NavLink} end to="/restaurants">See all restaurants</Nav.Link>
 						<Nav.Link as={NavLink} end to="/add-restaurant">Add restaurant</Nav.Link>
+
+                        {
+                            currentUser ? ( 
+                                <Nav.Link as={NavLink} end to="/logout">Logout</Nav.Link>
+                            ) : ( 
+                                <Nav.Link as={NavLink} end to="/login">Login</Nav.Link>
+                            )
+                        }
 
 					</Nav>
 				</Navbar.Collapse>
