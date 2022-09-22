@@ -33,7 +33,8 @@ const AddRestaurantPage = () => {
 	const facebookRef = useRef()
 	const instagramRef = useRef()
 
-	const createRestaurant = async () => {
+	const createRestaurant = async (formdata) => {
+		console.log('data', formdata)
 		//get longitud and latitude from address
 		setAddress(streetRef.current.value)
 		

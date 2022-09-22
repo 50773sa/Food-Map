@@ -12,7 +12,7 @@ const RestaurantListItem = ({ restaurant }) => {
 			<h1>{restaurant.name}</h1>
 			<div className="d-flex flex-column">
 				<a 
-					href={linkGoogleMaps + restaurant.postition.latitude + ',' + restaurant.postition.longitude} 
+					href={linkGoogleMaps + restaurant.position.latitude + ',' + restaurant.position.longitude} 
 					target="_blank"
 				>{restaurant.address.street}, {restaurant.address.postcode} {restaurant.address.city}</a>
 				<p>{restaurant.restaurant_info.restaurantInfo}</p>
