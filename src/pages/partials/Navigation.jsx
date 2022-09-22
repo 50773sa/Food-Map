@@ -12,13 +12,7 @@ const Navigation = () => {
 		<Navbar bg="dark" variant="dark" expand="md">
 			<Container>
 				<Navbar.Brand as={Link} to="/">
-					<img
-						src=""
-						width="30"
-						height="30"
-						className="d-inline-block align-top"
-						alt="Google Maps"
-					/>{' '}
+					Food-Map
 				</Navbar.Brand>
 
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />

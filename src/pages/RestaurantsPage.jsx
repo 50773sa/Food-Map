@@ -1,19 +1,11 @@
 import Container from 'react-bootstrap/Container'
-import { collection, query } from 'firebase/firestore'
-import { useFirestoreQueryData } from '@react-query-firebase/firestore'
 import RestaurantList from '../components/RestaurantList'
-import { db } from '../firebase'
+import useGetRestaurants from '../hooks/useGetRestaurants'
 
 
 const RestaurantsPage = () => {
-	const queryRef = query(
-		collection(db, 'restaurants')
-	)
 
-	const { data, isLoading } = useFirestoreQueryData(['restaurants'], queryRef, {
-		idField: 'id',
-		subscribe: 'true' //för att firebase ska uppdatera listan när något har ändrats
-	})
+	const {data, isLoading} = useGetRestaurants()
 
 	return (
 		<Container>

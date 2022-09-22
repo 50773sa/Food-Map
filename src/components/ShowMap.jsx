@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react"
 import { GoogleMap,  MarkerF } from "@react-google-maps/api"
+import RestaurantList from "./RestaurantList"
 
-
-const showMap = () => {
-	const [currentPosition, setCurrentPosition] = useState({})
+const showMap = ({data, restaurants}) => {
+	const [currentPosition, setCurrentPosition] = useState({
+		lat: 55.603075505110425, 
+		lng: 13.00048440435288,
+	})
 	
-
 	// Find  and set user's position
 	const onSuccess = async (pos) => {
 		const positionCords  = {
@@ -20,8 +22,7 @@ const showMap = () => {
 	}, [])
 	
 	
-
-    return (
+	return (
     	<GoogleMap 
 			mapContainerClassName="map-container vh-100"
 			zoom={13} 
@@ -30,6 +31,9 @@ const showMap = () => {
 			{currentPosition.lat && (
 				<MarkerF position={currentPosition} />
 			)}
+
+			<RestaurantList data={data}/>
+
      	</GoogleMap>
     );
 }
