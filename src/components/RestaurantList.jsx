@@ -5,9 +5,9 @@ import RestaurantListItem from './RestaurantListItem'
 const RestaurantList = ({ data }) => {
 	return (
 		<Row xs={1} sm={2} md={2} lg={3}>
-			{data.map((restaurant) => (
-				<Col className="my-3">
-					<RestaurantListItem restaurant={restaurant} key={restaurant.id} />
+			{data.map((restaurant, i) => (
+				<Col className="my-3" key={i}>
+					<RestaurantListItem restaurant={restaurant} />
 				</Col>
 			))}
 		</Row>
