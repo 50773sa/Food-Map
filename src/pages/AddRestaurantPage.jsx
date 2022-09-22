@@ -37,9 +37,10 @@ const AddRestaurantPage = () => {
 		//get longitud and latitude from address
 		setAddress(streetRef.current.value)
 		
+		// the reference to the collection in the database
 		const restaurantsRef = collection(db, 'restaurants')
 
-		//make firestore doc
+		//make firestore doc to store in the DB
 		await addDoc(restaurantsRef, {
 			created: serverTimestamp(),
 			name: nameRef.current.value,
@@ -76,21 +77,21 @@ const AddRestaurantPage = () => {
 			<Row className="my-4">
 				<Col>
 					<Card>
-						<Card.Header as="h5">Tipsa oss om en restaurang</Card.Header>
+						<Card.Header as="h5">Tipsa oss!</Card.Header>
 						<Card.Body>
 							{error && (<Alert variant="danger">{error}</Alert>)}
 							{message && (<Alert variant="success">{message}</Alert>)}
 
 							<Form onSubmit={handleSubmit(createRestaurant)}>
 								<Form.Group className="mb-3">
-									<Form.Label>Namn</Form.Label>
+									<Form.Label>Namn*</Form.Label>
 									<Form.Control ref={nameRef} type="text" placeholder="Namn på stället" required />
 								</Form.Group>
 
 								<Form.Group className="mb-3">
 									<Row>
 										<Col>
-											<Form.Label>Adress</Form.Label>
+											<Form.Label>Adress*</Form.Label>
 											<Form.Control type="text" placeholder="Adress" ref={streetRef} required />
 										</Col>
 									</Row>
@@ -107,12 +108,12 @@ const AddRestaurantPage = () => {
 								</Form.Group>
 
 								<Form.Group className="mb-3">
-									<Form.Label>Info om restaurangen</Form.Label>
+									<Form.Label>Info om restaurangen*</Form.Label>
 									<Form.Control as="textarea" rows={2} type="text" placeholder="Skriv något om restaurangen" ref={restaurantInfoRef} required />
 								</Form.Group>
 								
 								<Form.Group className="mb-3">
-									<Form.Label>Vad är det för typ av ställe</Form.Label>
+									<Form.Label>Vad är det för typ av ställe*</Form.Label>
 									<Form.Select ref={restaurantTypeRef}>
 										<option>Café</option>
 										<option>Restaurang</option>
@@ -123,7 +124,7 @@ const AddRestaurantPage = () => {
 								</Form.Group>
 
 								<Form.Group className="mb-3">
-									<Form.Label>Utbud</Form.Label>
+									<Form.Label>Utbud*</Form.Label>
 									<Form.Check
 										inline
 										label="Lunch"
@@ -145,11 +146,18 @@ const AddRestaurantPage = () => {
 										id="a-la-carte"
 										className="mx-2"
 									/>
+									<Form.Check
+										inline
+										label="Bar"
+										type="checkbox"
+										id="bar"
+										className="mx-2"
+									/>
 								</Form.Group>
 
 								<Form.Group className="mb-3">
-									<Form.Label>Vad för slags mat?</Form.Label>
-									<Form.Control type="text" placeholder="Typ av mat" ref={foodTypeRef} required />
+									<Form.Label>Vad för slags kök?*</Form.Label>
+									<Form.Control type="text" placeholder="T ex franskt, thailändskt ..." ref={foodTypeRef} required />
 								</Form.Group>
 
 								<Form.Group id="email" className="mb-3">
