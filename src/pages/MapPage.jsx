@@ -9,9 +9,9 @@ const MapPage = () => {
   	const { isLoaded } = useLoadScript({
    		googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
   	})
-	const {data: restaurantQuery , isError, isSuccess} = useGetRestaurants()
-	const { data } = useGetRestaurants()
 
+	// Data from firebase
+	const {data, isError, isSuccess} = useGetRestaurants()
 
  	return (
 
@@ -21,8 +21,8 @@ const MapPage = () => {
 			{isError && <Alert variant='warning'>Error...</Alert>}
 
     		{isSuccess && (
-				<ShowMap query={restaurantQuery} data={data} />
-    		)}	
+				<ShowMap data={data} />
+    		)}					
     	</Container>
   	)
 }
