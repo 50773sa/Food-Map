@@ -1,20 +1,16 @@
 import { useEffect, useState } from "react"
 import { GoogleMap,  MarkerF } from "@react-google-maps/api"
-import Markers from "./Markers"
 import useGetRestaurants from "../hooks/useGetRestaurants"
-import MarkerItem from "./MarkerItem"
 
 
 const showMap = () => {
-	const [markerPos, setMarkerPos] = useState()
+	const [restaurantPosition, setRestaurantPosition] = useState(null)
 	const [currentPosition, setCurrentPosition] = useState({
 		lat: 55.603075505110425, 
 		lng: 13.00048440435288,
 	})
+
 	const {data: restaurants, isSuccess, isError} = useGetRestaurants()
-
-	const mark = restaurants.map(rest => rest.position)
-
 
 	// Find  and set user's position
 	const onSuccess = (pos) => {
@@ -25,14 +21,22 @@ const showMap = () => {
 		setCurrentPosition(positionCords)
 	}
 
+	// Get and set restaurants position
+	const markerPosition = () => {
+		const marker = restaurants
+			.map(rest => rest.position)
+
+		setRestaurantPosition(marker)
+	}
+
+	
 	useEffect(() => {
 		navigator.geolocation.getCurrentPosition(onSuccess)
 
-		setMarkerPos(mark)
-	
+		markerPosition()
+
 	},[])	
 
-	console.log('MARKER POS', markerPos)
 
 	return (
     	<GoogleMap 
@@ -45,8 +49,10 @@ const showMap = () => {
 				<MarkerF position={currentPosition} />
 			)}
 
-			{markerPos && markerPos.map((rest) => (
-				<MarkerF key={rest.id} position={{lat: rest.latitude, lng: rest.longitude}}/>
+			{restaurantPosition && restaurantPosition.map((rest) => (
+				<MarkerF 
+					key={rest.id} 
+					position={{lat: rest.latitude, lng: rest.longitude}}/>
 			))}
 
      	</GoogleMap>
