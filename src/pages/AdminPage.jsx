@@ -5,11 +5,9 @@ const AdminPage = () => {
 
     return (
             <>
-                <div>AdminPage</div>
-
-                {currentUser 
-                    ? <p>You are logged in as {currentUser.email}</p> 
-                    : <p>Vem e du egentligen?</p>}
+                <div>
+                    <p>You are logged in as {currentUser.email}</p> 
+                </div>
             </>
         )
 }
