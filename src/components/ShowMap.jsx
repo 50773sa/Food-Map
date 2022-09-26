@@ -4,7 +4,7 @@ import useGetRestaurants from "../hooks/useGetRestaurants"
 
 
 const showMap = () => {
-	const [restaurantPosition, setRestaurantPosition] = useState(null)
+	const [restaurant, setRestaurant] = useState(null)
 	const [currentPosition, setCurrentPosition] = useState({
 		lat: 55.603075505110425, 
 		lng: 13.00048440435288,
@@ -24,9 +24,9 @@ const showMap = () => {
 	// Get and set restaurants position
 	const markerPosition = () => {
 		const marker = restaurants
-			.map(rest => rest.position)
+			.map(rest => rest)
 
-		setRestaurantPosition(marker)
+		setRestaurant(marker)
 	}
 
 	
@@ -49,10 +49,10 @@ const showMap = () => {
 				<MarkerF position={currentPosition} />
 			)}
 
-			{restaurantPosition && restaurantPosition.map((rest) => (
+			{restaurant && restaurant.map((rest) => (
 				<MarkerF 
 					key={rest.id} 
-					position={{lat: rest.latitude, lng: rest.longitude}}/>
+					position={{lat: rest.position.latitude, lng: rest.position.longitude}}/>
 			))}
 
      	</GoogleMap>
