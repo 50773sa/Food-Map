@@ -5,6 +5,7 @@ import InfoBox from "./InfoBox"
 
 
 const showMap = ({ }) => {
+	const [show, setShow] = useState(true)
 	const [restaurant, setRestaurant] = useState(null)
 	const [selectedRestaurant, setSelectedRestaurant] = useState(null)
 	const [currentPosition, setCurrentPosition] = useState({
@@ -25,10 +26,15 @@ const showMap = ({ }) => {
 	}
 
 	// Get and set restaurants position
-	const markerPosition = (e) => {
+	const markerPosition = () => {
 		const marker = restaurants.map(rest => rest)
 		setRestaurant(marker)
 	}
+
+	const closeWindow = () => {
+		setShow(false)
+	}
+
 
 
 	useEffect(() => {
@@ -63,17 +69,21 @@ const showMap = ({ }) => {
 			))}
 
 			{selectedRestaurant && (
-				<InfoWindowF
-					position={{
-						lat: selectedRestaurant.position.latitude, 
-						lng: selectedRestaurant.position.longitude
-					}}
+				<>
+					<InfoWindowF
+						position={{
+							lat: selectedRestaurant.position.latitude, 
+							lng: selectedRestaurant.position.longitude
+						}}
 
-					onCloseClick={() => setSelectedRestaurant(null)}
-				>
-					<p>{selectedRestaurant.name}</p>
+						onCloseClick={() => setSelectedRestaurant(null)}
+					>
+						<p>{selectedRestaurant.name}</p>
 
-				</InfoWindowF>	
+					</InfoWindowF>	
+
+					<InfoBox show={show} closeWindow={closeWindow} selectedRestaurant={selectedRestaurant}/>
+				</>
 			)}
 
      	</GoogleMap>
