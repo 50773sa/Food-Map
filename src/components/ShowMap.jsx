@@ -23,6 +23,7 @@ const showMap = () => {
 
 	// Get and set restaurants position
 	const markerPosition = () => {
+		
 		const marker = restaurants
 			.map(rest => rest)
 
