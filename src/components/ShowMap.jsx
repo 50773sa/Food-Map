@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { GoogleMap,  MarkerF } from "@react-google-maps/api"
 import useGetRestaurants from "../hooks/useGetRestaurants"
+import SearchBar from "./SearchBar"
 
 
 const showMap = () => {
@@ -10,7 +11,7 @@ const showMap = () => {
 		lng: 13.00048440435288,
 	})
 
-	const {data: restaurants, isSuccess, isError} = useGetRestaurants()
+	const {data: restaurants, isSuccess, isError, isLoading} = useGetRestaurants()
 
 	// Find  and set user's position
 	const onSuccess = (pos) => {
@@ -30,6 +31,7 @@ const showMap = () => {
 		setRestaurant(marker)
 	}
 
+
 	
 	useEffect(() => {
 		navigator.geolocation.getCurrentPosition(onSuccess)
@@ -40,23 +42,28 @@ const showMap = () => {
 
 
 	return (
-    	<GoogleMap 
-			mapContainerClassName="map-container vh-100"
-			zoom={13} 
-			center={currentPosition} 
-		>
+		<>
+			{isLoading && <p>Loading the map...</p>}
+			<SearchBar data={restaurants} />
 
-			{currentPosition.lat && (
-				<MarkerF position={currentPosition} />
-			)}
+			<GoogleMap 
+				mapContainerClassName="map-container vh-100"
+				zoom={13} 
+				center={currentPosition} 
+			>
 
-			{restaurant && restaurant.map((rest) => (
-				<MarkerF 
-					key={rest.id} 
-					position={{lat: rest.position.latitude, lng: rest.position.longitude}}/>
-			))}
+				{currentPosition.lat && (
+					<MarkerF position={currentPosition} />
+				)}
 
-     	</GoogleMap>
+				{restaurant && restaurant.map((rest) => (
+					<MarkerF 
+						key={rest.id} 
+						position={{lat: rest.position.latitude, lng: rest.position.longitude}}/>
+				))}
+
+			</GoogleMap>
+		 </>
     )
 }
 export default showMap
