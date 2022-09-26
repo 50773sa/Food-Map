@@ -14,15 +14,18 @@ import { toast } from 'react-toastify'
 const AddRestaurantForm = () => {
 	const [error, setError] = useState(null)
 	const [loading, setLoading] = useState(false)
-	const [address, setAddress] = useState(null)
+	const [street, setStreet] = useState(null)
+	const [city, setCity] = useState(null)
 	const { handleSubmit, formState: { errors }, reset, register } = useForm()
-	const { data: addressData } = useAddress(address)
+	const { data: addressData } = useAddress(street, city)
+	console.log('city and street', city, street)
 
 	const createRestaurant = async (data) => {
 		console.log('data', data)
 		
 		//get longitud and latitude from address
-		setAddress(data.street)
+		setStreet(data.street)
+		setCity(data.city)
 		
 
 		//make firestore doc to store in the DB
