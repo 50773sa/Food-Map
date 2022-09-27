@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { ToastContainer } from 'react-toastify'
+import RequireAuth from './components/RequireAuth'
 import HomePage from './pages/HomePage'
 import MapPage from './pages/MapPage'
 import LoginPage from './pages/LoginPage'
@@ -23,7 +24,12 @@ function App() {
                 <Route path="/logout" element={<LogoutPage />} />
 				<Route path="/restaurants" element={<RestaurantsPage />} />
 				<Route path="/add-restaurant" element={<AddRestaurantPage />} />
-				<Route path="/admin" element={<AdminPage />} />
+                <Route path="/admin" element={
+					<RequireAuth>
+						<AdminPage />
+					</RequireAuth>
+				} />
+				
 
 			</Routes>
 

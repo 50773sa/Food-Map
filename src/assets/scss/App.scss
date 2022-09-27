@@ -31,6 +31,26 @@ h1, h2, h3, h4, h5, h6 {
 	font-size: 0.8rem;
 }
 
+#navbar-dropdown {
+    border: 2px solid wheat;
+    border-radius: 50%;
+    margin-left: 2px;
+}
+
+.dropdown-menu {
+    background-color: #212529;
+    padding-left: 5px;
+}
+
+.dropdown-menu a {
+    text-decoration: none;
+    color: rgb(255, 255, 255, 0.55);
+}
+
+.dropdown-menu a:hover {
+    color:rgb(255, 255, 255, 0.75)
+}
+
 // icons
 .svg-inline--fa{
 	color: black;
