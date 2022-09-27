@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect} from 'react'
 import { auth } from '../firebase'
 import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import { Container } from 'react-bootstrap'
-import foodLoader from '../assets/Images/food-loader.gif'
+import LoadingSpinner from '../components/LoadingSpinner'
 
 const AuthContext = createContext()
 
@@ -44,9 +44,7 @@ const AuthContextProvider = ({ children }) => {
 		<AuthContext.Provider value={contextValues}>
             {loading ? (
                 <Container className='vh-100 d-flex justify-content-center align-items-center'>
-                    <div className="loading-wrapper">
-                        <img src={foodLoader}></img>                
-                    </div>
+                    <LoadingSpinner />
                 </Container>
             ) : (
                 children
