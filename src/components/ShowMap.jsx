@@ -5,7 +5,7 @@ import InfoBox from "./InfoBox"
 
 
 const showMap = ({ }) => {
-	const [show, setShow] = useState(true)
+	const [show, setShow] = useState(false)
 	const [restaurant, setRestaurant] = useState(null)
 	const [selectedRestaurant, setSelectedRestaurant] = useState(null)
 	const [currentPosition, setCurrentPosition] = useState({
@@ -13,7 +13,6 @@ const showMap = ({ }) => {
 		lng: 13.00048440435288,
 	})
 
-	// console.log('selected restaurant:', selectedRestaurant)
 	const {data: restaurants} = useGetRestaurants()
 
 	// Find  and set user's position
@@ -31,11 +30,10 @@ const showMap = ({ }) => {
 		setRestaurant(marker)
 	}
 
+	//! ska fixa så denna blir en onMouseOver istället
 	const closeWindow = () => {
 		setShow(false)
 	}
-
-
 
 	useEffect(() => {
 		navigator.geolocation.getCurrentPosition(onSuccess)
@@ -44,6 +42,7 @@ const showMap = ({ }) => {
 
 	},[])	
 
+	console.log(restaurant)
 
 	return (
     	<GoogleMap 
@@ -59,7 +58,7 @@ const showMap = ({ }) => {
 			{restaurant && restaurant.map((rest) => (
 				<MarkerF 
 					key={rest.id} 
-					onClick={() => setSelectedRestaurant(rest)}
+					onClick={() => {setSelectedRestaurant(rest), setShow(true)}}
 					value={rest.id}
 					position={{
 						lat: rest.position.latitude, 
