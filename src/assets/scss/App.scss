@@ -63,4 +63,22 @@ a {
 
 a:hover {
   background-color: lightgrey;
+#navbar-dropdown {
+    border: 2px solid wheat;
+    border-radius: 50%;
+    margin-left: 2px;
+}
+
+.dropdown-menu {
+    background-color: #212529;
+    padding-left: 5px;
+}
+
+.dropdown-menu a {
+    text-decoration: none;
+    color: rgb(255, 255, 255, 0.55);
+}
+
+.dropdown-menu a:hover {
+    color:rgb(255, 255, 255, 0.75)
 }
