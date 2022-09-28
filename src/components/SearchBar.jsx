@@ -1,57 +1,33 @@
-import { useState } from 'react'
+import { useRef } from 'react'
 import { Autocomplete } from '@react-google-maps/api'
 import Form from 'react-bootstrap/Form'
-import InputGroup from 'react-bootstrap/InputGroup'
 import Button from 'react-bootstrap/Button'
-import { faSearch, faClose } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-const SearchBar = (data) => {
-	const [filteredData, setFilteredData] = useState([])
-	const [wordEntered, setWordEntered] = useState('')
+const SearchBar = () => {
+	const searchRef = useRef()
 
-	const handleFilter = (event) => {
-		const searchWord = event.target.value
-		const newFilter = data.data.filter((value) => {
-			return value.address.city.toLowerCase().includes(searchWord.toLowerCase())
-		})
-		if (searchWord === "") {
-			setFilteredData([])
-			setWordEntered('')
+	const handleForm = (e) => {
+		e.preventDefault()
 
-		} else {
-			console.log('newFilter', newFilter)
-			setFilteredData(newFilter)
-		}
-	}
-
-	const clearInput = () => {
-		setFilteredData([])
-		setWordEntered('')
+		console.log(searchRef.current.value)
+		//onSubmit(searchRef.current.value)
 	}
 
 	return (
 		<div>
-			<InputGroup className="mb-3"  >
-				<input onChange={handleFilter} placeholder="Search for a place" type="text" defaultValue={wordEntered} />
-				<Button variant="outline-secondary">
-					{filteredData.length === 0
-						? <FontAwesomeIcon icon={faSearch} />
-						: <FontAwesomeIcon icon={faClose} onClick={clearInput}/>
-					} {/* nu visar den förstoringsglaset när man söker på random bokstäver = length=0 FIXA */}
-				</Button>
-			</InputGroup>
-			{filteredData.length != 0 && (
-				<div className="data_result">
-					{filteredData.map((value) => {
-						return (
-							<a key={value.id} className="data_result_item" href="">
-								<p>{value.name}, {value.address.city}</p>
-							</a>
-						)
-					})}
-				</div>
-			)}
+			<Form onSubmit={handleForm}>
+				<Form.Group className="d-flex justify-content-center">
+					<Autocomplete>
+						<Form.Control
+							type="text"
+							ref={searchRef}
+							placeholder="Enter an adress"
+							required
+						/>
+					</Autocomplete>
+					<Button type="submit" variant="outline-primary">Search</Button>
+				</Form.Group>
+			</Form>
 		</div>
 	)
 }
