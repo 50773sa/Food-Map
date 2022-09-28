@@ -4,7 +4,7 @@ import useGetRestaurants from "../hooks/useGetRestaurants"
 import InfoBox from "./InfoBox"
 
 
-const showMap = ({ }) => {
+const showMap = ({searchData}) => {
 	const [show, setShow] = useState(false)
 	const [restaurant, setRestaurant] = useState(null)
 	const [selectedRestaurant, setSelectedRestaurant] = useState(null)
@@ -12,16 +12,23 @@ const showMap = ({ }) => {
 		lat: 55.603075505110425, 
 		lng: 13.00048440435288,
 	})
-
+	//console.log('selected in showMap', searchData)
 	const {data: restaurants} = useGetRestaurants()
+	console.log("sökdata",searchData)
+	console.log("defaultplats",currentPosition)
 
 	// Find  and set user's position
 	const onSuccess = (pos) => {
-		const positionCords  = {
+		const positionCords = {
 			lat: pos.coords.latitude,
 			lng: pos.coords.longitude,
 		}
-		setCurrentPosition(positionCords)
+		if (searchData === null) {
+			setCurrentPosition(positionCords)
+			console.log('platsen vi är på', positionCords)
+		} else {
+			setCurrentPosition(searchData)
+		}
 	}
 
 	// Get and set restaurants position
