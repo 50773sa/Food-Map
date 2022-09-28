@@ -9,6 +9,7 @@ import LogoutPage from './pages/LogoutPage'
 import AdminPage from './pages/AdminPage'
 import Navigation from './pages/partials/Navigation'
 import RestaurantsPage from './pages/RestaurantsPage'
+import RestaurantPage from './pages/RestaurantPage'
 import AddRestaurantPage from './pages/AddRestaurantPage'
 import './assets/scss/App.scss'
 
@@ -27,6 +28,11 @@ function App() {
                 <Route path="/admin" element={
 					<RequireAuth>
 						<AdminPage />
+					</RequireAuth>
+				} />
+                <Route path="/restaurants/:id" element={
+					<RequireAuth>
+						<RestaurantPage />
 					</RequireAuth>
 				} />
 				
