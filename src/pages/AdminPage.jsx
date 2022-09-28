@@ -1,17 +1,18 @@
 import { useMemo } from 'react'
 import { useAuthContext } from '../contexts/AuthContext'
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col, Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 // import AddAdmin from '../components/AddAdmin'
 import useGetRestaurants from '../hooks/useGetRestaurants'
-import BasicTable from '../components/BasicTable'
+import SortableTable from '../components/SortableTable'
 import LoadingSpinner from '../components/LoadingSpinner'
 
 
 const AdminPage = () => {
-    const {data, isLoading} = useGetRestaurants()
+    const {data: restaurants, isLoading} = useGetRestaurants()
     const { currentUser } = useAuthContext()
 
-    console.log(data)
+    console.log(restaurants)
 
     const columns = useMemo(() => {
         return [
@@ -39,6 +40,20 @@ const AdminPage = () => {
                 Header: 'Typ',
                 accessor: 'restaurant_info.restaurantType',
             },
+            {
+                Header: 'Action',
+                accessor: 'Action',
+                Cell: ({ row: { original } }) => (
+                    <Button
+						variant="primary"
+						size="sm"
+						as={Link}
+						to={`/restaurants/${original.id}`}
+					>
+						Edit
+					</Button>
+                )
+            },
         ]
     },[])
 
@@ -54,12 +69,10 @@ const AdminPage = () => {
                             <AddAdmin />
                         </Col> */}
                         <Col md={12}>
-                            {isLoading && (
-                                <LoadingSpinner />
-                            )}
-                            {!isLoading && data && 
-                                <BasicTable columns={columns} data={data} />
-                            }
+
+                            {isLoading &&  <LoadingSpinner />}
+
+                            {restaurants && <SortableTable columns={columns} data={restaurants} />}
                         </Col>
                     </Row>
                 </Container>
