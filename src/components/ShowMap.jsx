@@ -1,9 +1,6 @@
-import { useEffect, useState } from "react"
-import { GoogleMap,  MarkerF } from "@react-google-maps/api"
+import { useEffect, useState, useRef } from "react"
+import { GoogleMap,  MarkerF, LoadScript, StandaloneSearchBox } from "@react-google-maps/api"
 import useGetRestaurants from "../hooks/useGetRestaurants"
-import SearchBar from "./SearchBar"
-import SearchBarAuto from "./SearchBarAuto"
-
 
 const showMap = () => {
 	const [restaurant, setRestaurant] = useState(null)
@@ -45,9 +42,7 @@ const showMap = () => {
 	return (
 		<>
 			{isLoading && <p>Loading the map...</p>}
-			<SearchBar data={restaurants} />
-			<SearchBarAuto data={restaurants}/>
-			
+
 			<GoogleMap 
 				mapContainerClassName="map-container vh-100"
 				zoom={13} 
@@ -66,7 +61,7 @@ const showMap = () => {
 
 			</GoogleMap>
 		 </>
-    )
+	)
 }
 export default showMap
 
