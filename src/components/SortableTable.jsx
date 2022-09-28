@@ -12,7 +12,7 @@ const SortableTable = ({ columns, data }) => {
 
     return (
         <Table bordered hover {...getTableProps()}>
-            <thead>
+            <thead className='table-headers'>
                 {headerGroups.map(headerGroup => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
                         {headerGroup.headers.map(column => (
@@ -38,7 +38,7 @@ const SortableTable = ({ columns, data }) => {
                     return (
                         <tr {...row.getRowProps()}>
                             {row.cells.map(cell => (
-                                <td {...cell.getCellProps()}>
+                                <td className='table-cells' {...cell.getCellProps()}>
                                     {cell.render('Cell')}
                                 </td>
                             ))}

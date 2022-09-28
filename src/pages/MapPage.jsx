@@ -15,7 +15,7 @@ const MapPage = () => {
 
  	return (
 
-    	<Container>
+    	<Container fluid className="g-0">
 			{!isLoaded && <div>Loading...</div>}
 
 			{isError && <Alert variant='warning'>Error...</Alert>}

@@ -17,32 +17,52 @@ const AdminPage = () => {
     const columns = useMemo(() => {
         return [
             {
-                Header: 'Namn',
-                accessor: 'name',
-            },
-            {
-                Header: 'Stad',
-                accessor: 'address.city',
+                Header: 'Restaurant Info',
+                columns: [{
+                    Header: 'Namn',
+                    accessor: 'name',
+                }, {
+                    Header: 'Cuisine',
+                    accessor: 'restaurant_info.cuisine',
+                }, {
+                    Header: 'Sort',
+                    accessor: 'restaurant_info.restaurantSort',
+                }, {
+                    Header: 'Typ',
+                    accessor: 'restaurant_info.restaurantType',
+                }]  
             },
             {
                 Header: 'Address',
-                accessor: 'address.street',
+                columns: [{
+                    Header: 'Stad',
+                    accessor: 'address.city',
+                }, {
+                    Header: 'Address',
+                    accessor: 'address.street',
+                }],
             },
             {
-                Header: 'Cuisine',
-                accessor: 'restaurant_info.cuisine',
-            },
-            {
-                Header: 'Sort',
-                accessor: 'restaurant_info.restaurantSort',
-            },
-            {
-                Header: 'Typ',
-                accessor: 'restaurant_info.restaurantType',
+                Header: 'Social',
+                columns: [{
+                    Header: 'Email',
+                    accessor: 'social.email',
+                }, {
+                    Header: 'Facebook',
+                    accessor: 'social.facebook',
+                }, {
+                    Header: 'Instagram',
+                    accessor: 'social.instagram',
+                }, {
+                    Header: 'Phone',
+                    accessor: 'social.phone',
+                }, {
+                    Header: 'Website',
+                    accessor: 'social.website',
+                }],
             },
             {
                 Header: 'Action',
-                accessor: 'Action',
                 Cell: ({ row: { original } }) => (
                     <Button
 						variant="primary"
