@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { GoogleMap,  MarkerF, InfoWindowF} from "@react-google-maps/api"
+import { GoogleMap,  MarkerF } from "@react-google-maps/api"
 import useGetRestaurants from "../hooks/useGetRestaurants"
 import InfoBox from "./InfoBox"
 
@@ -45,8 +45,8 @@ const showMap = ({searchData}) => {
 		setRestaurant(marker)
 	}
 
-	//! ska fixa så denna blir en onMouseOver istället
-	const closeWindow = () => {
+	// Close infoBox
+	const closeInfoBox = () => {
 		setShow(false)
 	}
 
@@ -83,21 +83,7 @@ const showMap = ({searchData}) => {
 			))}
 
 			{selectedRestaurant && (
-				<>
-					<InfoWindowF
-						position={{
-							lat: selectedRestaurant.position.latitude, 
-							lng: selectedRestaurant.position.longitude
-						}}
-
-						onCloseClick={() => setSelectedRestaurant(null)}
-					>
-						<p>{selectedRestaurant.name}</p>
-
-					</InfoWindowF>	
-
-					<InfoBox show={show} closeWindow={closeWindow} selectedRestaurant={selectedRestaurant}/>
-				</>
+				<InfoBox show={show} closeInfoBox={closeInfoBox} selectedRestaurant={selectedRestaurant}/>	
 			)}
 
      	</GoogleMap>
