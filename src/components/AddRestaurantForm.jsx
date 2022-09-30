@@ -24,10 +24,11 @@ const AddRestaurantForm = () => {
 			//get longitud and latitude from address
 			const res = await GoogleMapsAPI.getLatLng(data.street, data.city)
 
-			const lat = res.results[0].geometry.location.lat
-			const lng = res.results[0].geometry.location.lng
 			
 			if (res) {
+				const lng = res.results[0].geometry.location.lng
+				const lat = res.results[0].geometry.location.lat
+				
 				//make firestore doc to store in the DB
 				await addDoc(collection(db, 'restaurants'), {
 					created: serverTimestamp(),
