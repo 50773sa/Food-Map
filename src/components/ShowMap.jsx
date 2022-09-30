@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { GoogleMap,  MarkerF } from "@react-google-maps/api"
 import useGetRestaurants from "../hooks/useGetRestaurants"
 import InfoBox from "./InfoBox"
-
+import { toast } from "react-toastify"
 
 const showMap = ({searchData}) => {
 	const [show, setShow] = useState(false)
@@ -12,10 +12,7 @@ const showMap = ({searchData}) => {
 		lat: 55.603075505110425, 
 		lng: 13.00048440435288,
 	})
-	//console.log('selected in showMap', searchData)
-	const {data: restaurants} = useGetRestaurants()
-	console.log("sökdata",searchData)
-	console.log("defaultplats",currentPosition)
+	const { data: restaurants } = useGetRestaurants()	
 
 	// Find  and set user's position
 	const onSuccess = (pos) => {
@@ -23,12 +20,9 @@ const showMap = ({searchData}) => {
 			lat: pos.coords.latitude,
 			lng: pos.coords.longitude,
 		}
-		if (searchData === null) {
-			setCurrentPosition(positionCords)
-			console.log('platsen vi är på', positionCords)
-		} else if(searchData) {
-			setCurrentPosition(searchData)
-		}
+		
+		setCurrentPosition(positionCords)
+		console.log('platsen vi är på', positionCords)
 	}
 
 	if (!navigator.geolocation) {
@@ -36,7 +30,7 @@ const showMap = ({searchData}) => {
 	}
 
 	const error = (err) => {
-		error(`Vi kunde inte hitta din position, vänligen sök på stad i sökfältet. ${err.message}`)
+		toast.warning(`Vi kunde inte hitta din position, vänligen sök på stad i sökfältet. ${err.message}`)
 	}
 
 	// Get and set restaurants position
@@ -57,7 +51,19 @@ const showMap = ({searchData}) => {
 
 	},[])
 
-	console.log(restaurant)
+	useEffect(() => {
+		if(searchData !== null) {
+			setCurrentPosition(searchData)
+			
+		} else {
+			//om där är searchdata men den är null så placerar vi användaren på default (i malmö)
+			setCurrentPosition({
+				lat: 55.603075505110425, 
+				lng: 13.00048440435288,
+			})
+		}
+
+	}, [searchData])
 
 	return (
     	<GoogleMap 

@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import GoogleMapsAPI from '../services/GoogleMapsAPI'
+import { toast } from 'react-toastify'
 
 const SearchBar = ({ setSelected }) => {
 	const searchRef = useRef()
@@ -14,11 +15,13 @@ const SearchBar = ({ setSelected }) => {
 
 		//set the value to be what was searched for
 		const data = await GoogleMapsAPI.getCoordinates(searchRef.current.value)
-		console.log('data', data)
-		if (data) {
+		
+		if(data.status == "ZERO_RESULTS" || !data){
+			setSelected(null)
+			toast.warning('Oops, där gick något fel - sökte du på en stad?')
+
+		} else if (data.status == "OK") {
 			setSelected(data.results[0].geometry.location)
-		} else {
-			return
 		}
 	}
 
@@ -27,6 +30,7 @@ const SearchBar = ({ setSelected }) => {
 			<Form onSubmit={handleSearch}>
 				<Autocomplete restrictions={{ 'country': ['SE'] }} types={["locality"]}>
 					<Form.Group className="d-flex justify-content-center">
+
 						<Form.Control
 							type="text"
 							ref={searchRef}
@@ -37,6 +41,7 @@ const SearchBar = ({ setSelected }) => {
 						<Button type="submit" variant="outline-secondary">
 							<FontAwesomeIcon icon={faSearch} />
 						</Button>
+
 					</Form.Group>
 				</Autocomplete>
 			</Form>
