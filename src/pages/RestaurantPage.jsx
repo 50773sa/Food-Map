@@ -1,23 +1,29 @@
 import { useParams } from 'react-router-dom'
-import { Container } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 import useStreamDokument from '../hooks/useStreamDokument'
 import LoadingSpinner from '../components/LoadingSpinner'
 import EditRestaurantForm from '../components/EditRestaurantForm'
 
 const RestaurantsPage = () => {
     const { id } = useParams()
-	const {data, isLoading} = useStreamDokument('restaurants', id)
+	const {data: restaurant , isLoading} = useStreamDokument('restaurants', id)
 
-    console.log(data)
+    console.log(restaurant)
 
 	return (
 		<Container>
 
-			{isLoading && <LoadingSpinner />}
+            <Row>
+                <Col md={6} className="m-auto">
+
+			        {isLoading && <LoadingSpinner />}
 			
-            {!isLoading && data && (
-                <EditRestaurantForm data={data} />
-            )}
+                    {!isLoading && restaurant && (
+                        <EditRestaurantForm restaurant={restaurant} />
+                    )}
+
+                </Col>
+            </Row>
 
 		</Container>
 	)
