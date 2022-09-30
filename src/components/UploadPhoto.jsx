@@ -15,10 +15,11 @@ const UploadPhoto = () => {
 		console.log('File: ', e.target.files[0])
 	}
 
-	const handleSubmit = async (e) => {
+	const submit = async (e) => {
 		e.preventDefault()
 
-		await uploadPhoto.mutate(photo)
+		await uploadPhoto.upload(photo)
+		console.log('Hell yeah',e)
 	}
 
 	const handleReset = () => {
@@ -27,20 +28,21 @@ const UploadPhoto = () => {
 
 
 	return (
-		<Form onSubmit={handleSubmit} onReset={handleReset}>
-			<Form.Group controlId="formFile" className="mb-3">
+		// <Form onSubmit={handleSubmit} onReset={handleReset}>
+		<>
+			<Form.Group controlId="formFile" className="mb-3" >
 				<Form.Label>Välj bild</Form.Label>
-				<Form.Control type="file" onChange={handleSelectedPhoto} />
+				<Form.Control type="file" onChange={handleSelectedPhoto}/>
 
 				<Form.Text>
 					{photo ? photo.name : 'No photo selected'}
 				</Form.Text>
 			</Form.Group>
 
-			<Button className="me-3" variant="success" type="submit" disabled={uploadPhoto.isMutating}>Ladda upp</Button>
-			<Button type="reset" variant="warning">Återställ</Button>
-
-		</Form>
+			<Button className="me-3" variant="success" type="submit"onSubmit={submit}  disabled={uploadPhoto.isMutating}>Ladda upp</Button>
+			<Button onReset={handleReset} type="reset" variant="warning">Återställ</Button>
+			</>
+		// </Form>
 	)
 }
 

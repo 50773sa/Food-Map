@@ -10,6 +10,7 @@ import { db } from '../firebase'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 import useAddress from '../hooks/useAddress'
 import { toast } from 'react-toastify'
+import useUploadPhoto from '../hooks/useUploadPhoto'
 
 const AddRestaurantForm = () => {
 	const [error, setError] = useState(null)
@@ -20,13 +21,44 @@ const AddRestaurantForm = () => {
 	const { data: addressData } = useAddress(street, city)
 	console.log('city and street', city, street)
 
+	const [photo, setPhoto] = useState(null)
+	const [photoUrl, setPhotoUrl] = useState(null)
+	const uploadPhoto = useUploadPhoto()
+
+
+	const handleSelectedPhoto = (e) => {
+		if (e.target.files[0]) {
+			setPhoto(e.target.files[0])
+		}
+		console.log('File: ', e.target.files[0])
+
+		console.log('1')
+
+	}
+
+	const submit = async () => {
+
+		await uploadPhoto.upload(photo)
+		setPhotoUrl(uploadPhoto.URL)
+
+		console.log('uploadphoto', uploadPhoto.URL)
+		console.log('photoUrl', photoUrl)
+		console.log('2')
+	}
+
+	const handleReset = () => {
+		setPhotoUrl(null)
+		setPhoto(null)
+	}
+
 	const createRestaurant = async (data) => {
 		console.log('data', data)
-		
+		submit()
+
 		//get longitud and latitude from address
 		setStreet(data.street)
 		setCity(data.city)
-		
+		console.log('3')
 
 		//make firestore doc to store in the DB
 		await addDoc(collection(db, 'restaurants'), {
@@ -54,14 +86,15 @@ const AddRestaurantForm = () => {
 				latitude: addressData.results[0].geometry.location.lat,
 				longitude: addressData.results[0].geometry.location.lng,
 			},
+			url: uploadPhoto.URL,
+
 			approved: false,
 		})
-
+		console.log('4')
 		toast.success('Tack för tipset!')
 		setLoading(false)
-		reset()
+		// reset()
 	}
-
 	return (
 		<Row className="my-4">
 			<Col>
@@ -237,6 +270,18 @@ const AddRestaurantForm = () => {
 								<Form.Label>Instagram</Form.Label>
 								<Form.Control {...register("instagram")} type="text" />
 							</Form.Group>
+
+							<Form.Group controlId="formFile" className="mb-3" >
+								<Form.Label>Välj bild</Form.Label>
+								<Form.Control {...register("url")} type="file" onChange={handleSelectedPhoto}/>
+
+								<Form.Text>
+									{photo ? photo.name : 'No photo selected'}
+								</Form.Text>
+							</Form.Group>
+
+							<Button className="me-3" variant="success" type="submit" onSubmit={submit}  disabled={uploadPhoto.isUploading}>Ladda upp</Button>
+							<Button onReset={handleReset} type="reset" variant="warning">Återställ</Button>
 
 							<Button disabled={loading} type="submit">Skicka in förslaget till oss!</Button>
 						</Form>
