@@ -24,6 +24,7 @@ const AddRestaurantForm = () => {
 	const [photo, setPhoto] = useState(null)
 	const [photoUrl, setPhotoUrl] = useState(null)
 	const uploadPhoto = useUploadPhoto()
+	console.log('uploadPhoto', uploadPhoto.URL)
 
 
 	const handleSelectedPhoto = (e) => {
@@ -40,10 +41,12 @@ const AddRestaurantForm = () => {
 
 		await uploadPhoto.upload(photo)
 		setPhotoUrl(uploadPhoto.URL)
+		const path = [...register('url'), photoUrl]
 
 		console.log('uploadphoto', uploadPhoto.URL)
 		console.log('photoUrl', photoUrl)
 		console.log('2')
+		return path
 	}
 
 	const handleReset = () => {
@@ -86,13 +89,15 @@ const AddRestaurantForm = () => {
 				latitude: addressData.results[0].geometry.location.lat,
 				longitude: addressData.results[0].geometry.location.lng,
 			},
-			url: uploadPhoto.URL,
+			url: photoUrl ? photoUrl : "",
 
-			approved: false,
+			// approved: false,
 		})
 		console.log('4')
 		toast.success('Tack för tipset!')
 		setLoading(false)
+		setPhotoUrl(null)
+		setPhoto(null)
 		// reset()
 	}
 	return (
@@ -273,7 +278,7 @@ const AddRestaurantForm = () => {
 
 							<Form.Group controlId="formFile" className="mb-3" >
 								<Form.Label>Välj bild</Form.Label>
-								<Form.Control {...register("url")} type="file" onChange={handleSelectedPhoto}/>
+								<Form.Control type="file" onChange={handleSelectedPhoto}/>
 
 								<Form.Text>
 									{photo ? photo.name : 'No photo selected'}
