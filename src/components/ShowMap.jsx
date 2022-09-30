@@ -26,9 +26,17 @@ const showMap = ({searchData}) => {
 		if (searchData === null) {
 			setCurrentPosition(positionCords)
 			console.log('platsen vi är på', positionCords)
-		} else {
+		} else if(searchData) {
 			setCurrentPosition(searchData)
 		}
+	}
+
+	if (!navigator.geolocation) {
+		console.log('Geolocation is not supported by your browser')
+	}
+
+	const error = (err) => {
+		error(`Vi kunde inte hitta din position, vänligen sök på stad i sökfältet. ${err.message}`)
 	}
 
 	// Get and set restaurants position
@@ -43,11 +51,11 @@ const showMap = ({searchData}) => {
 	}
 
 	useEffect(() => {
-		navigator.geolocation.getCurrentPosition(onSuccess)
+		navigator.geolocation.getCurrentPosition(onSuccess, error)
 
 		markerPosition()
 
-	},[])	
+	},[])
 
 	console.log(restaurant)
 

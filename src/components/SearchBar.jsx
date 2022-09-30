@@ -14,7 +14,7 @@ const SearchBar = ({ setSelected }) => {
 
 		//set the value to be what was searched for
 		const data = await GoogleMapsAPI.getCoordinates(searchRef.current.value)
-
+		console.log('data', data)
 		if (data) {
 			setSelected(data.results[0].geometry.location)
 		} else {
