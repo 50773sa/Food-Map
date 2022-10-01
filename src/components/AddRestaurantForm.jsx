@@ -22,46 +22,39 @@ const AddRestaurantForm = () => {
 	console.log('city and street', city, street)
 
 	const [photo, setPhoto] = useState(null)
-	const [photoUrl, setPhotoUrl] = useState(null)
 	const uploadPhoto = useUploadPhoto()
 	console.log('uploadPhoto', uploadPhoto.URL)
 
+
+	/**
+	 *  Handle photos 
+	 */
 
 	const handleSelectedPhoto = (e) => {
 		if (e.target.files[0]) {
 			setPhoto(e.target.files[0])
 		}
 		console.log('File: ', e.target.files[0])
-
-		console.log('1')
-
 	}
 
 	const submit = async () => {
-
 		await uploadPhoto.upload(photo)
-		setPhotoUrl(uploadPhoto.URL)
-		const path = [...register('url'), photoUrl]
-
-		console.log('uploadphoto', uploadPhoto.URL)
-		console.log('photoUrl', photoUrl)
-		console.log('2')
-		return path
 	}
 
-	const handleReset = () => {
-		setPhotoUrl(null)
+	const handleResetPhoto = () => {
 		setPhoto(null)
 	}
 
+	/**
+	 *  Create restaurant 
+	 */
+	
 	const createRestaurant = async (data) => {
 		console.log('data', data)
-		submit()
-
+		
 		//get longitud and latitude from address
 		setStreet(data.street)
 		setCity(data.city)
-		console.log('3')
 
 		//make firestore doc to store in the DB
 		await addDoc(collection(db, 'restaurants'), {
@@ -89,17 +82,17 @@ const AddRestaurantForm = () => {
 				latitude: addressData.results[0].geometry.location.lat,
 				longitude: addressData.results[0].geometry.location.lng,
 			},
-			url: photoUrl ? photoUrl : "",
+			url: uploadPhoto.URL,
 
 			// approved: false,
 		})
-		console.log('4')
 		toast.success('Tack för tipset!')
 		setLoading(false)
-		setPhotoUrl(null)
-		setPhoto(null)
-		// reset()
+		uploadPhoto.setURL(null)
+		reset()
 	}
+		
+	
 	return (
 		<Row className="my-4">
 			<Col>
@@ -276,19 +269,44 @@ const AddRestaurantForm = () => {
 								<Form.Control {...register("instagram")} type="text" />
 							</Form.Group>
 
+
+							{/**
+							 *	Upload photo
+							 */}
+
 							<Form.Group controlId="formFile" className="mb-3" >
 								<Form.Label>Välj bild</Form.Label>
-								<Form.Control type="file" onChange={handleSelectedPhoto}/>
+								<Form.Control type="file" onChange={handleSelectedPhoto} />
 
 								<Form.Text>
-									{photo ? photo.name : 'No photo selected'}
+									{
+										photo 
+											? `${photo.name} (${Math.round(photo.size/1024)} kB, ${uploadPhoto.progress} %)`
+											: 'No photo selected'
+									}
 								</Form.Text>
 							</Form.Group>
 
-							<Button className="me-3" variant="success" type="submit" onSubmit={submit}  disabled={uploadPhoto.isUploading}>Ladda upp</Button>
-							<Button onReset={handleReset} type="reset" variant="warning">Återställ</Button>
+							<div className='d-flex justify-content-between'>
+								<div>
+									<Button 
+										className="me-3" 
+										variant="success" 
+										onClick={submit} 
+										disabled={uploadPhoto.isUploading}
+									> Ladda upp
+									</Button>
 
-							<Button disabled={loading} type="submit">Skicka in förslaget till oss!</Button>
+									<Button 
+										onClick={handleResetPhoto} 
+										variant="warning"
+										> Radera bild
+									</Button>
+								</div>
+
+								<Button disabled={loading} type="submit">Skicka in förslaget till oss!</Button>
+							</div>	
+
 						</Form>
 					</Card.Body>
 				</Card>
