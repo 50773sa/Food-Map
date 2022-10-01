@@ -1,22 +1,58 @@
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { db } from '../firebase'
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
+//import useAddress from '../hooks/useAddress'
+import useUploadPhoto from '../hooks/useUploadPhoto'
+
+// styles
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Alert from 'react-bootstrap/Alert'
-import { useForm } from 'react-hook-form'
-import { db } from '../firebase'
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
-//import useAddress from '../hooks/useAddress'
 import { toast } from 'react-toastify'
 import GoogleMapsAPI from '../services/GoogleMapsAPI'
+
 
 const AddRestaurantForm = () => {
 	const [error, setError] = useState(null)
 	const [loading, setLoading] = useState(false)
+	const [photo, setPhoto] = useState(null)
+	const uploadPhoto = useUploadPhoto()
 	const { handleSubmit, formState: { errors }, reset, register } = useForm()
 
+	// console.log('city and street', city, street)
+
+	/**
+	 *  Handle photos 
+	 */
+
+	const handleSelectedPhoto = (e) => {
+		setError(null)
+
+		if (e.target.files[0].size > 2 * 1024 * 1024) {
+			setError('Bilden får inte vara större än 2 MB')
+			return 
+
+		} else {
+			setPhoto(e.target.files[0])
+		}
+	}
+
+	const submit = async () => {
+		await uploadPhoto.upload(photo)
+	}
+
+	const handleResetPhoto = () => {
+		setPhoto(null)
+	}
+
+	/**
+	 *  Create restaurant 
+	 */
+	
 	const createRestaurant = async (data) => {
 		console.log('data', data)
 		
@@ -55,6 +91,8 @@ const AddRestaurantForm = () => {
 						latitude: lat,
 						longitude: lng,
 					},
+					url: uploadPhoto.URL,
+
 					approved: false,
 				})
 			}
@@ -65,7 +103,8 @@ const AddRestaurantForm = () => {
 		setLoading(false)
 		reset()
 	}
-
+		
+	
 	return (
 		<Row className="my-4">
 			<Col>
@@ -242,7 +281,46 @@ const AddRestaurantForm = () => {
 								<Form.Control {...register("instagram")} type="text" />
 							</Form.Group>
 
-							<Button disabled={loading} type="submit">Skicka in förslaget till oss!</Button>
+
+							{/**
+							 *	Upload photo
+							 */}
+
+							<Form.Group controlId="formFile" className="mb-3" >
+								<Form.Label>Välj bild</Form.Label>
+								<Form.Control type="file" accept='image/jpeg, image/jpg' onChange={handleSelectedPhoto} />
+
+								<Form.Text>
+									{
+										photo 
+											? `${photo.name} (${Math.round(photo.size/1024)} kB), ${uploadPhoto.progress} %`
+											: ''
+									}
+								</Form.Text>
+							</Form.Group>
+
+							{error && <Alert variant='danger'>{error}</Alert>}
+
+							<div className='d-flex justify-content-between'>
+								<div>
+									<Button 
+										className="me-3" 
+										variant="success" 
+										onClick={submit} 
+										disabled={uploadPhoto.isUploading}
+									> Ladda upp
+									</Button>
+
+									<Button 
+										onClick={handleResetPhoto} 
+										variant="warning"
+									> Radera bild
+									</Button>
+								</div>
+
+								<Button disabled={loading} type="submit">Skicka in förslaget till oss!</Button>
+							</div>	
+
 						</Form>
 					</Card.Body>
 				</Card>
