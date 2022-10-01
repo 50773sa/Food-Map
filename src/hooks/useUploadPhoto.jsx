@@ -29,8 +29,7 @@ const useUploadPhoto = () => {
         * Get storage reference --> upload photo --> get url from photo
         */
 
-        const fileExt = photo.name.substring(photo.name.lastIndexOf('.') + 1)
-        const storageRef = ref(storage,`photos/${fileExt}`)
+        const storageRef = ref(storage,`photos/${photo.name}`)
 
         const uploadPhoto = uploadBytesResumable(storageRef, photo)
 
@@ -56,7 +55,6 @@ const useUploadPhoto = () => {
 
     return {
         URL,
-        setURL,
         error,
         isError,
         isSuccess,

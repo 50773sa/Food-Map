@@ -1,40 +1,46 @@
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { db } from '../firebase'
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
+import useAddress from '../hooks/useAddress'
+import useUploadPhoto from '../hooks/useUploadPhoto'
+
+// styles
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Alert from 'react-bootstrap/Alert'
-import { useForm } from 'react-hook-form'
-import { db } from '../firebase'
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
-import useAddress from '../hooks/useAddress'
 import { toast } from 'react-toastify'
-import useUploadPhoto from '../hooks/useUploadPhoto'
+
 
 const AddRestaurantForm = () => {
 	const [error, setError] = useState(null)
 	const [loading, setLoading] = useState(false)
 	const [street, setStreet] = useState(null)
 	const [city, setCity] = useState(null)
+	const [photo, setPhoto] = useState(null)
+
 	const { handleSubmit, formState: { errors }, reset, register } = useForm()
 	const { data: addressData } = useAddress(street, city)
-	console.log('city and street', city, street)
-
-	const [photo, setPhoto] = useState(null)
 	const uploadPhoto = useUploadPhoto()
-	console.log('uploadPhoto', uploadPhoto.URL)
-
+	// console.log('city and street', city, street)
 
 	/**
 	 *  Handle photos 
 	 */
 
 	const handleSelectedPhoto = (e) => {
-		if (e.target.files[0]) {
+		setError(null)
+
+		if (e.target.files[0].size > 1 * 1024 * 1024) {
+			setError('Bilden får inte vara större än 2 MB')
+			return 
+
+		} else {
 			setPhoto(e.target.files[0])
 		}
-		console.log('File: ', e.target.files[0])
 	}
 
 	const submit = async () => {
@@ -84,11 +90,10 @@ const AddRestaurantForm = () => {
 			},
 			url: uploadPhoto.URL,
 
-			// approved: false,
+			approved: false,
 		})
 		toast.success('Tack för tipset!')
 		setLoading(false)
-		uploadPhoto.setURL(null)
 		reset()
 	}
 		
@@ -276,16 +281,18 @@ const AddRestaurantForm = () => {
 
 							<Form.Group controlId="formFile" className="mb-3" >
 								<Form.Label>Välj bild</Form.Label>
-								<Form.Control type="file" onChange={handleSelectedPhoto} />
+								<Form.Control type="file" accept='image/jpeg, image/jpg' onChange={handleSelectedPhoto} />
 
 								<Form.Text>
 									{
 										photo 
-											? `${photo.name} (${Math.round(photo.size/1024)} kB, ${uploadPhoto.progress} %)`
-											: 'No photo selected'
+											? `${photo.name} (${Math.round(photo.size/1024)} kB), ${uploadPhoto.progress} %`
+											: ''
 									}
 								</Form.Text>
 							</Form.Group>
+
+							{error && <Alert variant='danger'>{error}</Alert>}
 
 							<div className='d-flex justify-content-between'>
 								<div>
@@ -300,7 +307,7 @@ const AddRestaurantForm = () => {
 									<Button 
 										onClick={handleResetPhoto} 
 										variant="warning"
-										> Radera bild
+									> Radera bild
 									</Button>
 								</div>
 
