@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import { collection, addDoc } from 'firebase/firestore'
-import { db, storage } from '../firebase'
+import { storage } from '../firebase'
 import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
 
 
@@ -10,70 +9,61 @@ const useUploadPhoto = () => {
     const [isError, setIsError] = useState(null)
     const [isSuccess, setIsSuccess] = useState(null)
     const [isUploading, setIsUploading] = useState(null)
+    const [progress, setProgress] = useState(0)
+
 
     const upload = async (photo) => {
-        // reset
+        // reset current state
         setURL(null)
         setError(null)
-		setIsError(null)
-		setIsSuccess(null)
-		setIsUploading(null)
+		setIsError(false)
+		setIsSuccess(false)
+		setIsUploading(true)
+        setProgress(null)
 
         if(!photo) {
             return
         }
 
-        try {
+        /**
+        * Get storage reference --> upload photo --> get url from photo
+        */
 
-            /**
-            * Get storage reference --> upload photo --> get url
-            */
+        const fileExt = photo.name.substring(photo.name.lastIndexOf('.') + 1)
+        const storageRef = ref(storage,`photos/${fileExt}`)
 
-			// const fileExt = photo.name.substring(photo.name.lastIndexOf('.') + 1)
-            const storageRef = ref(storage,`photos/${photo.name}`)
+        const uploadPhoto = uploadBytesResumable(storageRef, photo)
 
-            const uploadPhoto = uploadBytesResumable(storageRef, photo)
-            await uploadPhoto.then()
+        uploadPhoto.on('state_changed', (uploadPhotoSnapshot) => {
+            setProgress(Math.round(uploadPhotoSnapshot.bytesTransferred / uploadPhotoSnapshot.totalBytes) * 100)
 
-            const url = await getDownloadURL(storageRef)
-            setURL(url)
-            // console.log('url', URL)
-
-
-            /**
-             * Create reference to db-collection --> Create document in db
-             */
-
-            // const collectionRef = collection(db, 'restaurants')
-
-            // await addDoc(collectionRef, {
-            //     name: photo.name,
-            //     type: photo.type,
-            //     path: storageRef.fullPath,
-            //     size: photo.size,
-            //     url: url,
-            // })
-
-            setIsSuccess(true)
-        } catch (e) {
-            setError(e)
-            setIsError(true)
-
+        }, (e) => {
             console.log("An error occurred", e)
 
-        } finally {
+            setError(e)
+            setIsError(true)
             setIsUploading(false)
-        }
+
+        }, async () => {
+            const url = await getDownloadURL(storageRef)
+            setURL(url)
+        })
+        
+        setIsSuccess(true)
+        setIsUploading(false)
+        setProgress(null)
     }
 
-  return {
-    URL,
-    error,
-    isError,
-    isSuccess,
-    isUploading,
-    upload,
-  }
+    return {
+        URL,
+        setURL,
+        error,
+        isError,
+        isSuccess,
+        isUploading,
+        progress,
+        upload,
+    }
 }
 
 export default useUploadPhoto
