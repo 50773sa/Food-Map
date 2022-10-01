@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { db } from '../firebase'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
-import useAddress from '../hooks/useAddress'
+//import useAddress from '../hooks/useAddress'
 import useUploadPhoto from '../hooks/useUploadPhoto'
 
 // styles
@@ -13,18 +13,16 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Alert from 'react-bootstrap/Alert'
 import { toast } from 'react-toastify'
+import GoogleMapsAPI from '../services/GoogleMapsAPI'
 
 
 const AddRestaurantForm = () => {
 	const [error, setError] = useState(null)
 	const [loading, setLoading] = useState(false)
-	const [street, setStreet] = useState(null)
-	const [city, setCity] = useState(null)
 	const [photo, setPhoto] = useState(null)
-
-	const { handleSubmit, formState: { errors }, reset, register } = useForm()
-	const { data: addressData } = useAddress(street, city)
 	const uploadPhoto = useUploadPhoto()
+	const { handleSubmit, formState: { errors }, reset, register } = useForm()
+
 	// console.log('city and street', city, street)
 
 	/**
@@ -34,7 +32,7 @@ const AddRestaurantForm = () => {
 	const handleSelectedPhoto = (e) => {
 		setError(null)
 
-		if (e.target.files[0].size > 1 * 1024 * 1024) {
+		if (e.target.files[0].size > 2 * 1024 * 1024) {
 			setError('Bilden får inte vara större än 2 MB')
 			return 
 
@@ -58,40 +56,49 @@ const AddRestaurantForm = () => {
 	const createRestaurant = async (data) => {
 		console.log('data', data)
 		
-		//get longitud and latitude from address
-		setStreet(data.street)
-		setCity(data.city)
+		if (data.street && data.city) {
+			//get longitud and latitude from address
+			const res = await GoogleMapsAPI.getLatLng(data.street, data.city)
 
-		//make firestore doc to store in the DB
-		await addDoc(collection(db, 'restaurants'), {
-			created: serverTimestamp(),
-			name: data.name,
-			address: {
-				street: data.street,
-				postcode: data.postcode,
-				city: data.city,
-			},
-			restaurant_info: {
-				restaurantInfo: data.restaurantInfo,
-				restaurantType: data.restaurantType,
-				restaurantSort: data.restaurantSort,
-				cuisine: data.cuisine,
-			},
-			social: {
-				email: data.email,
-				phone: data.phone,
-				website: data.website,
-				facebook: data.facebook,
-				instagram: data.instagram,
-			},
-			position: {
-				latitude: addressData.results[0].geometry.location.lat,
-				longitude: addressData.results[0].geometry.location.lng,
-			},
-			url: uploadPhoto.URL,
+			
+			if (res) {
+				const lng = res.results[0].geometry.location.lng
+				const lat = res.results[0].geometry.location.lat
+				
+				//make firestore doc to store in the DB
+				await addDoc(collection(db, 'restaurants'), {
+					created: serverTimestamp(),
+					name: data.name,
+					address: {
+						street: data.street,
+						postcode: data.postcode,
+						city: data.city,
+					},
+					restaurant_info: {
+						restaurantInfo: data.restaurantInfo,
+						restaurantType: data.restaurantType,
+						restaurantSort: data.restaurantSort,
+						cuisine: data.cuisine,
+					},
+					social: {
+						email: data.email,
+						phone: data.phone,
+						website: data.website,
+						facebook: data.facebook,
+						instagram: data.instagram,
+					},
+					position: {
+						latitude: lat,
+						longitude: lng,
+					},
+					url: uploadPhoto.URL,
 
-			approved: false,
-		})
+					approved: false,
+				})
+			}
+		} else {
+			console.log('could not fetch the coordinates')
+		}
 		toast.success('Tack för tipset!')
 		setLoading(false)
 		reset()
