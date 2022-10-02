@@ -18,7 +18,6 @@ const MapPage = () => {
 	// Data from firebase
 	const {data, isError, isSuccess} = useGetRestaurants()
 
-
  	return (
 		<Container>
 			{!isLoaded && <div>Loading...</div>}
@@ -30,7 +29,7 @@ const MapPage = () => {
 			}
 
 			{isSuccess && isLoaded && 
-				<ShowMap data={data} searchData={selected} />
+				<ShowMap restaurants={data} searchData={selected} />
     		}
     	</Container>
   	)

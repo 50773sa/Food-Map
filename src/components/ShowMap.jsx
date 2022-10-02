@@ -4,7 +4,7 @@ import useGetRestaurants from "../hooks/useGetRestaurants"
 import InfoBox from "./InfoBox"
 import { toast } from "react-toastify"
 
-const showMap = ({searchData}) => {
+const showMap = ({searchData, restaurants}) => {
 	const [show, setShow] = useState(false)
 	const [restaurant, setRestaurant] = useState(null)
 	const [selectedRestaurant, setSelectedRestaurant] = useState(null)
@@ -12,7 +12,6 @@ const showMap = ({searchData}) => {
 		lat: 55.603075505110425, 
 		lng: 13.00048440435288,
 	})
-	const { data: restaurants } = useGetRestaurants()	
 
 	// Find  and set user's position
 	const onSuccess = (pos) => {
