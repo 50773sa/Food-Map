@@ -2,7 +2,8 @@ import { useMemo } from 'react'
 import { useAuthContext } from '../contexts/AuthContext'
 import { Container, Row, Col, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-// import AddAdmin from '../components/AddAdmin'
+import AddAdmin from '../components/AddAdmin'
+import UpdateAdmin from '../components/UpdateAdmin'
 import useGetRestaurants from '../hooks/useGetRestaurants'
 import SortableTable from '../components/SortableTable'
 import LoadingSpinner from '../components/LoadingSpinner'
@@ -62,6 +63,7 @@ const AdminPage = () => {
             { 
                 Header: 'Accepted',
                 accessor: data => (data.approved ? "Yes" : "No"),
+
             },
             {
                 Header: 'Action',
@@ -87,9 +89,12 @@ const AdminPage = () => {
                 
                 <Container className='d-flex flex-column justify-content-center align-items-center flex-grow-1'>
                     <Row>
-                        {/* <Col md={12}>
+                        <Col md={6}>
                             <AddAdmin />
-                        </Col> */}
+                        </Col>
+                        <Col md={6}>
+                            <UpdateAdmin />
+                        </Col>
                         <Col md={12}>
 
                             {isLoading && <LoadingSpinner />}

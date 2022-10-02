@@ -1,6 +1,12 @@
 import { createContext, useContext, useState, useEffect} from 'react'
 import { auth } from '../firebase'
-import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import { 
+    onAuthStateChanged, 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword, 
+    updateEmail,
+	updatePassword,
+    signOut } from 'firebase/auth'
 import { Container } from 'react-bootstrap'
 import LoadingSpinner from '../components/LoadingSpinner'
 
@@ -12,10 +18,13 @@ const useAuthContext = () => {
 
 const AuthContextProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null) 
+    const [userEmail, setUserEmail] = useState(null)
 	const [loading, setLoading] = useState(true)
 
-    const signup = (email, password) => {
-		return createUserWithEmailAndPassword(auth, email, password)
+    const signup =  async (email, password) => {
+		await createUserWithEmailAndPassword(auth, email, password)
+
+        await reloadUser()
 	}
 
     const login = (email, password) => {
@@ -26,9 +35,25 @@ const AuthContextProvider = ({ children }) => {
         return signOut(auth)
     }
 
+    const reloadUser = async () => {
+		await auth.currentUser.reload()
+		setCurrentUser(auth.currentUser)
+		setUserEmail(auth.currentUser.email)
+		return true
+	}
+
+    const setEmail = (email) => {
+		return updateEmail(currentUser, email)
+	}
+
+    const setPassword = (newPassword) => {
+		return updatePassword(currentUser, newPassword)
+	}
+
     useEffect(() => {
         return onAuthStateChanged(auth, (user) => {
             setCurrentUser(user)
+            setUserEmail(user?.email)
             setLoading(false)
         })
     }, [])
@@ -38,6 +63,10 @@ const AuthContextProvider = ({ children }) => {
         signup,
         login,
         logout,
+        reloadUser,
+        setEmail,
+		setPassword,
+		userEmail,
 	}
 
     return (
