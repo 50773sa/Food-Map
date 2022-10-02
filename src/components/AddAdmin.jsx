@@ -24,6 +24,8 @@ const AddAdmin = () => {
 			setLoading(true)
 			await signup(emailRef.current.value, passwordRef.current.value)
 
+            setLoading(false)
+
         } catch (err) {
 			setError(err.message)
 			setLoading(false)

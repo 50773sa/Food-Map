@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect} from 'react'
-import { auth } from '../firebase'
+import { auth, db } from '../firebase'
 import { 
     onAuthStateChanged, 
     createUserWithEmailAndPassword, 
@@ -9,6 +9,7 @@ import {
     signOut } from 'firebase/auth'
 import { Container } from 'react-bootstrap'
 import LoadingSpinner from '../components/LoadingSpinner'
+import { setDoc, doc } from 'firebase/firestore'
 
 const AuthContext = createContext()
 
@@ -25,6 +26,10 @@ const AuthContextProvider = ({ children }) => {
 		await createUserWithEmailAndPassword(auth, email, password)
 
         await reloadUser()
+
+        await setDoc(doc(db, "admins", auth.currentUser.uid), {
+             email
+        })
 	}
 
     const login = (email, password) => {
