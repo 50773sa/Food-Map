@@ -1,12 +1,11 @@
 import { db } from '../firebase'
-import { collection, query, where } from 'firebase/firestore'
+import { collection, query } from 'firebase/firestore'
 import { useFirestoreQueryData } from '@react-query-firebase/firestore'
 
 const useGetRestaurants = () => {
     // Get reference of collection 'restaurants'
     const queryRef = query(
-		collection(db, 'restaurants'),
-        where('approved', '==', false)
+		collection(db, 'restaurants')
 	)
 
 	const restaurantsQuery = useFirestoreQueryData(['restaurants'], queryRef, {

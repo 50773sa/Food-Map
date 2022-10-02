@@ -8,7 +8,7 @@ import GoogleMapsAPI from '../services/GoogleMapsAPI'
 
 const EditRestaurantForm = ({ restaurant }) => {
     const { id } = useParams()
-    const { register, handleSubmit, watch, formState: {errors}} = useForm()
+    const { register, handleSubmit, formState: {errors}} = useForm()
     const navigate = useNavigate()
 
     const deleteRestaurant = async () => {
@@ -246,9 +246,10 @@ const EditRestaurantForm = ({ restaurant }) => {
                 {errors.restaurantType && <div className="invalid">{errors.restaurantType.message}</div>}
 
             </Form.Group> */}
+            <h4>Status: {restaurant.approved ? 'Approved' : 'Not approved'}</h4>
 
             <Button variant="success" type="submit">Save</Button>          
-            <Button variant="primary" onClick={toggleStatus}>Approve</Button>          
+            <Button variant="primary" onClick={toggleStatus}>Toggle Status</Button>          
             <Button variant="danger" onClick={deleteRestaurant}>Delete</Button>             
         </Form>
     )
