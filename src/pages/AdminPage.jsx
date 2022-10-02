@@ -4,16 +4,19 @@ import { Container, Row, Col, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 // import AddAdmin from '../components/AddAdmin'
 import useGetRestaurants from '../hooks/useGetRestaurants'
+import useGetApprovedRestaurants from '../hooks/useGetApprovedRestaurants'
 import SortableTable from '../components/SortableTable'
 import LoadingSpinner from '../components/LoadingSpinner'
 
 
 const AdminPage = () => {
+    const {data: approvedRestaurants, loading} = useGetApprovedRestaurants()
     const {data: restaurants, isLoading} = useGetRestaurants()
     const { currentUser } = useAuthContext()
 
     console.log(restaurants)
-
+    console.log(approvedRestaurants)
+    
     const columns = useMemo(() => {
         return [
             {
@@ -90,9 +93,24 @@ const AdminPage = () => {
                         </Col> */}
                         <Col md={12}>
 
-                            {isLoading &&  <LoadingSpinner />}
+                            {loading && isLoading && <LoadingSpinner />}
+                            
+                            {!loading && approvedRestaurants && 
+                                <>
+                                    <SortableTable columns={columns} data={approvedRestaurants} />
+                                    <h2>hej</h2>
+                                </>
+                            }
 
-                            {restaurants && <SortableTable columns={columns} data={restaurants} />}
+                            <hr />
+
+                            {!isLoading && restaurants && 
+                                <>
+                                    <SortableTable columns={columns} data={restaurants} />
+                                    <h2>fan</h2>
+                                </>
+                            }
+
                         </Col>
                     </Row>
                 </Container>
