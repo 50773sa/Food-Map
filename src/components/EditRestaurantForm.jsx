@@ -1,62 +1,72 @@
 // import { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { Form, Button } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
-import { doc, updateDoc } from 'firebase/firestore'
+import { doc, updateDoc, deleteDoc } from 'firebase/firestore'
 import { db } from '../firebase'
 import GoogleMapsAPI from '../services/GoogleMapsAPI'
 
 const EditRestaurantForm = ({ restaurant }) => {
     const { id } = useParams()
-    const { register, handleSubmit, formState: {errors}} = useForm()
+    const { register, handleSubmit, watch, formState: {errors}} = useForm()
+    const navigate = useNavigate()
 
+    const deleteRestaurant = async () => {
+        await deleteDoc(doc(db,'restaurants', id))
+		navigate('/admin', { replace: true })
+	}
+    
+    const toggleStatus = async () => {
+		const ref = doc(db, 'restaurants', id)
+		await updateDoc(ref, {
+			approved: !restaurant.approved,
+		})
+	}
+    
     const onUpdateRestaurant = async (data) => {
-
         
-        if (data.street && data.city) {
-            //get longitud and latitude from address
+		if (data.street && data.city) {
+			//get longitud and latitude from address
 			const res = await GoogleMapsAPI.getLatLng(data.street, data.city)
-            
-			const lat = res.results[0].geometry.location.lat
-			const lng = res.results[0].geometry.location.lng
-            
-            if (res) {
-                console.log(data)
+
+			if (res) {
+				const lng = res.results[0].geometry.location.lng
+				const lat = res.results[0].geometry.location.lat
+
+                console.log(res)
                 //update firestore doc to store in the DB
                 await updateDoc(doc(db, 'restaurants', id), {
-                    // name: data.name == "" ? restaurant.name : data.name ,
                     name: data.name ? data.name : restaurant.name,
                     address: {
-                        street: data.street ? data.street : restaurant.street  ,
-                        postcode: data.postcode ? data.postcode: restaurant.street,
-                        city: data.city ? data.city : restaurant.city,
+                        street: data.street,
+                        postcode: data.postcode,
+                        city: data.city,
                     },
                     restaurant_info: {
-                        restaurantInfo: data.restaurantInfo,
-                        restaurantType: data.restaurantType,
-                        restaurantSort: data.restaurantSort,
-                        cuisine: data.cuisine,
+                        restaurantInfo: data?.restaurantInfo,
+                        restaurantType: data?.restaurantType ,
+                        restaurantSort: data?.restaurantSort,
+                        cuisine: data?.cuisine,
                     },
                     social: {
-                        email: data.email,
+                        email: data?.email,
                         phone: data.phone,
                         website: data.website,
                         facebook: data.facebook,
                         instagram: data.instagram,
                     },
                     position: {
-						latitude: lat,
-						longitude: lng,
+                        latitude: lat,
+                        longitude: lng,
                     },
-                    approved: false,
                 })
+            }
+        } else {
+            console.log('could not fetch the coordinates')
+        }
 
-		    } else {
-			    console.log('could not fetch the coordinates')
-		    }
-	    }
     }
-
+                
     return (
         <Form onSubmit={handleSubmit(onUpdateRestaurant)} noValidate className='my-5'>
 
@@ -65,10 +75,10 @@ const EditRestaurantForm = ({ restaurant }) => {
                 <Form.Control 
                     {...register("name", {
                         // required: "skriv för fan",
-                        minLength: {
-                            value: 2,
-                            message: "That's too short be a name!"
-                        }
+                        // minLength: {
+                        //     value: 2,
+                        //     message: "That's too short be a name!"
+                        // }
                     })}
                     defaultValue={restaurant.name}
                     type="text" placeholder="Namn på stället" />
@@ -84,10 +94,11 @@ const EditRestaurantForm = ({ restaurant }) => {
                 <Form.Label>Adress*</Form.Label>
                 <Form.Control 
                     {...register("street", {
-                        minLength: {
-                            value: 4,
-                            message: "That's too short be an address!"
-                        }
+                        // required: "You must enter an address",
+                        // minLength: {
+                        //     value: 4,
+                        //     message: "That's too short be an address!"
+                        // }
                     })}
                     defaultValue={restaurant.address?.street}
                     type="text" placeholder="Adress" />
@@ -96,10 +107,10 @@ const EditRestaurantForm = ({ restaurant }) => {
                 <Form.Control 
                     {...register("postcode", {
                         // required: "You must enter a postcode",
-                        minLength: {
-                            value: 5,
-                            message: "That's too short be an address!"
-                        }
+                        // minLength: {
+                        //     value: 5,
+                        //     message: "That's too short be an address!"
+                        // }
                     })}
                     defaultValue={restaurant.address?.postcode}
                     type="number" placeholder="Postnummer" />
@@ -109,10 +120,10 @@ const EditRestaurantForm = ({ restaurant }) => {
                 <Form.Control 
                     {...register("city", {
                         // required: "You must enter a city",
-                        minLength: {
-                            value: 2,
-                            message: "That's not a city!"
-                        }
+                        // minLength: {
+                        //     value: 2,
+                        //     message: "That's not a city!"
+                        // }
                     })}
                     defaultValue={restaurant.address?.city}
                     type="text" placeholder="Stad" />
@@ -125,10 +136,10 @@ const EditRestaurantForm = ({ restaurant }) => {
                 <Form.Control 
                     {...register("restaurantInfo", {
                         // required: "Please write something about the place",
-                        minLength: {
-                            value: 2,
-                            message: "We'd like some more information please..."
-                        }
+                        // minLength: {
+                        //     value: 2,
+                        //     message: "We'd like some more information please..."
+                        // }
                     })}
                     as="textarea" rows={2} defaultValue={restaurant.restaurant_info?.restaurantInfo} 
                     type="text" placeholder="Skriv något om restaurangen" />
@@ -196,11 +207,12 @@ const EditRestaurantForm = ({ restaurant }) => {
                 <Form.Control 
                     {...register("cuisine", {
                         // required: "Please write what kind of cuisine that is served here",
-                        minLength: {
-                            value: 2,
-                            message: "We'd like some information about the cuisine please..."
-                        }
+                        // minLength: {
+                        //     value: 2,
+                        //     message: "We'd like some information about the cuisine please..."
+                        // }
                     })}
+                    defaultValue={restaurant.restaurant_info?.cuisine}
                     type="text" placeholder="T ex franskt, thailändskt ..." />
                 {errors.cuisine && <div className="invalid">{errors.cuisine.message}</div>}
             </Form.Group>
@@ -225,7 +237,7 @@ const EditRestaurantForm = ({ restaurant }) => {
                 <Form.Control {...register("instagram")} type="text" />
             </Form.Group>
 
-            <Form.Group className="mb-3">
+            {/* <Form.Group className="mb-3">
                 <Form.Label>Godkänd</Form.Label>
                 <Form.Select {...register("approved")}>
                     <option>Nä</option>
@@ -233,9 +245,11 @@ const EditRestaurantForm = ({ restaurant }) => {
                 </Form.Select>
                 {errors.restaurantType && <div className="invalid">{errors.restaurantType.message}</div>}
 
-            </Form.Group>
+            </Form.Group> */}
 
-            <Button variant="success" type="submit">Save</Button>                       
+            <Button variant="success" type="submit">Save</Button>          
+            <Button variant="primary" onClick={toggleStatus}>Approve</Button>          
+            <Button variant="danger" onClick={deleteRestaurant}>Delete</Button>             
         </Form>
     )
 }
