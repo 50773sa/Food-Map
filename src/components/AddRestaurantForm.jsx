@@ -4,6 +4,7 @@ import { db } from '../firebase'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 //import useAddress from '../hooks/useAddress'
 import useUploadPhoto from '../hooks/useUploadPhoto'
+import { auth } from '../firebase'
 
 // styles
 import Row from 'react-bootstrap/Row'
@@ -92,8 +93,7 @@ const AddRestaurantForm = () => {
 						longitude: lng,
 					},
 					url: uploadPhoto.URL,
-
-					approved: false,
+					approved: auth.currentUser ? true : false,
 				})
 			}
 		} else {
@@ -318,7 +318,7 @@ const AddRestaurantForm = () => {
 									</Button>
 								</div>
 
-								<Button disabled={loading} type="submit">Skicka in förslaget till oss!</Button>
+								<Button disabled={loading} type="submit">{auth.currentUser ? "Lägg till" : "Skicka in förslaget till oss!" }</Button>
 							</div>	
 
 						</Form>
