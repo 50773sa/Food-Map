@@ -90,3 +90,11 @@ a:hover {
 	color: black;
 	height: 1.5em;
 }
+
+.offcanvas-backdrop.show {
+	opacity: 0;
+}
+
+.offcanvas {
+	margin-top: 100px;
+}

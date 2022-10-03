@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
 import { GoogleMap,  MarkerF } from "@react-google-maps/api"
 import useGetRestaurants from "../hooks/useGetRestaurants"
-import InfoBox from "./InfoBox"
+import Sidebar from "./Sidebar"
 import { toast } from "react-toastify"
+import SidebarList from "./SidebarList"
 
 const showMap = ({searchData}) => {
 	const [show, setShow] = useState(false)
@@ -89,7 +90,11 @@ const showMap = ({searchData}) => {
 			))}
 
 			{selectedRestaurant && (
-				<InfoBox show={show} closeInfoBox={closeInfoBox} selectedRestaurant={selectedRestaurant}/>	
+				<Sidebar show={show} closeInfoBox={closeInfoBox} selectedRestaurant={selectedRestaurant}/>	
+			)}
+
+			{restaurants && (
+				<SidebarList restaurant={restaurants} />
 			)}
 
      	</GoogleMap>
