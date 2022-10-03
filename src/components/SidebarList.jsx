@@ -13,7 +13,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas'
 
 
 const SidebarList = ({restaurant }) => {
-    const [show, setShow] = useState(true)
+    const [show, setShow] = useState(false)
 	const linkGoogleMaps = "https://www.google.com/maps/search/?api=1&query="
 
 
