@@ -20,6 +20,7 @@ const MapPage = () => {
 	const {data, isError, isSuccess} = useGetRestaurants()
 
  	return (
+		
 		<Container>
 			{!isLoaded && <div>Loading...</div>}
 
@@ -31,8 +32,16 @@ const MapPage = () => {
 
 			{isSuccess && isLoaded && 
 				<ShowMap restaurants={data} searchData={selected} searchedCity={searchedCity} />
-    		}
-    	</Container>
+			}
+				<a 
+					href="https://www.flaticon.com/free-icons/restaurant" 
+					title="restaurant icons"
+					> Restaurant icons created by mavadee - Flaticon
+				</a>
+
+		</Container>
+		
+	
   	)
 }
 

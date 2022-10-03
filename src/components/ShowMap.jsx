@@ -8,6 +8,7 @@ import { db } from '../firebase'
 import { useFirestoreQueryData } from '@react-query-firebase/firestore'
 import { collection, query, where, onSnapshot } from 'firebase/firestore'
 import SidebarList from "./SidebarList"
+import cutlery from '../assets/Images/restaurant.png'
 
 const showMap = ({searchData, searchedCity}) => {
 	const [city, setCity] = useState('Malmö')
@@ -121,6 +122,7 @@ const showMap = ({searchData, searchedCity}) => {
 
 			{restaurant && restaurant.map((rest) => (
 				<MarkerF 
+					icon={cutlery}
 					key={rest.id} 
 					onClick={() => {setSelectedRestaurant(rest), setShow(true)}}
 					value={rest.id}
