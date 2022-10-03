@@ -9,7 +9,7 @@ import { faEnvelope } from '@fortawesome/free-regular-svg-icons'
 import { faPhone, faGlobe } from '@fortawesome/free-solid-svg-icons'
 
 
-const InfoBox = ({ show, closeInfoBox, selectedRestaurant }) => {
+const Sidebar = ({ show, closeInfoBox, selectedRestaurant }) => {
 	const linkGoogleMaps = "https://www.google.com/maps/search/?api=1&query="
 
 	return (
@@ -88,4 +88,4 @@ const InfoBox = ({ show, closeInfoBox, selectedRestaurant }) => {
 	)
 }
 
-export default InfoBox
+export default Sidebar

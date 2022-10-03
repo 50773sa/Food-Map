@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react"
 import { GoogleMap,  MarkerF } from "@react-google-maps/api"
-import InfoBox from "./InfoBox"
+import useGetRestaurants from "../hooks/useGetRestaurants"
+import Sidebar from "./Sidebar"
 import { toast } from "react-toastify"
 import GoogleMapsAPI from '../services/GoogleMapsAPI'
 import { db } from '../firebase'
 import { useFirestoreQueryData } from '@react-query-firebase/firestore'
 import { collection, query, where, onSnapshot } from 'firebase/firestore'
+import SidebarList from "./SidebarList"
+import cutlery from '../assets/Images/restaurant.png'
 
 const showMap = ({searchData, searchedCity}) => {
 	const [city, setCity] = useState('Malmö')
@@ -17,6 +20,7 @@ const showMap = ({searchData, searchedCity}) => {
 		lat: 55.603075505110425, 
 		lng: 13.00048440435288,
 	})
+	const {data: restaurants} = useGetRestaurants()
 
 	const getData = (positionCity) => {
 		setRestaurant([])
@@ -118,6 +122,7 @@ const showMap = ({searchData, searchedCity}) => {
 
 			{restaurant && restaurant.map((rest) => (
 				<MarkerF 
+					icon={cutlery}
 					key={rest.id} 
 					onClick={() => {setSelectedRestaurant(rest), setShow(true)}}
 					value={rest.id}
@@ -129,7 +134,11 @@ const showMap = ({searchData, searchedCity}) => {
 			))}
 
 			{selectedRestaurant && (
-				<InfoBox show={show} closeInfoBox={closeInfoBox} selectedRestaurant={selectedRestaurant}/>	
+				<Sidebar show={show} closeInfoBox={closeInfoBox} selectedRestaurant={selectedRestaurant}/>	
+			)}
+
+			{restaurants && (
+				<SidebarList restaurant={restaurants} />
 			)}
 
      	</GoogleMap>
