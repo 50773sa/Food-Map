@@ -10,14 +10,14 @@ const libraries = ['places']
 
 const MapPage = () => {
 	const [selected, setSelected] = useState(null)
+	const [searchedCity, setSearchedCity] = useState(null)
 	const { isLoaded } = useLoadScript({
 		googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
 		libraries
 	})
-
+	
 	// Data from firebase
 	const {data, isError, isSuccess} = useGetRestaurants()
-
 
  	return (
 		<Container>
@@ -26,11 +26,11 @@ const MapPage = () => {
 			{isError && <Alert variant='warning'>Error...</Alert>}
 
 			{isLoaded &&
-				<SearchBar setSelected={setSelected}/>
+				<SearchBar setSelected={setSelected} setSearchedCity={setSearchedCity} />
 			}
 
 			{isSuccess && isLoaded && 
-				<ShowMap data={data} searchData={selected} />
+				<ShowMap restaurants={data} searchData={selected} searchedCity={searchedCity} />
     		}
     	</Container>
   	)
