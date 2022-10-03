@@ -109,7 +109,7 @@ const AddRestaurantForm = () => {
 		<Row className="my-4">
 			<Col>
 				<Card>
-					<Card.Header as="h5">Tipsa oss!</Card.Header>
+					<Card.Header as="h5">{auth.currentUser ? "Lägg till Restaurang" : "Tipsa oss!" }</Card.Header>
 					<Card.Body>
 						{error && (<Alert variant="danger">{error}</Alert>)}
 

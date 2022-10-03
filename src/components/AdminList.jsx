@@ -6,14 +6,14 @@ const AdminList = () => {
     const { data: admins, isLoading } = useGetAdmins()
 
     return (
-        <div className='list-wrapper'>
+        <div className='list-wrapper my-4'>
             <h5 className='mb-4'>Admin Lista</h5>
 
             {isLoading && <LoadingSpinner />}
 
             {!isLoading && admins &&
         
-                <ListGroup variant="flush">
+                <ListGroup>
                     {admins.map((admin,i) =>(
                         <ListGroup.Item key={i}>{admin.email}</ListGroup.Item>
                     ))}

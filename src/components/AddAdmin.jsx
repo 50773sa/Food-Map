@@ -33,7 +33,7 @@ const AddAdmin = () => {
     }
 
     return (
-        <div className="signup-wrapper">
+        <div className="signup-wrapper my-4">
             <h5 className='mb-4'>Registrera Admin</h5>
             
             {error && (<Alert variant='danger'>{error}</Alert>)}
