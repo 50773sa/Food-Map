@@ -4,6 +4,7 @@ import { Container, Row, Col, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import AddAdmin from '../components/AddAdmin'
 import UpdateAdmin from '../components/UpdateAdmin'
+import AdminList from '../components/AdminList'
 import useGetRestaurants from '../hooks/useGetRestaurants'
 import SortableTable from '../components/SortableTable'
 import LoadingSpinner from '../components/LoadingSpinner'
@@ -89,11 +90,14 @@ const AdminPage = () => {
                 
                 <Container className='d-flex flex-column justify-content-center align-items-center flex-grow-1'>
                     <Row>
-                        <Col md={6}>
+                        <Col md={4}>
                             <AddAdmin />
                         </Col>
-                        <Col md={6}>
+                        <Col md={4}>
                             <UpdateAdmin />
+                        </Col>
+                        <Col md={4}>
+                            <AdminList />
                         </Col>
                         <Col md={12}>
 
