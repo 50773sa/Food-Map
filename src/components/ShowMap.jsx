@@ -1,28 +1,68 @@
 import { useEffect, useState } from "react"
 import { GoogleMap,  MarkerF } from "@react-google-maps/api"
-import useGetRestaurants from "../hooks/useGetRestaurants"
 import InfoBox from "./InfoBox"
 import { toast } from "react-toastify"
+import GoogleMapsAPI from '../services/GoogleMapsAPI'
+import { db } from '../firebase'
+import { useFirestoreQueryData } from '@react-query-firebase/firestore'
+import { collection, query, where, onSnapshot } from 'firebase/firestore'
 
-const showMap = ({searchData}) => {
+const showMap = ({searchData, searchedCity}) => {
+	const [city, setCity] = useState('Malmö')
+	const [loading, setLoading] = useState(false)
 	const [show, setShow] = useState(false)
-	const [restaurant, setRestaurant] = useState(null)
+	const [restaurant, setRestaurant] = useState([])
 	const [selectedRestaurant, setSelectedRestaurant] = useState(null)
 	const [currentPosition, setCurrentPosition] = useState({
 		lat: 55.603075505110425, 
 		lng: 13.00048440435288,
 	})
-	const { data: restaurants } = useGetRestaurants()	
+
+	const getData = (positionCity) => {
+		setRestaurant([])
+		setLoading(true)
+
+		//fetch restaurants where city is the same as the setCity
+		const queryRef = query(
+			collection(db, 'restaurants'),
+			where('approved', '==', true),
+			where('address.city', '==', positionCity)
+		)
+
+		const unsubscribe = onSnapshot(queryRef, (snapshot) => {
+			// got a snapshot and will change the data to the format we can use
+			const docs = snapshot.docs.map(doc => {
+				return {
+					id: doc.id,
+					...doc.data(),
+				}
+			})
+
+			setRestaurant(docs)
+			setLoading(false)
+		})
+		return unsubscribe
+	}
 
 	// Find  and set user's position
-	const onSuccess = (pos) => {
+	const onSuccess = async (pos) => {
 		const positionCords = {
 			lat: pos.coords.latitude,
 			lng: pos.coords.longitude,
 		}
 		
 		setCurrentPosition(positionCords)
-		console.log('platsen vi är på', positionCords)
+		setCity('')
+
+		// get city from lat and lng
+		if(currentPosition) {
+			const res = await GoogleMapsAPI.getCity(positionCords.lat, positionCords.lng)
+			if (res) {
+				const positionCity = res.results[0].address_components[0].long_name
+				setCity(positionCity)
+				getData(positionCity)
+			}
+		}
 	}
 
 	if (!navigator.geolocation) {
@@ -33,37 +73,36 @@ const showMap = ({searchData}) => {
 		toast.warning(`Vi kunde inte hitta din position, vänligen sök på stad i sökfältet. ${err.message}`)
 	}
 
-	// Get and set restaurants position
-	const markerPosition = () => {
-		const marker = restaurants.map(rest => rest)
-		setRestaurant(marker)
-	}
-
 	// Close infoBox
 	const closeInfoBox = () => {
 		setShow(false)
 	}
 
 	useEffect(() => {
+		//get position from platstjänster
 		navigator.geolocation.getCurrentPosition(onSuccess, error)
-
-		markerPosition()
-
 	},[])
 
+	//when we search for a city run this useEffect
 	useEffect(() => {
 		if(searchData !== null) {
+			// searchData = {lng, lat}
 			setCurrentPosition(searchData)
 			
+			//searchedCity = ''
+			setCity(searchedCity)
+			getData(searchedCity)
+
 		} else {
-			//om där är searchdata men den är null så placerar vi användaren på default (i malmö)
+			//if there is searchdata but it is null then we will place the user on default position (in malmö)
 			setCurrentPosition({
 				lat: 55.603075505110425, 
 				lng: 13.00048440435288,
 			})
+			setCity('Malmö')
+			getData('Malmö')
 		}
-
-	}, [searchData])
+	}, [searchData, searchedCity])
 
 	return (
     	<GoogleMap 
@@ -71,6 +110,7 @@ const showMap = ({searchData}) => {
 			zoom={13} 
 			center={currentPosition} 
 		>
+			{loading && <p>Loading...</p>}
 
 			{currentPosition.lat && (
 				<MarkerF position={currentPosition} />
