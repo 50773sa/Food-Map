@@ -19,8 +19,8 @@ const MapPage = () => {
 	// Data from firebase
 	const {data, isError, isSuccess} = useGetRestaurants()
 
- 	return (
-		<Container>
+return (
+    	<Container fluid className="g-0">
 			{!isLoaded && <div>Loading...</div>}
 
 			{isError && <Alert variant='warning'>Error...</Alert>}
@@ -31,8 +31,16 @@ const MapPage = () => {
 
 			{isSuccess && isLoaded && 
 				<ShowMap restaurants={data} searchData={selected} searchedCity={searchedCity} />
-    		}
-    	</Container>
+			}
+				<a 
+					href="https://www.flaticon.com/free-icons/restaurant" 
+					title="restaurant icons"
+					> Restaurant icons created by mavadee - Flaticon
+				</a>
+
+		</Container>
+		
+	
   	)
 }
 

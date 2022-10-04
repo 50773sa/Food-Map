@@ -7,18 +7,17 @@
 	flex-direction: column;
 	min-height: 100vh;
 	position: relative;
+    
+}
+
+html {
+    overflow: scroll;
 }
 
 
 h1, h2, h3, h4, h5, h6 {
 	margin-bottom: 0.5em;
 }
-
-.logo-wrapper {
-	display: flex;
-	margin-bottom: 3rem;
-}
-
 
 .login-wrapper {
     border: 1px solid grey;
@@ -89,4 +88,28 @@ a:hover {
 .svg-inline--fa{
 	color: black;
 	height: 1.5em;
+}
+
+.table-headers {
+    text-align: center;
+}
+
+.table-cells {
+    font-size: 14px;
+    
+}
+
+.offcanvas-backdrop.show {
+	opacity: 0;
+}
+
+.offcanvas {
+	margin-top: 100px;
+}
+
+// card
+.card-img-top {
+	width: 100%;
+	height: 200px;
+	object-fit: cover;
 }
