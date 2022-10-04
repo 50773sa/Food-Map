@@ -19,9 +19,8 @@ const MapPage = () => {
 	// Data from firebase
 	const {data, isError, isSuccess} = useGetRestaurants()
 
- 	return (
-		
-		<Container>
+return (
+    	<Container fluid className="g-0">
 			{!isLoaded && <div>Loading...</div>}
 
 			{isError && <Alert variant='warning'>Error...</Alert>}

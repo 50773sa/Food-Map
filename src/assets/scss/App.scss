@@ -7,6 +7,11 @@
 	flex-direction: column;
 	min-height: 100vh;
 	position: relative;
+    
+}
+
+html {
+    overflow: scroll;
 }
 
 
@@ -83,6 +88,15 @@ a:hover {
 .svg-inline--fa{
 	color: black;
 	height: 1.5em;
+}
+
+.table-headers {
+    text-align: center;
+}
+
+.table-cells {
+    font-size: 14px;
+    
 }
 
 .offcanvas-backdrop.show {
