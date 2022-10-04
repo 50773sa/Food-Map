@@ -27,6 +27,7 @@ const showMap = ({ searchData, searchedCity }) => {
 		setCurrentFilter(newFilter)
 
 		try {
+			console.log('current filter', currentFilter)
 			setRestaurants([])
 			setLoading(true)
 			// filter the restaurants
@@ -36,21 +37,11 @@ const showMap = ({ searchData, searchedCity }) => {
 					case 'All':
 						return true
 					case 'Lunch':
-						/* let sortedlunch = false
-						//console.log('en array?', rest.restaurant_info.restaurantSort)
-						rest.restaurant_info.restaurantSort.forEach((r) => {
-							console.log('r', r, currentFilter)
-							if (currentFilter == r) {
-								sortedlunch = true 
-							}
-						})
-						console.log('filteredRes', sortedlunch)
-						return sortedlunch */
 					case 'After work':
 					case 'Á la carte':
 					case 'Bar':
-						return rest.restaurant_info.restaurantSort[0] === currentFilter
-	
+						console.log('restaurant', rest.restaurant_info.restaurantSort, currentFilter)
+						return rest.restaurant_info.restaurantSort === currentFilter
 					case 'Café':
 					case 'Restaurang':
 					case 'Snabbmat':
