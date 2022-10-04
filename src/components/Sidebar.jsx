@@ -1,12 +1,15 @@
-import { Button } from "react-bootstrap"
-import Offcanvas from 'react-bootstrap/Offcanvas'
-import Card from 'react-bootstrap/Card'
 
-// icons
+// styles
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons'
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons'
 import { faPhone, faGlobe } from '@fortawesome/free-solid-svg-icons'
+import Card from 'react-bootstrap/Card'
+import Offcanvas from 'react-bootstrap/Offcanvas'
+import Button from "react-bootstrap/Button"
+
+
+
 
 
 const Sidebar = ({ show, closeInfoBox, selectedRestaurant }) => {
