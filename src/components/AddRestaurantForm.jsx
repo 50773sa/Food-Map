@@ -137,7 +137,7 @@ const AddRestaurantForm = () => {
 												required: "You must enter a address so we can find the place",
 												minLength: {
 													value: 4,
-													message: "That's too short be an address!"
+													message: "That's too short be a street!"
 												}
 											})}
 											type="text" placeholder="Adress" />
@@ -151,7 +151,7 @@ const AddRestaurantForm = () => {
 												required: "You must enter a postcode",
 												minLength: {
 													value: 5,
-													message: "That's too short be an address!"
+													message: "Please write a valid postcode!"
 												}
 											})}
 											type="number" placeholder="Postnummer" />
@@ -202,44 +202,13 @@ const AddRestaurantForm = () => {
 
 							<Form.Group className="mb-3">
 								<Form.Label>Utbud*</Form.Label>
-								<Form.Check
-									{...register("restaurantSort")}
-									inline
-									label="Lunch"
-									value="Lunch"
-									type="checkbox"
-									id="lunch"
-									className="mx-2"
-								/>
-								<Form.Check
-									{...register("restaurantSort")}
-									inline
-									label="After work"
-									value="After work"
-									type="checkbox"
-									id="after-work"
-									className="mx-2"
-								/>
-								<Form.Check
-									{...register("restaurantSort")}
-									inline
-									label="A la carte"
-									value="A la carte"
-									type="checkbox"
-									id="a-la-carte"
-									className="mx-2"
-								/>
-								<Form.Check
-									{...register("restaurantSort")}
-									inline
-									label="Bar"
-									value="Bar"
-									type="checkbox"
-									id="bar"
-									className="mx-2"
-								/>
+								<Form.Select {...register("restaurantSort")}>
+									<option>Lunch</option>
+									<option>After work</option>
+									<option>Á la carte</option>
+									<option>Bar</option>
+								</Form.Select>
 								{errors.restaurantSort && <div className="invalid">{errors.restaurantSort.message}</div>}
-
 							</Form.Group>
 
 							<Form.Group className="mb-3">
