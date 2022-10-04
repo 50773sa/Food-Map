@@ -113,3 +113,43 @@ a:hover {
 	height: 200px;
 	object-fit: cover;
 }
+
+body {
+    padding: 0 !important;
+}
+
+.sidebar-btn {
+    position: absolute;
+    right: 0;
+    left: 0;
+    margin: auto;
+    top: 10px;
+    border-radius: 0;
+}
+
+.map a{
+   display: none 
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.table-body {
+    overflow-x:auto;
+
+}
+
+.kort-bild {
+    width: 150px;
+    height: 150px;
+    object-fit:fill;
+}
+
+#App {
+
+}
+
+.sorterings-knapp {
+    cursor: pointer;
+}

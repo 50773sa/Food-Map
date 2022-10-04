@@ -19,12 +19,11 @@ const SidebarList = ({restaurant }) => {
 
 	return (
         <>
-            <Badge 
-                style={{ position: 'absolute', cursor: 'pointer'}} 
-                bg="dark" sixe='sm' 
+            <Button className="sidebar-btn dark"
+                variant="dark" sixe='sm' 
                 onClick={() => setShow((s) => !s)}
             > Visa Restauranger 
-            </Badge>
+            </Button>
              
             <Offcanvas className='mb-20px' show={show} scroll={true} >
                 <Offcanvas.Header 

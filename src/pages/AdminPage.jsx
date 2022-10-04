@@ -119,9 +119,9 @@ const AdminPage = () => {
                                 </Col>
                             </Accordion.Body>
                         </Accordion.Item>
-                        <Accordion.Item eventKey="3">
+                        <Accordion.Item className="table" eventKey="3">
                             <Accordion.Header>Restaurants Table</Accordion.Header>
-                            <Accordion.Body>
+                            <Accordion.Body className="table-body">
                                 <Col md={12}>
                                     {isLoading && <LoadingSpinner />}
 
