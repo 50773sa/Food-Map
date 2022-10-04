@@ -12,6 +12,7 @@ import Col from 'react-bootstrap/Col'
 import Card from 'react-bootstrap/Card'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import InputGroup from 'react-bootstrap/InputGroup'
 import Alert from 'react-bootstrap/Alert'
 import { toast } from 'react-toastify'
 import GoogleMapsAPI from '../services/GoogleMapsAPI'
@@ -242,12 +243,22 @@ const AddRestaurantForm = () => {
 
 							<Form.Group id="facebook" className="mb-3">
 								<Form.Label>Facebook</Form.Label>
-								<Form.Control {...register("facebook")} type="text" />
+								<InputGroup>
+									<InputGroup.Text id="basic-addon3">
+										https://facebook.com/
+									</InputGroup.Text>
+									<Form.Control {...register("facebook")} type="text" />
+								</InputGroup>
 							</Form.Group>
 
 							<Form.Group id="instagram" className="mb-3">
 								<Form.Label>Instagram</Form.Label>
-								<Form.Control {...register("instagram")} type="text" />
+								<InputGroup>
+									<InputGroup.Text id="basic-addon3">
+										https://instagram.com/
+									</InputGroup.Text>
+									<Form.Control {...register("instagram")} type="text" />
+								</InputGroup>
 							</Form.Group>
 
 
