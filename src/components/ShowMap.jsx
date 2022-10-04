@@ -8,20 +8,71 @@ import { db } from '../firebase'
 import { collection, query, where, onSnapshot } from 'firebase/firestore'
 import SidebarList from "./SidebarList"
 import cutlery from '../assets/Images/restaurant.png'
+import RestaurantFilter from "../components/RestaurantFilter"
 
-const showMap = ({searchData, searchedCity}) => {
-	const [loading, setLoading] = useState(false)
-	const [show, setShow] = useState(false)
-	const [restaurant, setRestaurant] = useState([])
-	const [selectedRestaurant, setSelectedRestaurant] = useState(null)
+const showMap = ({ searchData, searchedCity }) => {
+	const [currentFilter, setCurrentFilter] = useState('All')
 	const [currentPosition, setCurrentPosition] = useState({
 		lat: 55.603075505110425, 
 		lng: 13.00048440435288,
 	})
-	const { data: restaurants } = useGetRestaurants()
+	const [loading, setLoading] = useState(false)
+	const [restaurants, setRestaurants] = useState([])
+	const [selectedRestaurant, setSelectedRestaurant] = useState(null)
+	const [show, setShow] = useState(false)
+
+	//const { data: restaurants } = useGetRestaurants()
+
+	const changeFilter = (newFilter) => {
+		setCurrentFilter(newFilter)
+
+		try {
+			setRestaurants([])
+			setLoading(true)
+			// filter the restaurants
+			const filteredRestaurants = restaurants ? restaurants.filter((rest) => {
+				//if it returns true is it saved in filteredrestaurants array
+				switch (currentFilter) {
+					case 'All':
+						return true
+					case 'Lunch':
+						/* let sortedlunch = false
+						//console.log('en array?', rest.restaurant_info.restaurantSort)
+						rest.restaurant_info.restaurantSort.forEach((r) => {
+							console.log('r', r, currentFilter)
+							if (currentFilter == r) {
+								sortedlunch = true 
+							}
+						})
+						console.log('filteredRes', sortedlunch)
+						return sortedlunch */
+					case 'After work':
+					case 'Á la carte':
+					case 'Bar':
+						return rest.restaurant_info.restaurantSort[0] === currentFilter
+	
+					case 'Café':
+					case 'Restaurang':
+					case 'Snabbmat':
+					case 'Kiosk/Grill':
+					case 'Food truck':
+						console.log('restaurant', rest.restaurant_info.restaurantType, currentFilter)
+						return rest.restaurant_info.restaurantType === currentFilter
+					default:
+						return true
+				}
+			}) : null
+	
+			console.log('filtered rest', filteredRestaurants)
+			setRestaurants(filteredRestaurants)
+			setLoading(false)
+		} catch {
+			console.log('could not')
+		}
+	}
 
 	const getData = (positionCity) => {
-		setRestaurant([])
+		setRestaurants([])
 		setLoading(true)
 
 		//fetch restaurants where city is the same as the setCity
@@ -40,11 +91,15 @@ const showMap = ({searchData, searchedCity}) => {
 				}
 			})
 
-			setRestaurant(docs)
+			setRestaurants(docs)
 			setLoading(false)
+			console.log('all rest', docs)
 		})
 		return unsubscribe
 	}
+
+	
+	 
 
 	// Find  and set user's position
 	const onSuccess = async (pos) => {
@@ -89,6 +144,7 @@ const showMap = ({searchData, searchedCity}) => {
 		scale: 2,
 	};
 
+
 	useEffect(() => {
 		//get position from platstjänster
 		navigator.geolocation.getCurrentPosition(onSuccess, error)
@@ -113,45 +169,54 @@ const showMap = ({searchData, searchedCity}) => {
 	}, [searchData, searchedCity])
 
 	return (
-    	<GoogleMap 
-			mapContainerClassName="map-container vh-100"
-			zoom={13} 
-			center={currentPosition} 
-		>
-			{loading && <p>Loading...</p>}
-
-			{currentPosition.lat && (
-				<MarkerF 
-					icon={svgMarkerYou}
-					position={currentPosition}
-					title={'Här är du'}
-				/>
-			)}
-
-			{restaurant && restaurant.map((rest) => (
-				<MarkerF 
-					icon={cutlery}
-					key={rest.id} 
-					title={rest.name}
-					onClick={() => {setSelectedRestaurant(rest), setShow(true)}}
-					value={rest.id}
-					position={{
-						lat: rest.position.latitude, 
-						lng: rest.position.longitude
-					}}
-				/>
-			))}
-
-			{selectedRestaurant && (
-				<Sidebar show={show} closeInfoBox={closeInfoBox} selectedRestaurant={selectedRestaurant}/>	
-			)}
-
+		<>
 			{restaurants && (
-				<SidebarList restaurant={restaurants} />
+				<RestaurantFilter 
+					currentFilter={currentFilter} 
+					changeFilter={changeFilter} 
+				/>
 			)}
+		
+			<GoogleMap 
+				mapContainerClassName="map-container vh-100"
+				zoom={13} 
+				center={currentPosition} 
+			>
+				{loading && <p>Loading...</p>}
 
-     	</GoogleMap>
-    )
+				{currentPosition.lat && (
+					<MarkerF 
+						icon={svgMarkerYou}
+						position={currentPosition}
+						title={'Här är du'}
+					/>
+				)}
+
+				{restaurants && restaurants.map((rest) => (
+					<MarkerF 
+						icon={cutlery}
+						key={rest.id} 
+						title={rest.name}
+						onClick={() => {setSelectedRestaurant(rest), setShow(true)}}
+						value={rest.id}
+						position={{
+							lat: rest.position.latitude, 
+							lng: rest.position.longitude
+						}}
+					/>
+				))}
+
+				{selectedRestaurant && (
+					<Sidebar show={show} closeInfoBox={closeInfoBox} selectedRestaurant={selectedRestaurant}/>	
+				)}
+
+				{restaurants && (
+					<SidebarList restaurant={restaurants} />
+				)}
+
+			</GoogleMap>
+		</>
+	)
 }
 export default showMap
 

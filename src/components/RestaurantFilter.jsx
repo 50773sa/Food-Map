@@ -4,12 +4,10 @@ import Button from 'react-bootstrap/Button'
 
 const filterList = ['All', 'Lunch', 'After work', 'Á la carte', 'Bar', 'Café', 'Restaurang', 'Snabbmat', 'Kiosk/Grill', 'Food truck']
 
-const RestaurantFilter = () => {
-	const [currentFilter, setCurrentFilter] = useState('All')
+const RestaurantFilter = ({ currentFilter, changeFilter }) => {
 	
 	const handleClick = (newFilter) => {
-		console.log(newFilter)
-		setCurrentFilter(newFilter)
+		changeFilter(newFilter)
 	}
 
 	return (
