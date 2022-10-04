@@ -29,12 +29,12 @@ const RestaurantListItem = ({ restaurant }) => {
 				</Card.Body>
 				<Card.Footer className="d-flex justify-content-center">
 					{restaurant.social.facebook && (
-						<a href={restaurant.social.facebook} target="_blank">
+						<a href={`https://www.facebook.com/${restaurant.social.facebook}`} target="_blank">
 							<FontAwesomeIcon icon={faFacebook} />
 						</a>
 					)}
 					{restaurant.social.instagram && (
-						<a href={restaurant.social.instagram} target="_blank">
+						<a href={`https://www.instagram.com/${restaurant.social.instagram}`} target="_blank">
 							<FontAwesomeIcon icon={faInstagram} />
 						</a>
 					)}
