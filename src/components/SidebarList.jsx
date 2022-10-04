@@ -53,13 +53,12 @@ const SidebarList = ({restaurant }) => {
                                 
                                 <Card.Text className="d-flex justify-content-between" style={{ color: 'black'}}>
                                     {restaurant.social.facebook && (
-                                        <a href={restaurant.social.facebook} target="_blank">
+                                        <a href={`https://www.facebook.com/${restaurant.social.facebook}`} target="_blank">
                                             <FontAwesomeIcon icon={faFacebook} />
                                         </a>
                                     )}
-
                                     {restaurant.social.instagram && (
-                                        <a href={restaurant.social.instagram} target="_blank">
+                                        <a href={`https://www.instagram.com/${restaurant.social.instagram}`} target="_blank">
                                             <FontAwesomeIcon icon={faInstagram} />
                                         </a>
                                     )}
