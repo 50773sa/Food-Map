@@ -5,6 +5,7 @@ import ShowMap from "../components/ShowMap"
 import useGetRestaurants from "../hooks/useGetRestaurants"
 import SearchBar from "../components/SearchBar"
 import { useState } from "react"
+import RestaurantFilter from "../components/RestaurantFilter"
 
 const libraries = ['places']
 
@@ -25,6 +26,8 @@ return (
 
 			{isError && <Alert variant='warning'>Error...</Alert>}
 
+			{data && <RestaurantFilter />}
+
 			{isLoaded &&
 				<SearchBar setSelected={setSelected} setSearchedCity={setSearchedCity} />
 			}
@@ -32,12 +35,12 @@ return (
 			{isSuccess && isLoaded && 
 				<ShowMap restaurants={data} searchData={selected} searchedCity={searchedCity} />
 			}
-				<a 
+				{/* <a 
 					href="https://www.flaticon.com/free-icons/restaurant" 
 					title="restaurant icons"
 					> Restaurant icons created by mavadee - Flaticon
 				</a>
-
+ */}
 		</Container>
 		
 	
