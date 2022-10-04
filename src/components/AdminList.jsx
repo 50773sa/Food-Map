@@ -1,9 +1,19 @@
-import { ListGroup } from 'react-bootstrap'
+import { useMemo } from 'react'
+import SortableTable from '../components/SortableTable'
 import useGetAdmins from '../hooks/useGetAdmins'
 import LoadingSpinner from '../components/LoadingSpinner'
 
 const AdminList = () => {
     const { data: admins, isLoading } = useGetAdmins()
+
+    const columns = useMemo(() => {
+        return [
+            {
+                Header: 'Admins',
+                accessor: 'email'
+            },
+        ]
+    },[])
 
     return (
         <div className='list-wrapper my-4'>
@@ -11,15 +21,9 @@ const AdminList = () => {
 
             {isLoading && <LoadingSpinner />}
 
-            {!isLoading && admins &&
-        
-                <ListGroup>
-                    {admins.map((admin,i) =>(
-                        <ListGroup.Item key={i}>{admin.email}</ListGroup.Item>
-                    ))}
-                </ListGroup>
-                
-            }
+            {!isLoading && admins && (
+                <SortableTable columns={columns} data={admins} />
+            )}
 
         </div>
     )
