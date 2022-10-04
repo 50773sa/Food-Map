@@ -88,6 +88,7 @@ a:hover {
 .svg-inline--fa{
 	color: black;
 	height: 1.5em;
+	margin-left: 3.9em;
 }
 
 .table-headers {
@@ -95,8 +96,7 @@ a:hover {
 }
 
 .table-cells {
-    font-size: 14px;
-    
+    font-size: 14px;  
 }
 
 .offcanvas-backdrop.show {
@@ -152,4 +152,7 @@ body {
 
 .sorterings-knapp {
     cursor: pointer;
+}
+.cuisine {
+	font-style: italic;
 }
