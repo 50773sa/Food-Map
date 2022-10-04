@@ -65,6 +65,7 @@ const EditRestaurantForm = ({ restaurant }) => {
                 },
             })
             console.log(restaurant)
+            navigate('/admin')
     }
                 
     return (
