@@ -1,10 +1,10 @@
 import RestaurantList from '../components/RestaurantList'
-import useGetRestaurants from '../hooks/useGetRestaurants'
+import useGetApprovedRestaurants from '../hooks/useGetApprovedRestaurants'
 import Container from 'react-bootstrap/Container'
 import SearchFilterBar from '../components/SearchFilterBar'
 
 const RestaurantsPage = () => {
-	const {data, isLoading} = useGetRestaurants()
+	const {data, isLoading} = useGetApprovedRestaurants()
 
 	return (
 		<Container>

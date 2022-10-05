@@ -1,67 +1,62 @@
 import { useEffect, useState } from "react"
 import { GoogleMap,  MarkerF } from "@react-google-maps/api"
-import useGetRestaurants from "../hooks/useGetRestaurants"
+import { collection, query, where, onSnapshot } from 'firebase/firestore'
+import { db } from '../firebase'
 import Sidebar from "./Sidebar"
 import { toast } from "react-toastify"
 import GoogleMapsAPI from '../services/GoogleMapsAPI'
-import { db } from '../firebase'
-import { collection, query, where, onSnapshot } from 'firebase/firestore'
 import SidebarList from "./SidebarList"
 import cutlery from '../assets/Images/restaurant.png'
 import RestaurantFilter from "../components/RestaurantFilter"
 
 const showMap = ({ searchData, searchedCity }) => {
 	const [currentFilter, setCurrentFilter] = useState('All')
-	const [currentPosition, setCurrentPosition] = useState({
-		lat: 55.603075505110425, 
-		lng: 13.00048440435288,
-	})
 	const [loading, setLoading] = useState(false)
 	const [restaurants, setRestaurants] = useState([])
 	const [selectedRestaurant, setSelectedRestaurant] = useState(null)
 	const [show, setShow] = useState(false)
+	const [currentPosition, setCurrentPosition] = useState({
+		lat: 55.603075505110425, 
+		lng: 13.00048440435288,
+	})
 
-	//const { data: restaurants } = useGetRestaurants()
-
+	/* FILTER THE PLACES DEPENDING ON WHICH BUTTON YOU PRESS */
 	const changeFilter = (newFilter) => {
 		setCurrentFilter(newFilter)
+		console.log('current filter', currentFilter)
 
-		try {
-			console.log('current filter', currentFilter)
-			setRestaurants([])
-			setLoading(true)
-			// filter the restaurants
-			const filteredRestaurants = restaurants ? restaurants.filter((rest) => {
-				//if it returns true is it saved in filteredrestaurants array
-				switch (currentFilter) {
-					case 'All':
-						return true
-					case 'Lunch':
-					case 'After work':
-					case 'Á la carte':
-					case 'Bar':
-						console.log('restaurant', rest.restaurant_info.restaurantSort, currentFilter)
-						return rest.restaurant_info.restaurantSort === currentFilter
-					case 'Café':
-					case 'Restaurang':
-					case 'Snabbmat':
-					case 'Kiosk/Grill':
-					case 'Food truck':
-						console.log('restaurant', rest.restaurant_info.restaurantType, currentFilter)
-						return rest.restaurant_info.restaurantType === currentFilter
-					default:
-						return true
-				}
-			}) : null
-	
-			console.log('filtered rest', filteredRestaurants)
-			setRestaurants(filteredRestaurants)
-			setLoading(false)
-		} catch {
-			console.log('could not')
-		}
+		setLoading(true)
+
+		// filter the restaurants
+		const filteredRestaurants = restaurants ? restaurants.filter((rest) => {
+			//if it returns true is it saved in filteredrestaurants array
+			switch (currentFilter) {
+				case 'All':
+					return true
+				case 'Lunch':
+				case 'After work':
+				case 'Á la carte':
+				case 'Bar':
+					console.log('restaurant', rest.restaurant_info.restaurantSort, currentFilter)
+					return rest.restaurant_info.restaurantSort === currentFilter
+				case 'Café':
+				case 'Restaurang':
+				case 'Snabbmat':
+				case 'Kiosk/Grill':
+				case 'Food truck':
+					console.log('restaurant', rest.restaurant_info.restaurantType, currentFilter)
+					return rest.restaurant_info.restaurantType === currentFilter
+				default:
+					return true
+			}
+		}) : null
+
+		console.log('filtered rest', filteredRestaurants)
+		setRestaurants(filteredRestaurants)
+		setLoading(false)
 	}
 
+	/* GET ALL THE RESTAURANTS IN YOUR CITY */
 	const getData = (positionCity) => {
 		setRestaurants([])
 		setLoading(true)
@@ -89,10 +84,7 @@ const showMap = ({ searchData, searchedCity }) => {
 		return unsubscribe
 	}
 
-	
-	 
-
-	// Find  and set user's position
+	/* PLACE THE USER ON THE MAP (WHEN PLATSTJÄNSTER IS ACTIVE) */
 	const onSuccess = async (pos) => {
 		const positionCords = {
 			lat: pos.coords.latitude,
@@ -117,31 +109,23 @@ const showMap = ({ searchData, searchedCity }) => {
 		console.log('Geolocation is not supported by your browser')
 	}
 
+	/* IF PLATSTJÄNSTER IS ACTING UP */
 	const error = (err) => {
 		toast.warning(`Vi kunde inte hitta din position, vänligen sök på stad i sökfältet. ${err.message}`)
 	}
 
-	// Close infoBox
+	/* CLOSE INFO BOX */
 	const closeInfoBox = () => {
 		setShow(false)
 	}
 
-	const svgMarkerYou = {
-		path: "M10.453 14.016l6.563-6.609-1.406-1.406-5.156 5.203-2.063-2.109-1.406 1.406zM12 2.016q2.906 0 4.945 2.039t2.039 4.945q0 1.453-0.727 3.328t-1.758 3.516-2.039 3.070-1.711 2.273l-0.75 0.797q-0.281-0.328-0.75-0.867t-1.688-2.156-2.133-3.141-1.664-3.445-0.75-3.375q0-2.906 2.039-4.945t4.945-2.039z",
-		fillColor: "black",
-		fillOpacity: 0.9,
-		strokeWeight: 0,
-		rotation: 0,
-		scale: 2,
-	};
-
-
+	/* WHEN USER ENTERS THE PAGE, CHECK IF THEY WANT TO USE PLATSTJÄNSTER */
 	useEffect(() => {
 		//get position from platstjänster
 		navigator.geolocation.getCurrentPosition(onSuccess, error)
 	},[])
 
-	//when we search for a city run this useEffect
+	/* WHEN THE USER SEARCHES FOR A CITY - CHANGE THE POSITION AND THE MARKERS */
 	useEffect(() => {
 		if(searchData !== null) {
 			// searchData = {lng, lat}
@@ -155,7 +139,6 @@ const showMap = ({ searchData, searchedCity }) => {
 				lat: 55.603075505110425, 
 				lng: 13.00048440435288,
 			})
-			
 		}
 	}, [searchData, searchedCity])
 
@@ -167,7 +150,7 @@ const showMap = ({ searchData, searchedCity }) => {
 					changeFilter={changeFilter} 
 				/>
 			)}
-		
+
 			<GoogleMap 
 				mapContainerClassName="map-container vh-100"
 				zoom={13} 
@@ -177,7 +160,6 @@ const showMap = ({ searchData, searchedCity }) => {
 
 				{currentPosition.lat && (
 					<MarkerF 
-						icon={svgMarkerYou}
 						position={currentPosition}
 						title={'Här är du'}
 					/>
