@@ -7,10 +7,9 @@ import { faPhone, faGlobe } from '@fortawesome/free-solid-svg-icons'
 import Card from 'react-bootstrap/Card'
 import Offcanvas from 'react-bootstrap/Offcanvas'
 import Button from "react-bootstrap/Button"
+import Image from 'react-bootstrap/Image'
 import defaultPhoto from "../assets/Images/defaultPhoto.jpg"
-
-
-
+import petFriendly from '../assets/Images/pet-friendly.png'
 
 
 const Sidebar = ({ show, closeInfoBox, selectedRestaurant }) => {
@@ -27,7 +26,9 @@ const Sidebar = ({ show, closeInfoBox, selectedRestaurant }) => {
 				<Card.Body>
 					<Card.Title>{selectedRestaurant.name} </Card.Title>
 
-					<Card.Subtitle className="mb-3 cuisine">{selectedRestaurant.restaurant_info.cuisine}</Card.Subtitle>
+					<Card.Subtitle className="mb-3 cuisine">{selectedRestaurant.restaurant_info.cuisine}
+						<Image className='dogIcon' src={petFriendly}/>
+					</Card.Subtitle>
 
 					<Card.Text>
 						{
