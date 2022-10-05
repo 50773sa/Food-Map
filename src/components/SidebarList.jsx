@@ -20,7 +20,7 @@ const SidebarList = ({restaurant }) => {
 	return (
         <>
             <Button className="sidebar-btn dark"
-                variant="dark" sixe='sm' 
+                variant="dark" size='sm' 
                 onClick={() => setShow((s) => !s)}
             > Visa Restauranger 
             </Button>
