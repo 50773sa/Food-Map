@@ -13,6 +13,7 @@ const showMap = ({ searchData, searchedCity }) => {
 	const [currentFilter, setCurrentFilter] = useState('All')
 	const [loading, setLoading] = useState(false)
 	const [restaurants, setRestaurants] = useState([])
+	const [filteredRest, setFilteredRest] = useState([])
 	const [selectedRestaurant, setSelectedRestaurant] = useState(null)
 	const [show, setShow] = useState(false)
 	const [currentPosition, setCurrentPosition] = useState({
@@ -50,13 +51,12 @@ const showMap = ({ searchData, searchedCity }) => {
 		}) : null
 
 		console.log('filtered rest', filteredRestaurants)
-		setRestaurants(filteredRestaurants)
+		setFilteredRest(filteredRestaurants)
 		setLoading(false)
 	}
 
 	/* GET ALL THE RESTAURANTS IN YOUR CITY */
 	const getData = (positionCity) => {
-		setRestaurants([])
 		setLoading(true)
 
 		//fetch restaurants where city is the same as the setCity
@@ -76,6 +76,7 @@ const showMap = ({ searchData, searchedCity }) => {
 			})
 
 			setRestaurants(docs)
+			setFilteredRest(docs)
 			setLoading(false)
 			console.log('all rest', docs)
 		})
@@ -90,7 +91,6 @@ const showMap = ({ searchData, searchedCity }) => {
 		}
 		
 		setCurrentPosition(positionCords)
-		//setCity('')
 
 		// get city from lat and lng
 		if(currentPosition) {
@@ -163,7 +163,7 @@ const showMap = ({ searchData, searchedCity }) => {
 					/>
 				)}
 
-				{restaurants && restaurants.map((rest) => (
+				{filteredRest && filteredRest.map((rest) => (
 					<MarkerF 
 						icon={cutlery}
 						key={rest.id} 
@@ -181,8 +181,8 @@ const showMap = ({ searchData, searchedCity }) => {
 					<Sidebar show={show} closeInfoBox={closeInfoBox} selectedRestaurant={selectedRestaurant}/>	
 				)}
 
-				{restaurants && (
-					<SidebarList restaurant={restaurants} />
+				{filteredRest && (
+					<SidebarList restaurant={filteredRest} />
 				)}
 
 			</GoogleMap>
