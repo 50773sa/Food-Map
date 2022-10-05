@@ -63,7 +63,8 @@ const showMap = ({ searchData, searchedCity }) => {
 	/* GET ALL THE RESTAURANTS IN YOUR CITY */
 	const getData = (positionCity) => {
 		setLoading(true)
-
+		let newcity = positionCity.toLowerCase()
+		console.log('to lower case?', newcity)
 		//fetch restaurants where city is the same as the setCity
 		const queryRef = query(
 			collection(db, 'restaurants'),
@@ -101,7 +102,7 @@ const showMap = ({ searchData, searchedCity }) => {
 		if(currentPosition) {
 			const res = await GoogleMapsAPI.getCity(positionCords.lat, positionCords.lng)
 			if (res) {
-				const positionCity = res.results[0].address_components[0].long_name
+				const positionCity = res.results[0].address_components[0].long_name.toLowerCase()
 				//setCity(positionCity)
 				getData(positionCity)
 			}

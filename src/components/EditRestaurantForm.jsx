@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { doc, updateDoc, deleteDoc } from 'firebase/firestore'
 import { db } from '../firebase'
 import GoogleMapsAPI from '../services/GoogleMapsAPI'
+import InputGroup from 'react-bootstrap/InputGroup'
 
 const EditRestaurantForm = ({ restaurant }) => {
     const { id } = useParams()
@@ -44,7 +45,7 @@ const EditRestaurantForm = ({ restaurant }) => {
                 address: {
                     street: street,
                     postcode: data.postcode=="" ? restaurant.address.postcode : data.postcode,
-                    city: city,
+                    city: city.toLowerCase(),
                 },
                 restaurant_info: {
                     restaurantInfo: data.restaurantInfo =="" ? restaurant.restaurant_info.restaurantInfo : data.restaurantInfo,
@@ -110,9 +111,7 @@ const EditRestaurantForm = ({ restaurant }) => {
             <Form.Group className="mb-3">
                 <Form.Label>Info om restaurangen*</Form.Label>
                 <Form.Control 
-                    {...register("restaurantInfo", {
-                        // required: "Please write something about the place",
-                    })}
+                    {...register("restaurantInfo")}
                     as="textarea" rows={2} defaultValue={restaurant.restaurant_info?.restaurantInfo} 
                     type="text" placeholder="Skriv något om restaurangen" />
                 {errors.restaurantInfo && <div className="invalid">{errors.restaurantInfo.message}</div>}
@@ -121,7 +120,7 @@ const EditRestaurantForm = ({ restaurant }) => {
 
             <Form.Group className="mb-3">
                 <Form.Label>Vad är det för typ av ställe*</Form.Label>
-                <Form.Select {...register("restaurantType")}>
+                <Form.Select {...register("restaurantType")} value={restaurant.restaurant_info?.restaurantType}>
                     <option>Café</option>
                     <option>Restaurang</option>
                     <option>Snabbmat</option>
@@ -134,52 +133,19 @@ const EditRestaurantForm = ({ restaurant }) => {
 
             <Form.Group className="mb-3">
                 <Form.Label>Utbud*</Form.Label>
-                <Form.Check
-                    {...register("restaurantSort")}
-                    inline
-                    label="Lunch"
-                    value="Lunch"
-                    type="checkbox"
-                    id="lunch"
-                    className="mx-2"
-                />
-                <Form.Check
-                    {...register("restaurantSort")}
-                    inline
-                    label="After work"
-                    value="After work"
-                    type="checkbox"
-                    id="after-work"
-                    className="mx-2"
-                />
-                <Form.Check
-                    {...register("restaurantSort")}
-                    inline
-                    label="A la carte"
-                    value="A la carte"
-                    type="checkbox"
-                    id="a-la-carte"
-                    className="mx-2"
-                />
-                <Form.Check
-                    {...register("restaurantSort")}
-                    inline
-                    label="Bar"
-                    value="Bar"
-                    type="checkbox"
-                    id="bar"
-                    className="mx-2"
-                />
+                <Form.Select {...register("restaurantSort")} value={restaurant.restaurant_info?.restaurantSort}>
+                    <option>Lunch</option>
+                    <option>After work</option>
+                    <option>Á la carte</option>
+                    <option>Bar</option>
+                </Form.Select>
                 {errors.restaurantSort && <div className="invalid">{errors.restaurantSort.message}</div>}
-
             </Form.Group>
 
             <Form.Group className="mb-3">
                 <Form.Label>Vad för slags kök?*</Form.Label>
                 <Form.Control 
-                    {...register("cuisine", {
-                        // required: "Please write what kind of cuisine that is served here",
-                    })}
+                    {...register("cuisine")}
                     defaultValue={restaurant.restaurant_info?.cuisine}
                     type="text" placeholder="T ex franskt, thailändskt ..." />
                 {errors.cuisine && <div className="invalid">{errors.cuisine.message}</div>}
@@ -187,22 +153,32 @@ const EditRestaurantForm = ({ restaurant }) => {
 
             <Form.Group id="phone" className="mb-3">
                 <Form.Label>Telefonnummer</Form.Label>
-                <Form.Control {...register("phone")} type="number" />
+                <Form.Control {...register("phone")} type="number" defaultValue={restaurant.social?.phone} />
             </Form.Group>
 
             <Form.Group id="website" className="mb-3">
                 <Form.Label>Hemsida</Form.Label>
-                <Form.Control {...register("website")} type="text" />
+                <Form.Control {...register("website")} type="text" defaultValue={restaurant.social?.website} />
             </Form.Group>
 
             <Form.Group id="facebook" className="mb-3">
                 <Form.Label>Facebook</Form.Label>
-                <Form.Control {...register("facebook")} type="text" />
+                <InputGroup>
+                    <InputGroup.Text id="basic-addon3">
+                        https://facebook.com/
+                    </InputGroup.Text>
+                    <Form.Control {...register("facebook")} type="text" defaultValue={restaurant.social?.facebook} />
+                </InputGroup>
             </Form.Group>
 
             <Form.Group id="instagram" className="mb-3">
                 <Form.Label>Instagram</Form.Label>
-                <Form.Control {...register("instagram")} type="text" />
+                <InputGroup>
+                    <InputGroup.Text id="basic-addon3">
+                        https://instagram.com/
+                    </InputGroup.Text>
+                    <Form.Control {...register("instagram")} type="text" defaultValue={restaurant.social?.instagram} />
+                </InputGroup>
             </Form.Group>
 
             <h4>Status: {restaurant.approved ? 'Approved' : 'Not approved'}</h4>

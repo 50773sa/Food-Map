@@ -74,7 +74,7 @@ const AddRestaurantForm = () => {
 					address: {
 						street: data.street,
 						postcode: data.postcode,
-						city: data.city,
+						city: data.city.toLowerCase(),
 					},
 					restaurant_info: {
 						restaurantInfo: data.restaurantInfo,
