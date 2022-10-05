@@ -52,7 +52,10 @@ const showMap = ({ searchData, searchedCity }) => {
 		}) : null
 
 		console.log('filtered rest', filteredRestaurants)
-        setCurrentFilter(newFilter)
+		if(filteredRestaurants.length === 0) {
+			console.log('filtered places', filteredRestaurants)
+		}
+		setCurrentFilter(newFilter)
 		setFilteredRest(filteredRestaurants)
 		setLoading(false)
 	}
@@ -132,6 +135,7 @@ const showMap = ({ searchData, searchedCity }) => {
 			setCurrentPosition(searchData)
 			
 			getData(searchedCity)
+			setCurrentFilter('All')
 
 		} else {
 			//if there is searchdata but it is null then we will place the user on default position (in malmö)
