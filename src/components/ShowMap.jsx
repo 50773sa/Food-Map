@@ -139,6 +139,7 @@ const showMap = ({ searchData, searchedCity }) => {
 				lat: 55.603075505110425, 
 				lng: 13.00048440435288,
 			})
+			getData('Malmö')
 		}
 	}, [searchData, searchedCity])
 
