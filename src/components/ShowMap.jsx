@@ -23,34 +23,35 @@ const showMap = ({ searchData, searchedCity }) => {
 
 	/* FILTER THE PLACES DEPENDING ON WHICH BUTTON YOU PRESS */
 	const changeFilter = (newFilter) => {
-		setCurrentFilter(newFilter)
-		console.log('current filter', currentFilter)
-
+        // console.log('current filter', currentFilter)
+        
 		setLoading(true)
-
+        
 		// filter the restaurants
 		const filteredRestaurants = restaurants ? restaurants.filter((rest) => {
-			//if it returns true is it saved in filteredrestaurants array
-			switch (currentFilter) {
+            //if it returns true is it saved in filteredrestaurants array
+            
+			switch (newFilter) {
 				case 'All':
 					return true
 				case 'Lunch':
 				case 'After work':
 				case 'Á la carte':
 				case 'Bar':
-					return rest.restaurant_info.restaurantSort === currentFilter
+					return rest.restaurant_info.restaurantSort === newFilter
 				case 'Café':
 				case 'Restaurang':
 				case 'Snabbmat':
 				case 'Kiosk/Grill':
 				case 'Food truck':
-					return rest.restaurant_info.restaurantType === currentFilter
+					return rest.restaurant_info.restaurantType === newFilter
 				default:
 					return true
 			}
 		}) : null
 
 		console.log('filtered rest', filteredRestaurants)
+        setCurrentFilter(newFilter)
 		setFilteredRest(filteredRestaurants)
 		setLoading(false)
 	}
