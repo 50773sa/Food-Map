@@ -23,7 +23,7 @@ return (
 			{/* {isError && <Alert variant='warning'>Error...</Alert>} */}
 
 			{isLoaded &&
-				<SearchBar setSelected={setSelected} setSearchedCity={setSearchedCity} />
+				<SearchBar setSelected={setSelected} setSearchedCity={setSearchedCity} searchedCity={searchedCity} />
 			}
 
 			{isLoaded && 
