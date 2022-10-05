@@ -19,12 +19,11 @@ const SidebarList = ({restaurant }) => {
 
 	return (
         <>
-            <Badge 
-                style={{ position: 'absolute', cursor: 'pointer'}} 
-                bg="dark" sixe='sm' 
+            <Button className="sidebar-btn dark"
+                variant="dark" sixe='sm' 
                 onClick={() => setShow((s) => !s)}
             > Visa Restauranger 
-            </Badge>
+            </Button>
              
             <Offcanvas className='mb-20px' show={show} scroll={true} >
                 <Offcanvas.Header 
@@ -53,13 +52,12 @@ const SidebarList = ({restaurant }) => {
                                 
                                 <Card.Text className="d-flex justify-content-between" style={{ color: 'black'}}>
                                     {restaurant.social.facebook && (
-                                        <a href={restaurant.social.facebook} target="_blank">
+                                        <a href={`https://www.facebook.com/${restaurant.social.facebook}`} target="_blank">
                                             <FontAwesomeIcon icon={faFacebook} />
                                         </a>
                                     )}
-
                                     {restaurant.social.instagram && (
-                                        <a href={restaurant.social.instagram} target="_blank">
+                                        <a href={`https://www.instagram.com/${restaurant.social.instagram}`} target="_blank">
                                             <FontAwesomeIcon icon={faInstagram} />
                                         </a>
                                     )}

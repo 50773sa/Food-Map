@@ -16,8 +16,8 @@ const MapPage = () => {
 		libraries
 	})
 
-	return (
-		<Container fluid className="g-0">
+return (
+    	<Container fluid className="g-0 map">
 			{!isLoaded && <div>Loading...</div>}
 
 			{/* {isError && <Alert variant='warning'>Error...</Alert>} */}

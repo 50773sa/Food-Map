@@ -28,7 +28,7 @@ const RestaurantListItem = ({ restaurant }) => {
 					</Card.Text>
 				</Card.Body>
 				<Card.Footer className="d-flex justify-content-center">
-					{restaurant.social.facebook && (
+				{restaurant.social.facebook && (
 						<a href={`https://www.facebook.com/${restaurant.social.facebook}`} target="_blank">
 							<FontAwesomeIcon icon={faFacebook} />
 						</a>
