@@ -8,6 +8,7 @@ import GoogleMapsAPI from '../services/GoogleMapsAPI'
 import SidebarList from "./SidebarList"
 import cutlery from '../assets/Images/restaurant.png'
 import RestaurantFilter from "../components/RestaurantFilter"
+import dogcation from '../assets/Images/location.png'
 
 const showMap = ({ searchData, searchedCity }) => {
 	const [currentFilter, setCurrentFilter] = useState('All')
@@ -166,7 +167,7 @@ const showMap = ({ searchData, searchedCity }) => {
 
 				{filteredRest && filteredRest.map((rest) => (
 					<MarkerF 
-						icon={cutlery}
+						icon={dogcation}
 						key={rest.id} 
 						title={rest.name}
 						onClick={() => {setSelectedRestaurant(rest), setShow(true)}}
