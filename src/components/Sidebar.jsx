@@ -1,4 +1,3 @@
-
 // styles
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons'
@@ -6,7 +5,6 @@ import { faEnvelope } from '@fortawesome/free-regular-svg-icons'
 import { faPhone, faGlobe } from '@fortawesome/free-solid-svg-icons'
 import Card from 'react-bootstrap/Card'
 import Offcanvas from 'react-bootstrap/Offcanvas'
-import Button from "react-bootstrap/Button"
 import Image from 'react-bootstrap/Image'
 import defaultPhoto from "../assets/Images/defaultPhoto.jpg"
 import petFriendly from '../assets/Images/pet-friendly.png'
@@ -31,64 +29,60 @@ const Sidebar = ({ show, closeInfoBox, selectedRestaurant }) => {
 					</Card.Subtitle>
 
 					<Card.Text>
-						{
-							selectedRestaurant.address.street + ", " +
-							selectedRestaurant.address.postcode + " " +
-							selectedRestaurant.address.city
-						}
+						<a href={linkGoogleMaps + 
+							selectedRestaurant.position.latitude + ',' +
+							selectedRestaurant.position.longitude
+						}>
+							{
+								selectedRestaurant.address.street + ", " +
+								selectedRestaurant.address.postcode + " " +
+								selectedRestaurant.address.city
+							}
+						</a>
 					</Card.Text>
 
 					<hr/>
 
 					<Card.Text className="d-flex justify-content-end" style={{ color: 'black'}}>
 						{selectedRestaurant.social.facebook && (
-							<a href={selectedRestaurant.social.facebook} className="" target="_blank">
-								<FontAwesomeIcon icon={faFacebook} />
+							<a href={selectedRestaurant.social.facebook} target="_blank">
+								<FontAwesomeIcon icon={faFacebook} className='sidebarIcon' />
 							</a>
 						)}
 
 						{selectedRestaurant.social.instagram && (
-							<a href={selectedRestaurant.social.instagram} className="" target="_blank">
-								<FontAwesomeIcon icon={faInstagram} />
+							<a href={selectedRestaurant.social.instagram} target="_blank">
+								<FontAwesomeIcon icon={faInstagram} className='sidebarIcon' />
 							</a>
 						)}
 
 						{selectedRestaurant.social.website && (
-							<a href={selectedRestaurant.social.website} className="" target="_blank">
-								<FontAwesomeIcon icon={faGlobe} />
+							<a href={selectedRestaurant.social.website} target="_blank">
+								<FontAwesomeIcon icon={faGlobe} className='sidebarIcon' />
 							</a>
 						)}
 
 						{selectedRestaurant.social.phone && (
-							<a href={"tel:" + selectedRestaurant.social.phone} className="" >
-								<FontAwesomeIcon icon={faPhone} />
+							<a href={"tel:" + selectedRestaurant.social.phone} >
+								<FontAwesomeIcon icon={faPhone} className='sidebarIcon' />
 							</a>
 						)}
 
 						{selectedRestaurant.social.email && (
-							<a href={"mailto:" + selectedRestaurant.social.email} className="">
-								<FontAwesomeIcon icon={faEnvelope} />
+							<a href={"mailto:" + selectedRestaurant.social.email} >
+								<FontAwesomeIcon icon={faEnvelope} className='sidebarIcon' />
 							</a>
 						)}
 					</Card.Text>
+
 					<hr/>
 
 					<Card.Text className='mb-1'><strong>Beskrivning</strong></Card.Text>
-					<Card.Text>{selectedRestaurant.restaurant_info.restaurantInfo}</Card.Text>
-					<hr/>
+					<Card.Text className= 'mb-5'>
+						{selectedRestaurant.restaurant_info.restaurantInfo}
+					</Card.Text>
+
 				</Card.Body>
-
-				<Button 
-					variant="primary"
-					href={
-						linkGoogleMaps +
-							selectedRestaurant.position.latitude + ',' +
-							selectedRestaurant.position.longitud
-						}
-					target="_blank"
-				> Vägbeskrivning 
-				</Button>	
-
 			</Card>
 		</Offcanvas>
 	)

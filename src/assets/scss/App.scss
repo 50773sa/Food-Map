@@ -88,6 +88,9 @@ a:hover {
 .svg-inline--fa{
 	color: black;
 	height: 1.5em;
+}
+
+.sidebarIcon {
 	margin-left: 3.9em;
 }
 
@@ -97,6 +100,7 @@ a:hover {
 	right: 1em;
 }
 
+// table
 .table-headers {
     text-align: center;
 }
@@ -105,12 +109,17 @@ a:hover {
     font-size: 14px;  
 }
 
+// sidebar
 .offcanvas-backdrop.show {
 	opacity: 0;
 }
 
 .offcanvas {
 	margin-top: 100px;
+	position: absolute;
+	top: 0;
+	overflow-y: scroll;
+
 }
 
 // card

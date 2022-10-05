@@ -1,5 +1,4 @@
 import { useState } from "react"
-import defaultPhoto from '../assets/Images/defaultPhoto.jpg'
 
 // styles
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,9 +6,11 @@ import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons'
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons'
 import { faPhone, faGlobe } from '@fortawesome/free-solid-svg-icons'
 import Button from "react-bootstrap/Button"
-import Badge from "react-bootstrap/Badge"
 import Card from 'react-bootstrap/Card'
 import Offcanvas from 'react-bootstrap/Offcanvas'
+import Image from 'react-bootstrap/Image'
+import defaultPhoto from '../assets/Images/defaultPhoto.jpg'
+import petFriendly from '../assets/Images/pet-friendly.png'
 
 
 const SidebarList = ({restaurant }) => {
@@ -25,83 +26,81 @@ const SidebarList = ({restaurant }) => {
             > Visa Restauranger 
             </Button>
              
-            <Offcanvas className='mb-20px' show={show} scroll={true} >
+            <Offcanvas className='mb-20px' show={show} >
                 <Offcanvas.Header 
                     className='d-flex justify-content-end' 
                     onClick={() => setShow(false)} 
                     closeButton> 
                 </Offcanvas.Header>
 
-                <Offcanvas.Body>
+                <>
                     {restaurant?.map((restaurant) => (
                         <Card style={{ width: '100%' }} key={restaurant.id} className='mb-3' >
-                            <Card.Img variant="top" src={restaurant.url !== null ? restaurant.url : defaultPhoto} />
+                           <Card.Img variant="top" src={restaurant.url !== null ? restaurant.url : defaultPhoto} />
 
                             <Card.Body>
                                 <Card.Title>{restaurant.name} </Card.Title>
-                                <Card.Subtitle className="mb-3">{restaurant.restaurant_info.cuisine}</Card.Subtitle>
+
+                                <Card.Subtitle className="mb-3 cuisine">{restaurant.restaurant_info.cuisine}
+                                    <Image className='dogIcon' src={petFriendly}/>
+                                </Card.Subtitle>
+
                                 <Card.Text>
-                                    {
-                                        restaurant.address.street + ", " +
-                                        restaurant.address.postcode + " " +
-                                        restaurant.address.city
-                                    }
+                                    <a href={linkGoogleMaps + 
+                                        restaurant.position.latitude + ',' +
+                                        restaurant.position.longitude
+                                    }>
+                                        {
+                                            restaurant.address.street + ", " +
+                                            restaurant.address.postcode + " " +
+                                            restaurant.address.city
+                                        }
+                                    </a>
                                 </Card.Text>
 
                                 <hr/>
-                                
-                                <Card.Text className="d-flex justify-content-between" style={{ color: 'black'}}>
+
+                                <Card.Text className="d-flex justify-content-end" style={{ color: 'black'}}>
                                     {restaurant.social.facebook && (
-                                        <a href={`https://www.facebook.com/${restaurant.social.facebook}`} target="_blank">
-                                            <FontAwesomeIcon icon={faFacebook} />
+                                        <a href={restaurant.social.facebook} target="_blank">
+                                            <FontAwesomeIcon icon={faFacebook} className='sidebarIcon' />
                                         </a>
                                     )}
+
                                     {restaurant.social.instagram && (
-                                        <a href={`https://www.instagram.com/${restaurant.social.instagram}`} target="_blank">
-                                            <FontAwesomeIcon icon={faInstagram} />
+                                        <a href={restaurant.social.instagram} target="_blank">
+                                            <FontAwesomeIcon icon={faInstagram} className='sidebarIcon' />
                                         </a>
                                     )}
 
                                     {restaurant.social.website && (
                                         <a href={restaurant.social.website} target="_blank">
-                                            <FontAwesomeIcon icon={faGlobe} />
+                                            <FontAwesomeIcon icon={faGlobe} className='sidebarIcon' />
                                         </a>
                                     )}
 
                                     {restaurant.social.phone && (
-                                        <a href={"tel:" + restaurant.social.phone}>
-                                            <FontAwesomeIcon icon={faPhone} />
+                                        <a href={"tel:" + restaurant.social.phone} >
+                                            <FontAwesomeIcon icon={faPhone} className='sidebarIcon' />
                                         </a>
                                     )}
 
                                     {restaurant.social.email && (
-                                        <a href={"mailto:" + restaurant.social.email}>
-                                            <FontAwesomeIcon icon={faEnvelope} />
+                                        <a href={"mailto:" + restaurant.social.email} >
+                                            <FontAwesomeIcon icon={faEnvelope} className='sidebarIcon' />
                                         </a>
                                     )}
                                 </Card.Text>
 
                                 <hr/>
 
+                                <Card.Text className='mb-1'><strong>Beskrivning</strong></Card.Text>
                                 <Card.Text>{restaurant.restaurant_info.restaurantInfo}</Card.Text>
 
-                                <hr/>
                             </Card.Body>
-
-                            <Button 
-                                variant="primary"
-                                href={
-                                    linkGoogleMaps +
-                                        restaurant.position.latitude + ',' +
-                                        restaurant.position.longitud
-                                    }
-                                target="_blank"
-                            > Vägbeskrivning 
-                            </Button>	
-
                         </Card>
                     ))}
-                </Offcanvas.Body>	
+                </>	
 		    </Offcanvas>
         </>
 	)
