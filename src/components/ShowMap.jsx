@@ -37,14 +37,12 @@ const showMap = ({ searchData, searchedCity }) => {
 				case 'After work':
 				case 'Á la carte':
 				case 'Bar':
-					console.log('restaurant', rest.restaurant_info.restaurantSort, currentFilter)
 					return rest.restaurant_info.restaurantSort === currentFilter
 				case 'Café':
 				case 'Restaurang':
 				case 'Snabbmat':
 				case 'Kiosk/Grill':
 				case 'Food truck':
-					console.log('restaurant', rest.restaurant_info.restaurantType, currentFilter)
 					return rest.restaurant_info.restaurantType === currentFilter
 				default:
 					return true
