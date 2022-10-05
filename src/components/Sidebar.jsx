@@ -15,7 +15,7 @@ const Sidebar = ({ show, closeInfoBox, selectedRestaurant }) => {
 
 	return (
 		
-		<Offcanvas show={show}>
+		<Offcanvas show={show} onHide={closeInfoBox}>
 			<Offcanvas.Header className='d-flex justify-content-end' onClick={closeInfoBox} closeButton> </Offcanvas.Header>
 
 			<Card style={{ width: '100%' }}>

@@ -26,7 +26,7 @@ const SidebarList = ({restaurant }) => {
             > Visa Restauranger 
             </Button>
              
-            <Offcanvas className='mb-20px' show={show} >
+            <Offcanvas className='mb-20px' show={show} onHide={() => setShow(false)}>
                 <Offcanvas.Header 
                     className='d-flex justify-content-end' 
                     onClick={() => setShow(false)} 
