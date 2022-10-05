@@ -25,7 +25,7 @@ const Navigation = () => {
 
                         {
                             currentUser ? ( 
-                                <NavDropdown id="navbar-dropdown"title={currentUser.email.charAt(0).toUpperCase()}>
+                                <NavDropdown id="navbar-dropdown"title={currentUser.email.charAt(0).toUpperCase()} align="end">
                                     <NavLink to="/admin">Admin page</NavLink>
                                     <NavDropdown.Divider />
                                     <NavLink to="/logout">Log Out</NavLink>
