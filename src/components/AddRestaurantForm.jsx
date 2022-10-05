@@ -155,7 +155,7 @@ const AddRestaurantForm = () => {
 													message: "Please write a valid postcode!"
 												}
 											})}
-											type="number" placeholder="Postnummer" />
+											type="text" placeholder="Postnummer" />
 											{errors.postcode && <div className="invalid">{errors.postcode.message}</div>}
 									</Col>
 									<Col>
@@ -233,7 +233,7 @@ const AddRestaurantForm = () => {
 
 							<Form.Group id="phone" className="mb-3">
 								<Form.Label>Telefonnummer</Form.Label>
-								<Form.Control {...register("phone")} type="number" />
+								<Form.Control {...register("phone")} type="tel" />
 							</Form.Group>
 
 							<Form.Group id="website" className="mb-3">

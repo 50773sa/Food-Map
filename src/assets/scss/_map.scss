@@ -1,0 +1,20 @@
+/* Map */
+
+.project-filter {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: 2rem 0;
+}
+.project-filter p {
+	margin: 0;
+}
+.project-filter button {
+	background-color: none;
+	border: none;
+}
+
+.project-filter button.active {
+	color: rgb(219, 205, 14);
+	font-weight: bolder;
+}
