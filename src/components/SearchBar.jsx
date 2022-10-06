@@ -30,10 +30,10 @@ const SearchBar = ({ setSelected, setSearchedCity }) => {
 	}
 
 	return (
-		<div>
-			<Form onSubmit={handleSearch}>
-				<Autocomplete restrictions={{ 'country': ['SE'] }} types={["locality"]}>
-					<Form.Group className="d-flex justify-content-center">
+		<>
+			<Form onSubmit={handleSearch} className="d-flex justify-content-center search-holder">
+				<Autocomplete restrictions={{ 'country': ['SE'] }} types={["locality"]} className="autocomplete">
+					<Form.Group className="d-flex justify-content-center align-items-center search-container w-80">
 
 						<Form.Control
 							type="text"
@@ -49,7 +49,7 @@ const SearchBar = ({ setSelected, setSearchedCity }) => {
 					</Form.Group>
 				</Autocomplete>
 			</Form>
-		</div>
+		</>
 	)
 }
 
