@@ -9,6 +9,8 @@ import SidebarList from "./SidebarList"
 import cutlery from '../assets/Images/restaurant.png'
 import RestaurantFilter from "../components/RestaurantFilter"
 import dogcation from '../assets/Images/location.png'
+import { useSearchParams} from 'react-router-dom'
+
 
 const showMap = ({ searchData, searchedCity }) => {
 	const [currentFilter, setCurrentFilter] = useState('All')
@@ -21,6 +23,12 @@ const showMap = ({ searchData, searchedCity }) => {
 		lat: 55.603075505110425, 
 		lng: 13.00048440435288,
 	})
+
+	/* URL */
+	const [searchParams, setSearchParams] = useSearchParams({ 
+		city: "",
+	})
+	const city = searchParams.get('city')
 
 	/* FILTER THE PLACES DEPENDING ON WHICH BUTTON YOU PRESS */
 	const changeFilter = (newFilter) => {
@@ -134,6 +142,7 @@ const showMap = ({ searchData, searchedCity }) => {
 		if(searchData !== null) {
 			// searchData = {lng, lat}
 			setCurrentPosition(searchData)
+			setSearchParams({city: searchedCity})
 			
 			getData(searchedCity)
 			setCurrentFilter('All')
