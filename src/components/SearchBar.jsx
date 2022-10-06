@@ -36,13 +36,14 @@ const SearchBar = ({ setSelected, setSearchedCity }) => {
 					<Form.Group className="d-flex justify-content-center align-items-center search-container w-80">
 
 						<Form.Control
+							className="searchbar"
 							type="text"
 							ref={searchRef}
 							placeholder="Sök på en stad"
 							required
 						/>
 
-						<Button type="submit" variant="outline-secondary">
+						<Button type="submit" variant="link" className="search-btn">
 							<FontAwesomeIcon icon={faSearch} />
 						</Button>
 

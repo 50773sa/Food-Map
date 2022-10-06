@@ -1,4 +1,4 @@
-/* search */
+/* Searchbar */
 
 .search-holder {
 	width: 100%;
@@ -7,4 +7,32 @@
 
 .autocomplete {
 	width: 80%;
+}
+
+
+.searchbar {
+	margin: 0.5rem 0;
+	width: 90%;
+}
+
+.search-container input {
+	color: wheat;
+	border-radius: 0.9rem;
+	background-color: black;
+	box-shadow: none;
+	border: none;
+}
+.searchbar-input:focus {
+	background-color: black;
+	color: wheat;
+	border: solid rgba(255, 255, 255, 0.115) 0.1rem;
+}
+
+.searchbar-btn {
+	background-color: none;
+}
+
+.searchbar-btn svg {
+	color: wheat;
+
 }
