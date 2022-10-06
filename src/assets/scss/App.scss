@@ -66,9 +66,15 @@ a:hover {
 }
 
 #navbar-dropdown {
+    width: 40px;
+    height: 40px;
     border: 2px solid wheat;
     border-radius: 50%;
     margin-left: 2px;
+}
+
+#navbar-dropdown a{
+    padding-left: 5px;
 }
 
 .dropdown-menu {
@@ -188,7 +194,7 @@ input::-webkit-inner-spin-button {
 
 // CARDS ON RESTAURANT PAGE
 
-.card-w {
+.card-wrapper {
     padding: 14px;
     -webkit-box-shadow: 0px 0px 6px 0px rgba(89,89,89,1);
     -moz-box-shadow: 0px 0px 6px 0px rgba(89,89,89,1);
@@ -283,10 +289,19 @@ input::-webkit-inner-spin-button {
 
 .card-row {
     min-height: 180px;
+
 }
 
 
 // ADMIN PAGE 
+
+.current-user {
+    margin-left: 10px;
+
+    @media only screen and (min-width: 576px) {
+        margin-left: 0;
+    }
+}
 
 .accordion {
     -webkit-box-shadow: 0px 0px 6px 0px rgba(89,89,89,1);
@@ -296,6 +311,15 @@ input::-webkit-inner-spin-button {
     // outline-offset: -7px;
     padding: 0;
     border-radius: 8px;
+}
+
+.accordion-row {
+    width: 95%;
+    margin: auto;
+
+    @media only screen and (min-width: 576px) {
+        width: 100%;
+    }
 }
 
 .accordion-button:not(.collapsed) {
@@ -346,4 +370,66 @@ input::-webkit-inner-spin-button {
 .input-group-text{
     background-color: rgb(33, 37, 41);
     color: white;
+}
+
+
+// SIDEBAR SINGLE RESTAURANT
+
+.single-wrapper {
+    height: 100%;
+    padding: 14px;
+    // -webkit-box-shadow: 0px 0px 6px 0px rgba(89,89,89,1);
+    // -moz-box-shadow: 0px 0px 6px 0px rgba(89,89,89,1);
+    // box-shadow: 0px 0px 6px 0px rgba(89,89,89,1);
+    outline: 2px solid rgb(33, 37, 41);
+    outline-offset: -7px;
+    border-radius: 8px;
+
+}
+
+.single-img {
+    min-height: 220px;
+    object-fit: cover;
+    -webkit-box-shadow: 0px 0px 6px 0px rgba(89,89,89,1);
+    -moz-box-shadow: 0px 0px 6px 0px rgba(89,89,89,1);
+    box-shadow: 0px 0px 6px 0px rgba(89,89,89,1);
+}
+
+.single-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: 20px;
+}
+
+// .single-header {
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: end;
+// }
+
+.single-title {
+        // -webkit-box-shadow: 0px 0px 6px 0px rgba(89,89,89,1);
+    // -moz-box-shadow: 0px 0px 6px 0px rgba(89,89,89,1);
+    // box-shadow: 0px 0px 6px 0px rgba(89,89,89,1);
+    margin-bottom: 0;
+}
+.line {
+    margin:0
+}
+.single-street {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.single-box {
+    margin: 20px 0;
+}
+
+.single-info {
+    margin-bottom: 20px;
+}
+
+.single-social {
+    margin-top: 20px;
 }

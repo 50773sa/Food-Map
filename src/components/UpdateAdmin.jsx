@@ -68,7 +68,7 @@ const UpdateAdmin = () => {
                     <Form.Control type="password" ref={passwordConfirmRef} />
                 </Form.Group>
 
-                <Button className="text-center" disabled={loading} type="submit">Updatera</Button>
+                <Button className="text-center" variant="dark" disabled={loading} type="submit">Updatera</Button>
             </Form>      
         </div>
     )

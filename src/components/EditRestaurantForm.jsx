@@ -114,10 +114,6 @@ const EditRestaurantForm = ({ restaurant }) => {
                                     {errors.name && <div className="invalid">{errors.name.message}</div>}
                             </Form.Group>
 
-                            {/* <div>
-                                <img src={restaurant.url} alt="" />
-                            </div> */}
-
                             <Form.Group className="mb-3">
                                 <Row>
                                     <Col>
@@ -228,45 +224,56 @@ const EditRestaurantForm = ({ restaurant }) => {
                                 </InputGroup>
                             </Form.Group>
 
-                            <Form.Group controlId="formFile" className="mb-3" >
-                                <Form.Label >Välj bild</Form.Label>
-                                <Form.Control type="file" accept='image/jpeg, image/jpg' onChange={handleSelectedPhoto}  />
+                            
+                            <Row>
+                                <Col md={9}>
+                                    <Form.Group controlId="formFile" className="mb-3" >
+                                        <Form.Label >Välj bild</Form.Label>
+                                        <Form.Control type="file" accept='image/jpeg, image/jpg' onChange={handleSelectedPhoto}  />
 
-                                <Form.Text>
-                                    {
-                                        photo 
-                                            ? `${photo.name} (${Math.round(photo.size/1024)} kB), ${uploadPhoto.progress} %`
-                                            : ''
-                                    }
-                                </Form.Text>
-                            </Form.Group>
+                                        <Form.Text>
+                                            {
+                                                photo 
+                                                    ? `${photo.name} (${Math.round(photo.size/1024)} kB), ${uploadPhoto.progress} %`
+                                                    : ''
+                                            }
+                                        </Form.Text>
+                                    </Form.Group>
+                                
 
-                            {error && <Alert variant='danger'>{error}</Alert>}
+                                    {error && <Alert variant='danger'>{error}</Alert>}
+
+                                    <div className='d-flex justify-content-between'>
+                                        <div>
+                                            <Button 
+                                                className="me-3" 
+                                                variant="success" 
+                                                onClick={submit} 
+                                                disabled={uploadPhoto.isUploading}
+                                                > Ladda upp
+                                            </Button>
+
+                                            <Button 
+                                                onClick={handleResetPhoto} 
+                                                variant="danger"
+                                            > Radera bild
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </Col>
+                                <Col md={3}>
+                                    <img src={restaurant.url} className="img-fluid "alt="" />
+                                </Col>
+                            </Row>
+
+
+
+                            <p>Status: {restaurant.approved ? 'Godkänd' : 'Ej godkänd'}</p>
 
                             <div className='d-flex justify-content-between'>
                                 <div>
-                                    <Button 
-                                        className="me-3" 
-                                        variant="success" 
-                                        onClick={submit} 
-                                        disabled={uploadPhoto.isUploading}
-                                    > Ladda upp
-                                    </Button>
-
-                                    <Button 
-                                        onClick={handleResetPhoto} 
-                                        variant="warning"
-                                    > Radera bild
-                                    </Button>
-                                </div>
-                            </div>
-
-                            <h4>Status: {restaurant.approved ? 'Approved' : 'Not approved'}</h4>
-
-                            <div className='d-flex justify-content-between'>
-                                <div>
-                                    <Button className="me-3" variant="success" type="submit">Save</Button>          
-                                    <Button className="me-3" variant="primary" onClick={toggleStatus}>Toggle Status</Button>          
+                                    <Button className="me-3" variant="success" type="submit">Spara</Button>          
+                                    <Button className="me-3" variant="dark" onClick={toggleStatus}>Ändra status</Button>          
                                     <Button variant="danger" onClick={deleteRestaurant}>Delete</Button> 
                                 </div>     
                             </div>        

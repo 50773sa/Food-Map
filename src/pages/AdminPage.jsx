@@ -20,17 +20,24 @@ const AdminPage = () => {
     const columns = useMemo(() => {
         return [
             {
-                Header: 'Action',
-                Cell: ({ row: { original } }) => (
-                    <Button
-						variant="primary"
-						size="sm"
-						as={Link}
-						to={`/restaurants/${original.id}`}
-					>
-						Redigera
-					</Button>
-                )
+                Header: 'Status',
+                columns: [{
+                    Header: 'Action',
+                    Cell: ({ row: { original } }) => (
+                        <Button
+                            variant="dark"
+                            size="sm"
+                            as={Link}
+                            to={`/restaurants/${original.id}`}
+                        >
+                            Redigera
+                        </Button>
+                    )
+                    }, { 
+                        Header: 'Godkänd',
+                        accessor: data => (data.approved ? "Yes" : "No"),
+        
+                    }]
             },
             {
                 Header: 'Restaurang Info',
@@ -77,11 +84,6 @@ const AdminPage = () => {
                     accessor: 'social.website',
                 }],
             },
-            { 
-                Header: 'Godkänd',
-                accessor: data => (data.approved ? "Yes" : "No"),
-
-            },
         ]
     },[])
 
@@ -90,7 +92,7 @@ const AdminPage = () => {
             <Container className='my-4 '>
 
                 <Row>
-                    <h4 className='my-5'>Välkommen {auth.currentUser.email}</h4>
+                    <h4 className='my-5 current-user'>Välkommen {auth.currentUser.email}</h4>
                 </Row>
 
                 <Row className="accordion-row">

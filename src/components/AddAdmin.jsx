@@ -54,7 +54,7 @@ const AddAdmin = () => {
                     <Form.Control type="password" ref={passwordConfirmRef} required />
                 </Form.Group>
 
-                <Button className="text-center" disabled={loading} type="submit">Lägg till Admin</Button>
+                <Button className="text-center" variant="dark" disabled={loading} type="submit">Lägg till Admin</Button>
             </Form>      
         </div>
     )

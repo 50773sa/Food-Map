@@ -9,7 +9,7 @@ const RestaurantListItem = ({ restaurant }) => {
 	const linkGoogleMaps = "https://www.google.com/maps/search/?api=1&query="
 
 	return (
-        <div className='card-w'>
+        <div className='card-wrapper'>
             <Row className="card-row">
                 <Col md={8} sm={6} className="column-1">
                     <div className='text-box'>
