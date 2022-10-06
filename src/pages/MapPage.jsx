@@ -4,6 +4,7 @@ import { Container } from "react-bootstrap"
 import ShowMap from "../components/ShowMap"
 //import useGetRestaurants from "../hooks/useGetRestaurants"
 import SearchBar from "../components/SearchBar"
+import LoadingSpinner from "../components/LoadingSpinner"
 import { useState } from "react"
 
 const libraries = ['places']
@@ -18,8 +19,8 @@ const MapPage = () => {
 
 return (
     	<Container fluid className="g-0 map">
-			{!isLoaded && <div>Loading...</div>}
-
+			{!isLoaded && <LoadingSpinner />}
+    
 			{/* {isError && <Alert variant='warning'>Error...</Alert>} */}
 
 			{isLoaded &&
