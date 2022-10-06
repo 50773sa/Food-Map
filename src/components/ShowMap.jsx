@@ -69,7 +69,7 @@ const showMap = ({ searchData, searchedCity }) => {
 		const queryRef = query(
 			collection(db, 'restaurants'),
 			where('approved', '==', true),
-			where('address.city', '==', positionCity)
+			where('address.city', '==', newcity)
 		)
 
 		const unsubscribe = onSnapshot(queryRef, (snapshot) => {
