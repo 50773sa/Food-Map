@@ -90,7 +90,7 @@ const EditRestaurantForm = ({ restaurant }) => {
                     latitude: lat,
                     longitude: lng,
                 },
-                url: uploadPhoto.URL,
+                url: uploadPhoto.URL=="" ? restaurant.url : uploadPhoto.URL,
             })
             console.log(restaurant)
             navigate('/admin')
@@ -225,8 +225,8 @@ const EditRestaurantForm = ({ restaurant }) => {
                             </Form.Group>
 
                             
-                            <Row>
-                                <Col md={9}>
+                            <Row className='mb-5'>
+                                <Col md={8}>
                                     <Form.Group controlId="formFile" className="mb-3" >
                                         <Form.Label >Välj bild</Form.Label>
                                         <Form.Control type="file" accept='image/jpeg, image/jpg' onChange={handleSelectedPhoto}  />
@@ -261,14 +261,15 @@ const EditRestaurantForm = ({ restaurant }) => {
                                         </div>
                                     </div>
                                 </Col>
-                                <Col md={3}>
+                                <Col md={4} xs={10} className="d-flex flex-column justify-content-center">
                                     <img src={restaurant.url} className="img-fluid "alt="" />
+                                    <p className='mb-0'>{restaurant.url ? "uppladdad bild": "ingen bild uppladdad"}</p>
                                 </Col>
                             </Row>
 
 
 
-                            <p>Status: {restaurant.approved ? 'Godkänd' : 'Ej godkänd'}</p>
+                            <p className='mb-0'>Status: {restaurant.approved ? 'Godkänd' : 'Ej godkänd'}</p>
 
                             <div className='d-flex justify-content-between'>
                                 <div>

@@ -18,75 +18,8 @@ const Sidebar = ({ show, closeInfoBox, selectedRestaurant }) => {
 		<Offcanvas show={show} onHide={closeInfoBox}>
 			<Offcanvas.Header className='d-flex justify-content-end' onClick={closeInfoBox} closeButton> </Offcanvas.Header>
 
-			{/* <Card style={{ width: '100%' }}>
-				<Card.Img variant="top" src={selectedRestaurant.url !== null ? selectedRestaurant.url : defaultPhoto} />
-
-				<Card.Body>
-					<Card.Title>{selectedRestaurant.name} </Card.Title>
-
-					<Card.Subtitle className="mb-3 cuisine">{selectedRestaurant.restaurant_info.cuisine}
-						<Image className='dogIcon' src={petFriendly}/>
-					</Card.Subtitle>
-
-					<Card.Text>
-						<a href={linkGoogleMaps + 
-							selectedRestaurant.position.latitude + ',' +
-							selectedRestaurant.position.longitude
-						}>
-							{
-								selectedRestaurant.address.street + ", " +
-								selectedRestaurant.address.postcode + " " +
-								selectedRestaurant.address.city
-							}
-						</a>
-					</Card.Text>
-
-					<hr/>
-
-					<Card.Text className="d-flex justify-content-end" style={{ color: 'black'}}>
-						{selectedRestaurant.social.facebook && (
-							<a href={selectedRestaurant.social.facebook} target="_blank">
-								<FontAwesomeIcon icon={faFacebook} className='sidebarIcon' />
-							</a>
-						)}
-
-						{selectedRestaurant.social.instagram && (
-							<a href={selectedRestaurant.social.instagram} target="_blank">
-								<FontAwesomeIcon icon={faInstagram} className='sidebarIcon' />
-							</a>
-						)}
-
-						{selectedRestaurant.social.website && (
-							<a href={selectedRestaurant.social.website} target="_blank">
-								<FontAwesomeIcon icon={faGlobe} className='sidebarIcon' />
-							</a>
-						)}
-
-						{selectedRestaurant.social.phone && (
-							<a href={"tel:" + selectedRestaurant.social.phone} >
-								<FontAwesomeIcon icon={faPhone} className='sidebarIcon' />
-							</a>
-						)}
-
-						{selectedRestaurant.social.email && (
-							<a href={"mailto:" + selectedRestaurant.social.email} >
-								<FontAwesomeIcon icon={faEnvelope} className='sidebarIcon' />
-							</a>
-						)}
-					</Card.Text>
-
-					<hr/>
-
-					<Card.Text className='mb-1'><strong>Beskrivning</strong></Card.Text>
-					<Card.Text className= 'mb-5'>
-						{selectedRestaurant.restaurant_info.restaurantInfo}
-					</Card.Text>
-
-				</Card.Body>
-			</Card> */}
-
-
             <div className='single-wrapper'>
+                <img src={petFriendly} className="pet-img" alt="" />
                 <div className='single-img-wrapper'>
                     <img src={selectedRestaurant.url !== null ? selectedRestaurant.url : defaultPhoto} className="img-fluid single-img" alt="" />
                 </div>
