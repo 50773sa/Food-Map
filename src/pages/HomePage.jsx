@@ -1,7 +1,6 @@
-import Container from 'react-bootstrap/Container'
-import RestaurantsPage from '../pages/RestaurantsPage'
-import MapPage from '../pages/MapPage'
 import { Link } from 'react-router-dom'
+import Container from 'react-bootstrap/Container'
+
 
 const HomePage = () => {
 

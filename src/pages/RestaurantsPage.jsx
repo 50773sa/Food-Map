@@ -7,8 +7,11 @@ const RestaurantsPage = () => {
 
 	return (
 		<Container className='my-4'>
+
 			{isLoading && (<p>Loading data...</p>)}
-			{!isLoading && data && <RestaurantList data={data}/>}
+
+			{!isLoading && data && <RestaurantList data={data} />}
+			
 		</Container>
 	)
 }
