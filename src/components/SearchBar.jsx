@@ -6,14 +6,11 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import GoogleMapsAPI from '../services/GoogleMapsAPI'
 import { toast } from 'react-toastify'
-import { useSearchParams} from 'react-router-dom'
 
 
-const SearchBar = ({ setSelected, setSearchedCity, searchedCity }) => {
+const SearchBar = ({ setSelected, setSearchedCity }) => {
 	const searchRef = useRef()
-	const [searchParams, setSearchParams] = useSearchParams({ 
-		city: "",
-	})
+
 
 	const handleSearch = async (e) => {
 		e.preventDefault()
@@ -47,14 +44,7 @@ const SearchBar = ({ setSelected, setSearchedCity, searchedCity }) => {
 							required
 						/>
 
-						<Button 
-							type="submit" 
-							variant="outline-secondary"
-							onClick={() => {
-								setSearchParams({ 
-									city: searchedCity,
-								})
-							}}						>
+						<Button type="submit" variant="outline-secondary">
 							<FontAwesomeIcon icon={faSearch} />
 						</Button>
 
