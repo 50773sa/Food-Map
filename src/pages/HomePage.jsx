@@ -1,17 +1,20 @@
 import Container from 'react-bootstrap/Container'
+import Image from 'react-bootstrap/Image'
 import RestaurantsPage from '../pages/RestaurantsPage'
 import MapPage from '../pages/MapPage'
 import { Link } from 'react-router-dom'
+import doglogo from '../assets/Images/Dog.svg'
 
 const HomePage = () => {
 
 	return (
-		<Container className="py-3">
-			<div className="d-flex justify-content-center">
+		<div className="py-3 home-container">
+			<div className="image_holder">
 				<Link className="m-4" to="/restaurants">See all restaurants</Link>
+				<Image src={doglogo} className="image-home"/>
 				<Link className="m-4" to="/map">Go to the map</Link>
 			</div>
-		</Container>
+		</div>
 	)
 }
 
