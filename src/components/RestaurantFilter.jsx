@@ -13,7 +13,7 @@ const RestaurantFilter = ({ currentFilter, changeFilter }) => {
 
 	return (
 		<Container>
-			<Row className="project-filter">
+			<Row className="project-filter mt-1 mb-4">
 				{filterList.map((f, i) => (
 					<Button 
 						className={currentFilter === f ? 'btn-sm active col-3 col-sm-2 col-md-2 col-lg-2 col-xl-1 m-1' : 'btn-sm col-3 col-sm-2 col-md-2 col-lg-2 col-xl-1 m-1'}
