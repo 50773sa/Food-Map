@@ -1,0 +1,39 @@
+/* Home */
+.home-container {
+	height: 90vh;
+	background-color: #FFFFFF8C;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.image_holder {
+	width: 50%;
+	flex-grow: 1;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
+.image_holder a {
+	background-color: #dadada8c;
+	color: black;
+	border: solid 2px #FFFFFF8C;
+	padding: 2rem;
+	border-radius: 50%;
+}
+
+.image-home {
+	width: 30%;
+	height: auto;
+}
+
+@media (max-width: 768px) {
+	.image_holder {
+		flex-direction: column;
+	}
+	.image-home {
+		width: 50%;
+		height: auto;
+	}
+}

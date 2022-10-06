@@ -1,11 +1,10 @@
 import { useLoadScript } from "@react-google-maps/api"
 import { Alert } from "bootstrap"
 import { Container } from "react-bootstrap"
+import { useState } from "react"
 import ShowMap from "../components/ShowMap"
-//import useGetRestaurants from "../hooks/useGetRestaurants"
 import SearchBar from "../components/SearchBar"
 import LoadingSpinner from "../components/LoadingSpinner"
-import { useState } from "react"
 
 const libraries = ['places']
 
@@ -17,14 +16,12 @@ const MapPage = () => {
 		libraries
 	})
 
-return (
+	return (
     	<Container fluid className="g-0 map">
 			{!isLoaded && <LoadingSpinner />}
     
-			{/* {isError && <Alert variant='warning'>Error...</Alert>} */}
-
 			{isLoaded &&
-				<SearchBar setSelected={setSelected} setSearchedCity={setSearchedCity} />
+				<SearchBar setSelected={setSelected} setSearchedCity={setSearchedCity} searchedCity={searchedCity} />
 			}
 
 			{isLoaded && 

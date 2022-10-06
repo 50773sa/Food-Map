@@ -1,9 +1,11 @@
 import Container from 'react-bootstrap/Container'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
+import Image from 'react-bootstrap/Image'
 import { Link, NavLink } from 'react-router-dom'
 import { useAuthContext } from '../../contexts/AuthContext'
 import { NavDropdown } from 'react-bootstrap'
+import logo from '../../assets/Images/Classy_Petstauranger_white.svg'
 
 const Navigation = () => {
 	const { currentUser} = useAuthContext()
@@ -11,8 +13,8 @@ const Navigation = () => {
 	return (
 		<Navbar bg="dark" variant="dark" expand="md">
 			<Container>
-				<Navbar.Brand as={Link} to="/">
-					Food-Map
+				<Navbar.Brand href="/">
+					<Image src={logo} className="nav-logo" href="/" />
 				</Navbar.Brand>
 
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />

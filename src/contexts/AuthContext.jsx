@@ -7,9 +7,9 @@ import {
     updateEmail,
 	updatePassword,
     signOut } from 'firebase/auth'
-import { Container } from 'react-bootstrap'
-import LoadingSpinner from '../components/LoadingSpinner'
 import { setDoc, doc } from 'firebase/firestore'
+import LoadingSpinner from '../components/LoadingSpinner'
+import Container from 'react-bootstrap/Container'
 
 const AuthContext = createContext()
 

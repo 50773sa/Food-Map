@@ -1,16 +1,19 @@
 import { useMemo } from 'react'
 import { useAuthContext } from '../contexts/AuthContext'
-import { Container, Row, Col, Button } from 'react-bootstrap'
-import Accordion from 'react-bootstrap/Accordion';
 import { Link } from 'react-router-dom'
 import AddAdmin from '../components/AddAdmin'
 import UpdateAdmin from '../components/UpdateAdmin'
 import AdminList from '../components/AdminList'
 import AddRestaurantForm from '../components/AddRestaurantForm'
-import useGetRestaurants from '../hooks/useGetRestaurants'
 import SortableTable from '../components/SortableTable'
+import useGetRestaurants from '../hooks/useGetRestaurants'
 import LoadingSpinner from '../components/LoadingSpinner'
-import { auth } from '../firebase';
+import { auth } from '../firebase'
+
+// styles
+import { Container, Row, Col, Button } from 'react-bootstrap'
+import Accordion from 'react-bootstrap/Accordion';
+
 
 const AdminPage = () => {
     const {data: restaurants, isLoading} = useGetRestaurants()

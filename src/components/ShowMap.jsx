@@ -1,30 +1,39 @@
 import { useEffect, useState } from "react"
+import { useSearchParams} from 'react-router-dom'
 import { GoogleMap,  MarkerF } from "@react-google-maps/api"
 import { collection, query, where, onSnapshot } from 'firebase/firestore'
 import { db } from '../firebase'
-import Sidebar from "./Sidebar"
-import { toast } from "react-toastify"
 import GoogleMapsAPI from '../services/GoogleMapsAPI'
+import Sidebar from "./Sidebar"
 import SidebarList from "./SidebarList"
-import cutlery from '../assets/Images/restaurant.png'
 import RestaurantFilter from "../components/RestaurantFilter"
+
+// styles
+import { toast } from "react-toastify"
 import dogcation from '../assets/Images/location.png'
 
+
 const showMap = ({ searchData, searchedCity }) => {
+	const [show, setShow] = useState(false)
+	const [restaurants, setRestaurants] = useState([])
+	const [selectedRestaurant, setSelectedRestaurant] = useState(null)
+	const [filteredRest, setFilteredRest] = useState([])
 	const [currentFilter, setCurrentFilter] = useState('All')
 	const [loading, setLoading] = useState(false)
-	const [restaurants, setRestaurants] = useState([])
-	const [filteredRest, setFilteredRest] = useState([])
-	const [selectedRestaurant, setSelectedRestaurant] = useState(null)
-	const [show, setShow] = useState(false)
 	const [currentPosition, setCurrentPosition] = useState({
 		lat: 55.603075505110425, 
 		lng: 13.00048440435288,
 	})
 
+	/* URL */
+	const [searchParams, setSearchParams] = useSearchParams({ 
+		city: "",
+	})
+	
+	const city = searchParams.get('city')
+
 	/* FILTER THE PLACES DEPENDING ON WHICH BUTTON YOU PRESS */
 	const changeFilter = (newFilter) => {
-        // console.log('current filter', currentFilter)
         
 		setLoading(true)
         
@@ -51,10 +60,6 @@ const showMap = ({ searchData, searchedCity }) => {
 			}
 		}) : null
 
-		console.log('filtered rest', filteredRestaurants)
-		if(filteredRestaurants.length === 0) {
-			console.log('filtered places', filteredRestaurants)
-		}
 		setCurrentFilter(newFilter)
 		setFilteredRest(filteredRestaurants)
 		setLoading(false)
@@ -64,12 +69,11 @@ const showMap = ({ searchData, searchedCity }) => {
 	const getData = (positionCity) => {
 		setLoading(true)
 		let newcity = positionCity.toLowerCase()
-		console.log('to lower case?', newcity)
 		//fetch restaurants where city is the same as the setCity
 		const queryRef = query(
 			collection(db, 'restaurants'),
 			where('approved', '==', true),
-			where('address.city', '==', positionCity)
+			where('address.city', '==', newcity)
 		)
 
 		const unsubscribe = onSnapshot(queryRef, (snapshot) => {
@@ -84,7 +88,6 @@ const showMap = ({ searchData, searchedCity }) => {
 			setRestaurants(docs)
 			setFilteredRest(docs)
 			setLoading(false)
-			console.log('all rest', docs)
 		})
 		return unsubscribe
 	}
@@ -97,15 +100,18 @@ const showMap = ({ searchData, searchedCity }) => {
 		}
 		
 		setCurrentPosition(positionCords)
-
 		// get city from lat and lng
 		if(currentPosition) {
 			const res = await GoogleMapsAPI.getCity(positionCords.lat, positionCords.lng)
+			console.log(res)
 			if (res) {
 				const positionCity = res.results[0].address_components[0].long_name.toLowerCase()
-				//setCity(positionCity)
 				getData(positionCity)
+			} else {
+				toast.warning('Sorry, we cannot fetch your position, please try searching for a specific city')
 			}
+		} else {
+			toast.warning('Sorry, we cannot fetch your position, please try searching for a specific city')
 		}
 	}
 
@@ -125,6 +131,7 @@ const showMap = ({ searchData, searchedCity }) => {
 
 	/* WHEN USER ENTERS THE PAGE, CHECK IF THEY WANT TO USE PLATSTJÄNSTER */
 	useEffect(() => {
+
 		//get position from platstjänster
 		navigator.geolocation.getCurrentPosition(onSuccess, error)
 	},[])
@@ -134,6 +141,7 @@ const showMap = ({ searchData, searchedCity }) => {
 		if(searchData !== null) {
 			// searchData = {lng, lat}
 			setCurrentPosition(searchData)
+			setSearchParams({city: searchedCity})
 			
 			getData(searchedCity)
 			setCurrentFilter('All')
@@ -145,8 +153,10 @@ const showMap = ({ searchData, searchedCity }) => {
 				lng: 13.00048440435288,
 			})
 			getData('Malmö')
+			setSearchParams({city: currentPosition})// detta blir ej namn
+
 		}
-	}, [searchData, searchedCity])
+	}, [searchData, searchedCity, city])
 
 	return (
 		<>

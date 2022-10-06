@@ -1,10 +1,10 @@
 import { useRef, useState} from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap'
 import { useAuthContext } from '../contexts/AuthContext'
+import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap'
+
 
 const LoginPage = () => {
-    
     const emailRef = useRef()
     const passwordRef = useRef()
     const [error, setError] = useState(null)
@@ -16,7 +16,6 @@ const LoginPage = () => {
         e.preventDefault()
         setError(null);
   
-
     try {
         setLoading(true)
         await login(emailRef.current.value, passwordRef.current.value)

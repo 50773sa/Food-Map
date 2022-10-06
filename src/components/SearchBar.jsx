@@ -7,8 +7,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import GoogleMapsAPI from '../services/GoogleMapsAPI'
 import { toast } from 'react-toastify'
 
+
 const SearchBar = ({ setSelected, setSearchedCity }) => {
 	const searchRef = useRef()
+
 
 	const handleSearch = async (e) => {
 		e.preventDefault()
@@ -30,26 +32,27 @@ const SearchBar = ({ setSelected, setSearchedCity }) => {
 	}
 
 	return (
-		<div>
-			<Form onSubmit={handleSearch}>
-				<Autocomplete restrictions={{ 'country': ['SE'] }} types={["locality"]}>
-					<Form.Group className="d-flex justify-content-center">
+		<>
+			<Form onSubmit={handleSearch} className="d-flex justify-content-center search-holder">
+				<Autocomplete restrictions={{ 'country': ['SE'] }} types={["locality"]} className="autocomplete">
+					<Form.Group className="d-flex justify-content-center align-items-center search-container w-80">
 
 						<Form.Control
+							className="searchbar"
 							type="text"
 							ref={searchRef}
 							placeholder="Sök på en stad"
 							required
 						/>
 
-						<Button type="submit" variant="outline-secondary">
+						<Button type="submit" variant="link" className="search-btn">
 							<FontAwesomeIcon icon={faSearch} />
 						</Button>
 
 					</Form.Group>
 				</Autocomplete>
 			</Form>
-		</div>
+		</>
 	)
 }
 

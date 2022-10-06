@@ -20,11 +20,13 @@ const SidebarList = ({restaurant }) => {
 
 	return (
         <>
-            <Button className="sidebar-btn dark"
-                variant="dark" size='sm' 
-                onClick={() => setShow((s) => !s)}
-            > Visa Restauranger 
-            </Button>
+            <div className="d-flex justify-content-center">
+                <Button className="sidebar-btn dark"
+                    variant="dark" size='sm' 
+                    onClick={() => setShow((s) => !s)}
+                > Visa Restauranger 
+                </Button>
+            </div>
              
             <Offcanvas className='mb-20px' show={show} onHide={() => setShow(false)}>
                 <Offcanvas.Header 

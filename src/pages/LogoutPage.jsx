@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
-import { Container, Row, Col } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../contexts/AuthContext'
 import LoadingSpinner from '../components/LoadingSpinner'
+import { Container, Row, Col } from 'react-bootstrap'
+
  
 const LogoutPage = () => {
     const Navigate = useNavigate()
