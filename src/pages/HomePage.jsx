@@ -1,7 +1,4 @@
-import Container from 'react-bootstrap/Container'
 import Image from 'react-bootstrap/Image'
-import RestaurantsPage from '../pages/RestaurantsPage'
-import MapPage from '../pages/MapPage'
 import { Link } from 'react-router-dom'
 import doglogo from '../assets/Images/Dog.svg'
 

@@ -7,8 +7,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import GoogleMapsAPI from '../services/GoogleMapsAPI'
 import { toast } from 'react-toastify'
 
+
 const SearchBar = ({ setSelected, setSearchedCity }) => {
 	const searchRef = useRef()
+
 
 	const handleSearch = async (e) => {
 		e.preventDefault()
