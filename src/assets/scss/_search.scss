@@ -16,7 +16,7 @@
 }
 
 .search-container input {
-	color: wheat;
+	color: rgb(219, 205, 14);
 	border-radius: 0.9rem;
 	background-color: black;
 	box-shadow: none;
@@ -24,15 +24,10 @@
 }
 .searchbar-input:focus {
 	background-color: black;
-	color: wheat;
+	color: rgb(219, 205, 14);
 	border: solid rgba(255, 255, 255, 0.115) 0.1rem;
 }
 
 .searchbar-btn {
 	background-color: none;
-}
-
-.searchbar-btn svg {
-	color: wheat;
-
 }
