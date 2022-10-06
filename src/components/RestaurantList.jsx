@@ -10,14 +10,14 @@ const RestaurantList = ({ data }) => {
  const sorting = (value) => {
     if (order === "ASC") {
         const sorted = [...data].sort((a,b) =>
-            a[value] > b[value] ? 1 : -1
+            a[value].toLowerCase() > b[value].toLowerCase() ? 1 : -1
         )
         setSortedData(sorted)
         setOrder('DSC')
     }
     if (order === "DSC") {
         const sorted = [...data].sort((a,b) =>
-            a[value] < b[value] ? 1 : -1
+            a[value].toLowerCase() < b[value].toLowerCase() ? 1 : -1
         )
         setSortedData(sorted)
         setOrder('ASC')
@@ -26,10 +26,10 @@ const RestaurantList = ({ data }) => {
 
 	return (
         <>
-            <span>Sortera på namn</span><span className="sorterings-knapp" onClick={()=>sorting("name")}> {order === "ASC" ? "↓" : "↑"}</span> 
             <Row className="restaurant-wrapper">
-                {sortedData.map((res, i) => (
-                    <Col md={4} className="my-3" key={i}>
+                <span className="sorterings-knapp" onClick={()=>sorting("name")}> Sortera på namn {order === "ASC" ? "↓" : "↑"}</span> 
+                    {sortedData.map((res, i) => (
+                    <Col lg={6} className="my-3" key={i}>
                         <RestaurantListItem restaurant={res} />
                     </Col>
                 ))}

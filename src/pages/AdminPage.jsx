@@ -20,7 +20,20 @@ const AdminPage = () => {
     const columns = useMemo(() => {
         return [
             {
-                Header: 'Restaurant Info',
+                Header: 'Action',
+                Cell: ({ row: { original } }) => (
+                    <Button
+						variant="primary"
+						size="sm"
+						as={Link}
+						to={`/restaurants/${original.id}`}
+					>
+						Redigera
+					</Button>
+                )
+            },
+            {
+                Header: 'Restaurang Info',
                 columns: [{
                     Header: 'Namn',
                     accessor: 'name',
@@ -57,46 +70,33 @@ const AdminPage = () => {
                     Header: 'Instagram',
                     accessor: 'social.instagram',
                 }, {
-                    Header: 'Phone',
+                    Header: 'Tel',
                     accessor: 'social.phone',
                 }, {
-                    Header: 'Website',
+                    Header: 'Webbsida',
                     accessor: 'social.website',
                 }],
             },
             { 
-                Header: 'Accepted',
+                Header: 'Godkänd',
                 accessor: data => (data.approved ? "Yes" : "No"),
 
-            },
-            {
-                Header: 'Action',
-                Cell: ({ row: { original } }) => (
-                    <Button
-						variant="primary"
-						size="sm"
-						as={Link}
-						to={`/restaurants/${original.id}`}
-					>
-						Edit
-					</Button>
-                )
             },
         ]
     },[])
 
     return (
             
-            <Container className='my-5 bengt'>
+            <Container className='my-4 '>
 
                 <Row>
-                    <h4 className='mb-5'>Välkommen {auth.currentUser.email}</h4>
+                    <h4 className='my-5'>Välkommen {auth.currentUser.email}</h4>
                 </Row>
 
-                <Row>
+                <Row className="accordion-row">
                     <Accordion>
                         <Accordion.Item eventKey="0">
-                            <Accordion.Header>Add an Admin</Accordion.Header>
+                            <Accordion.Header>Lägg till Admin</Accordion.Header>
                             <Accordion.Body>
                                 <Col md={6} className="m-auto">
                                     <AddAdmin />
@@ -104,7 +104,7 @@ const AdminPage = () => {
                             </Accordion.Body>
                         </Accordion.Item>
                         <Accordion.Item eventKey="1">
-                            <Accordion.Header>Update an Admin</Accordion.Header>
+                            <Accordion.Header>Uppdatera Admin</Accordion.Header>
                             <Accordion.Body>
                                 <Col md={6} className="m-auto">
                                     <UpdateAdmin />
@@ -112,7 +112,7 @@ const AdminPage = () => {
                             </Accordion.Body>
                         </Accordion.Item>
                         <Accordion.Item eventKey="2">
-                            <Accordion.Header>List of Admins</Accordion.Header>
+                            <Accordion.Header>Lista på Admins</Accordion.Header>
                             <Accordion.Body>
                                 <Col md={6} className="m-auto">
                                     <AdminList />
@@ -120,7 +120,7 @@ const AdminPage = () => {
                             </Accordion.Body>
                         </Accordion.Item>
                         <Accordion.Item className="table" eventKey="3">
-                            <Accordion.Header>Restaurants Table</Accordion.Header>
+                            <Accordion.Header>Tabell på restauranger</Accordion.Header>
                             <Accordion.Body className="table-body">
                                 <Col md={12}>
                                     {isLoading && <LoadingSpinner />}
@@ -133,7 +133,7 @@ const AdminPage = () => {
                             </Accordion.Body>
                         </Accordion.Item>
                         <Accordion.Item eventKey="4">
-                            <Accordion.Header>Add a resturant</Accordion.Header>
+                            <Accordion.Header>Lägg till restaurang</Accordion.Header>
                             <Accordion.Body>
                                 <Col md={12}>
                                     <AddRestaurantForm/>

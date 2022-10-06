@@ -13,17 +13,11 @@ const RestaurantsPage = () => {
 	return (
 		<Container>
 
-            <Row>
-                <Col md={6} className="m-auto">
-
-			        {isLoading && <LoadingSpinner />}
-			
-                    {!isLoading && restaurant && (
-                        <EditRestaurantForm restaurant={restaurant} />
-                    )}
-
-                </Col>
-            </Row>
+            {isLoading && <LoadingSpinner />}
+    
+            {!isLoading && restaurant && (
+                <EditRestaurantForm restaurant={restaurant} />
+            )}
 
 		</Container>
 	)

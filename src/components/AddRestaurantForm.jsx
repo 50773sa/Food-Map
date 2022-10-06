@@ -25,8 +25,6 @@ const AddRestaurantForm = () => {
 	const uploadPhoto = useUploadPhoto()
 	const { handleSubmit, formState: { errors }, reset, register } = useForm()
 
-	// console.log('city and street', city, street)
-
 	/**
 	 *  Handle photos 
 	 */
@@ -108,9 +106,9 @@ const AddRestaurantForm = () => {
 	
 	return (
 		<Row className="my-4">
-			<Col>
-				<Card>
-					<Card.Header as="h5">{auth.currentUser ? "Lägg till Restaurang" : "Tipsa oss!" }</Card.Header>
+			<Col md={8} className="m-auto">
+				<Card className='form-card'>
+					<Card.Header className="form-header" as="h5">{auth.currentUser ? "Lägg till Restaurang" : "Tipsa oss!" }</Card.Header>
 					<Card.Body>
 						{error && (<Alert variant="danger">{error}</Alert>)}
 
@@ -220,7 +218,11 @@ const AddRestaurantForm = () => {
 										minLength: {
 											value: 2,
 											message: "We'd like some information about the cuisine please..."
-										}
+										},
+                                        maxLength: {
+                                            value: 40,
+                                            message: 'Write less plz'
+                                        }
 									})}
 									type="text" placeholder="T ex franskt, thailändskt ..." />
 								{errors.cuisine && <div className="invalid">{errors.cuisine.message}</div>}
@@ -233,7 +235,12 @@ const AddRestaurantForm = () => {
 
 							<Form.Group id="phone" className="mb-3">
 								<Form.Label>Telefonnummer</Form.Label>
-								<Form.Control {...register("phone")} type="tel" />
+								<Form.Control {...register("phone", {		
+										maxLength: {
+											value: 14,
+											message: "We'd like some information about the cuisine please..."
+										}
+									})} type="tel" />
 							</Form.Group>
 
 							<Form.Group id="website" className="mb-3">
@@ -285,7 +292,7 @@ const AddRestaurantForm = () => {
 								<div>
 									<Button 
 										className="me-3" 
-										variant="success" 
+										variant="dark" 
 										onClick={submit} 
 										disabled={uploadPhoto.isUploading}
 									> Ladda upp
@@ -293,12 +300,12 @@ const AddRestaurantForm = () => {
 
 									<Button 
 										onClick={handleResetPhoto} 
-										variant="warning"
+										variant="danger"
 									> Radera bild
 									</Button>
 								</div>
 
-								<Button disabled={loading} type="submit">{auth.currentUser ? "Lägg till" : "Skicka in förslaget till oss!" }</Button>
+								<Button disabled={loading} variant="success" type="submit">{auth.currentUser ? "Lägg till" : "Skicka in förslaget till oss!" }</Button>
 							</div>	
 
 						</Form>

@@ -172,3 +172,178 @@ body {
 .cuisine {
 	font-style: italic;
 }
+
+
+input[type=number] {
+    -moz-appearance: textfield;
+  }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+
+// CARDS ON RESTAURANT PAGE
+
+.card-w {
+    padding: 14px;
+    -webkit-box-shadow: 0px 0px 6px 0px rgba(89,89,89,1);
+    -moz-box-shadow: 0px 0px 6px 0px rgba(89,89,89,1);
+    box-shadow: 0px 0px 6px 0px rgba(89,89,89,1);
+    outline: 2px solid rgb(33, 37, 41);
+    outline-offset: -7px;
+    border-radius: 8px;
+}
+
+.column-1 {
+    order: 2;
+
+    @media only screen and (min-width: 576px) {
+        order:1;
+    }
+}
+
+.column-2 {
+    order: 1;
+    @media only screen and (min-width: 576px) {
+        order:1;
+    }
+}
+
+.image-box {
+    height: 100%;
+}
+
+.box-image {
+    height: 100%;
+    object-fit: cover;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.text-box {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px 0;
+
+    @media only screen and (min-width: 576px) {
+        padding: 0 4px;
+    }
+}
+
+.info-title {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 0;
+
+    @media only screen and (min-width: 576px) {
+        order:1;
+    }
+}
+
+.info-street {
+    font-size: 12px;
+    margin-bottom: 0;
+}
+
+.info-box {
+    display: flex;
+    padding-right: 5px;
+    color: rgb(0, 0, 0);
+}
+
+.info-text {
+    font-style: italic;
+    font-size: 12px;
+    padding-right: 8px;
+    margin-bottom: 0;
+
+    @media only screen and (min-width: 576px) {
+        font-size: 14px;
+    }
+}
+
+.svg:not(:root).svg-inline--fa, svg:not(:host).svg-inline--fa {
+    color: rgb(33, 37, 41);
+    font-size: 12px;
+}
+
+.fa-icon {
+    padding-right: 10px;
+}
+
+.info-info {
+    margin-bottom: 6px;
+}
+
+.card-row {
+    min-height: 180px;
+}
+
+
+// ADMIN PAGE 
+
+.accordion {
+    -webkit-box-shadow: 0px 0px 6px 0px rgba(89,89,89,1);
+    -moz-box-shadow: 0px 0px 6px 0px rgba(89,89,89,1);
+    box-shadow: 0px 0px 6px 0px rgba(89,89,89,1);
+    // outline: 2px solid rgb(0, 0, 0);
+    // outline-offset: -7px;
+    padding: 0;
+    border-radius: 8px;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: rgb(33, 37, 41);
+    color: white;
+}
+
+.accordion-button:not(.collapsed)::after {
+
+    color: white;
+}
+
+.accordion-item {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+}
+
+
+// Form 
+.form-card {
+    -webkit-box-shadow: 0px 0px 6px 0px rgba(89,89,89,1);
+    -moz-box-shadow: 0px 0px 6px 0px rgba(89,89,89,1);
+    box-shadow: 0px 0px 6px 0px rgba(89,89,89,1);
+    border-width: 0;
+}
+.form-header {
+    background-color: rgb(33, 37, 41);
+    color:white;
+}
+
+.form-control:focus {
+    color: rgb(33, 37, 41);
+    box-shadow:0 0 0 0.25rem rgba(104, 104, 104, 0.25);
+    border-color: rgb(33, 37, 41);
+}
+
+.form-select:focus {
+    color: rgb(33, 37, 41);
+    box-shadow:0 0 0 0.25rem rgba(104, 104, 104, 0.25);
+    border-color: #212529;
+}
+
+.input-group-text{
+    background-color: rgb(33, 37, 41);
+    color: white;
+}

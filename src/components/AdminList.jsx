@@ -17,7 +17,7 @@ const AdminList = () => {
 
     return (
         <div className='list-wrapper my-4'>
-            <h5 className='mb-4'>Admin Lista</h5>
+            <h5 className='mb-4'>Lista på admins</h5>
 
             {isLoading && <LoadingSpinner />}
 

@@ -4,7 +4,7 @@ import Container from 'react-bootstrap/Container'
 const AddRestaurantPage = () => {
 
 	return (
-		<Container>
+		<Container className="my-4">
 			<AddRestaurantForm />
 		</Container>
 	)
