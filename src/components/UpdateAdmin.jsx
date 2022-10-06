@@ -59,12 +59,12 @@ const UpdateAdmin = () => {
                 </Form.Group>
 
                 <Form.Group className='my-3'>
-                    <Form.Label>Password</Form.Label>
+                    <Form.Label>Lösenord</Form.Label>
                     <Form.Control type="password" ref={passwordRef} />
                 </Form.Group>
 
                 <Form.Group id="password-confirm" className="mb-3">
-                    <Form.Label>Password Confirmation</Form.Label>
+                    <Form.Label>Bekräfta lösenord</Form.Label>
                     <Form.Control type="password" ref={passwordConfirmRef} />
                 </Form.Group>
 
