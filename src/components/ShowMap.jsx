@@ -27,10 +27,15 @@ const showMap = ({ searchData, searchedCity }) => {
 
 	/* URL */
 	const [searchParams, setSearchParams] = useSearchParams({ 
-		city: "",
+		city: '',
+		position: {lat: null, lng: null},
 	})
-	
-	const city = searchParams.get('city')
+//  searchParams.city.replace(/åäö/gi, "aao"); //! glöm ej fixa
+
+	/* CLOSE INFO BOX */
+	const closeInfoBox = () => {
+		setShow(false)
+	}
 
 	/* FILTER THE PLACES DEPENDING ON WHICH BUTTON YOU PRESS */
 	const changeFilter = (newFilter) => {
@@ -91,73 +96,55 @@ const showMap = ({ searchData, searchedCity }) => {
 		})
 		return unsubscribe
 	}
+	
 
-	/* PLACE THE USER ON THE MAP (WHEN PLATSTJÄNSTER IS ACTIVE) */
-	const onSuccess = async (pos) => {
-		const positionCords = {
-			lat: pos.coords.latitude,
-			lng: pos.coords.longitude,
-		}
-		
-		setCurrentPosition(positionCords)
-		// get city from lat and lng
-		if(currentPosition) {
-			const res = await GoogleMapsAPI.getCity(positionCords.lat, positionCords.lng)
-			console.log(res)
-			if (res) {
-				const positionCity = res.results[0].address_components[0].long_name.toLowerCase()
-				getData(positionCity)
-			} else {
-				toast.warning('Sorry, we cannot fetch your position, please try searching for a specific city')
+
+	/* GET AND SET LOCATION */
+	useEffect(() => {
+
+		const location = async () => {
+
+			/*  ON SEARCH */
+			if (searchData !== null) {
+				// searchData = {lng, lat}
+				setCurrentPosition(searchData)
+				setSearchParams({
+					city: searchedCity, 
+					position: (searchData.lat, searchData.lng)
+				})
+				getData(searchedCity)
+
+				// filter restaurants
+				setCurrentFilter('All')
+				return 
+			} 
+
+			/*  GET USER POSITION WITH GEOLOCATION */
+			if (searchData === null) {
+
+				const cityName = await GoogleMapsAPI.getCoordinates(searchParams.get('city'))
+
+				// city & position
+				const city = cityName.results[0].formatted_address.split(",")
+				const position = cityName.results[0].geometry.location
+
+				setSearchParams({city: city[0], position: (position.lat ,  position.lng)})
+				setCurrentPosition(position)
+
+				return
 			}
-		} else {
-			toast.warning('Sorry, we cannot fetch your position, please try searching for a specific city')
-		}
-	}
 
-	if (!navigator.geolocation) {
-		console.log('Geolocation is not supported by your browser')
-	}
-
-	/* IF PLATSTJÄNSTER IS ACTING UP */
-	const error = (err) => {
-		toast.warning(`Vi kunde inte hitta din position, vänligen sök på stad i sökfältet. ${err.message}`)
-	}
-
-	/* CLOSE INFO BOX */
-	const closeInfoBox = () => {
-		setShow(false)
-	}
-
-	/* WHEN USER ENTERS THE PAGE, CHECK IF THEY WANT TO USE PLATSTJÄNSTER */
-	useEffect(() => {
-
-		//get position from platstjänster
-		navigator.geolocation.getCurrentPosition(onSuccess, error)
-	},[])
-
-	/* WHEN THE USER SEARCHES FOR A CITY - CHANGE THE POSITION AND THE MARKERS */
-	useEffect(() => {
-		if(searchData !== null) {
-			// searchData = {lng, lat}
-			setCurrentPosition(searchData)
-			setSearchParams({city: searchedCity})
-			
-			getData(searchedCity)
-			setCurrentFilter('All')
-
-		} else {
-			//if there is searchdata but it is null then we will place the user on default position (in malmö)
+			/* DEFAULT POSITION */
 			setCurrentPosition({
 				lat: 55.603075505110425, 
 				lng: 13.00048440435288,
 			})
-			getData('Malmö')
-			setSearchParams({city: currentPosition})// detta blir ej namn
-
 		}
-	}, [searchData, searchedCity, city])
+		location()
 
+	},[searchData, searchedCity, searchParams])
+
+	
 	return (
 		<>
 			{restaurants && (
@@ -174,7 +161,7 @@ const showMap = ({ searchData, searchedCity }) => {
 			>
 				{loading && <p>Loading...</p>}
 
-				{currentPosition.lat && (
+				{currentPosition && (
 					<MarkerF 
 						position={currentPosition}
 						title={'Här är du'}
