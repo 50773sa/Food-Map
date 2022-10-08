@@ -7,9 +7,11 @@ import GoogleMapsAPI from '../services/GoogleMapsAPI'
 import Sidebar from "./Sidebar"
 import SidebarList from "./SidebarList"
 import RestaurantFilter from "../components/RestaurantFilter"
+import useAddress from '../hooks/useAddress'
 
 // styles
 import { toast } from "react-toastify"
+import { Button } from 'react-bootstrap'
 import dogcation from '../assets/Images/location.png'
 
 
@@ -20,10 +22,12 @@ const showMap = ({ searchData, searchedCity }) => {
 	const [filteredRest, setFilteredRest] = useState([])
 	const [currentFilter, setCurrentFilter] = useState('All')
 	const [loading, setLoading] = useState(false)
+	const [geoLocation, setGeoLocation] = useState(false)
 	const [currentPosition, setCurrentPosition] = useState({
 		lat: 55.603075505110425, 
 		lng: 13.00048440435288,
 	})
+
 
 	/* URL */
 	const [searchParams, setSearchParams] = useSearchParams({ 
@@ -96,12 +100,40 @@ const showMap = ({ searchData, searchedCity }) => {
 		})
 		return unsubscribe
 	}
+
+	/* GEOLOCATION */
+	const handleGeoLocation = async (pos) => {
+		if (!navigator.geolocation) {
+			console.log('Geolocation is not supported by your browser')
+		}
+
+		if (navigator.geolocation) {
+			setCurrentPosition({
+				lat: pos.coords.latitude,
+				lng: pos.coords.longitude,
+			})
+
+			const cityName = await GoogleMapsAPI.getCoordinates(searchParams.get('city'))
+
+			// city & position
+			const city = cityName.results[0].formatted_address.split(",")
+			const position = cityName.results[0].geometry.location
+
+			setSearchParams({city: city[0], position: (pos.lat ,  pos.lng)})
+			setCurrentPosition(position)
+		}
+	}
+
+	useEffect(() => {
+		navigator.geolocation.getCurrentPosition(handleGeoLocation)
+
+	}, [geoLocation])
+
+
+
 	
-
-
 	/* GET AND SET LOCATION */
 	useEffect(() => {
-
 		const location = async () => {
 
 			/*  ON SEARCH */
@@ -122,16 +154,17 @@ const showMap = ({ searchData, searchedCity }) => {
 			/*  GET USER POSITION WITH GEOLOCATION */
 			if (searchData === null) {
 
-				const cityName = await GoogleMapsAPI.getCoordinates(searchParams.get('city'))
+				// const cityName = await GoogleMapsAPI.getCoordinates(searchParams.get('city'))
 
-				// city & position
-				const city = cityName.results[0].formatted_address.split(",")
-				const position = cityName.results[0].geometry.location
+				// // city & position
+				// const city = cityName.results[0].formatted_address.split(",")
+				// const position = cityName.results[0].geometry.location
 
-				setSearchParams({city: city[0], position: (position.lat ,  position.lng)})
-				setCurrentPosition(position)
+				// setSearchParams({city: city[0], position: (position.lat ,  position.lng)})
+				// setCurrentPosition(position)
 
-				return
+				// return
+
 			}
 
 			/* DEFAULT POSITION */
@@ -159,6 +192,13 @@ const showMap = ({ searchData, searchedCity }) => {
 				zoom={13} 
 				center={currentPosition} 
 			>
+				<Button 
+					onClick={handleGeoLocation}
+					style={{ position: "absolute" , top: 0, right: 0}} 
+					variant='dark' className="m-4" 
+					>Get My position
+				</Button>
+
 				{loading && <p>Loading...</p>}
 
 				{currentPosition && (
