@@ -27,9 +27,20 @@ const Sidebar = ({ show, closeInfoBox, selectedRestaurant }) => {
                     <div className='single-header'>
                         <h3 className='single-title'>{selectedRestaurant.name}
                         </h3>
-                        <p className='single-street'>{selectedRestaurant.address.street}</p>
+                        <p className='single-street'> 
+                            <a href={linkGoogleMaps + 
+                                selectedRestaurant.position.latitude + ',' +
+                                selectedRestaurant.position.longitude
+                            }>
+                                {
+                                    selectedRestaurant.address.street + ", " +
+                                    selectedRestaurant.address.postcode + " " +
+                                    selectedRestaurant.address.city
+                                }
+                            </a>
+                        </p>
                     </div>
-                        <hr  className='line'/>
+                        <hr className='line'/>
                     <div className="single-box">
                         <p className='single-text'>-{selectedRestaurant.restaurant_info.cuisine}</p>
                         <p className='single-text'>-{selectedRestaurant.restaurant_info.restaurantSort}</p>
