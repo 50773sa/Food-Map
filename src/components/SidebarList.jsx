@@ -32,7 +32,8 @@ const SidebarList = ({restaurant }) => {
                 <Offcanvas.Header 
                     className='d-flex justify-content-end' 
                     onClick={() => setShow(false)} 
-                    closeButton> 
+                    closeButton
+                > 
                 </Offcanvas.Header>
 
                 <>

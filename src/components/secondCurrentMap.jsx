@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { useSearchParams} from 'react-router-dom'
 import { GoogleMap,  MarkerF } from "@react-google-maps/api"
 import { collection, query, where, onSnapshot } from 'firebase/firestore'
@@ -6,18 +6,11 @@ import { db } from '../firebase'
 import GoogleMapsAPI from '../services/GoogleMapsAPI'
 import Sidebar from "./Sidebar"
 import SidebarList from "./SidebarList"
-import RestaurantFilter from "../components/RestaurantFilter"
+import RestaurantFilter from "./RestaurantFilter"
 import useAddress from '../hooks/useAddress'
 // styles
 import { toast } from "react-toastify"
 import dogcation from '../assets/Images/location.png'
-import { Button } from "react-bootstrap"
-import Form from 'react-bootstrap/Form'
-import { Autocomplete } from '@react-google-maps/api'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import SearchBar from "./SearchBar"
-
 
 
 const showMap = ({ searchData, searchedCity }) => {
@@ -32,15 +25,12 @@ const showMap = ({ searchData, searchedCity }) => {
 		lng: 13.001112428195901
 	})
 
-
 	/* URL */
 	const [searchParams, setSearchParams] = useSearchParams({ 
 		city: '',
 		position: {lat: null, lng: null},
 	})
 	const cityUrl = searchParams.get('city')
-
-	console.log(cityUrl)
 
 	/* CLOSE INFO BOX */
 	const closeInfoBox = () => {
@@ -107,67 +97,82 @@ const showMap = ({ searchData, searchedCity }) => {
 		return unsubscribe
 	}
 
-	
-	const handleGeoLocation = () => {
+	/* WHEN THE USER SEARCHES FOR A CITY - CHANGE THE POSITION AND THE MARKERS */
+	useEffect(() => {
+		const handleSearch = () => {
+			/*  ON SEARCH */
+			if (searchData !== null) {
+				// searchData = {lng, lat}
+				setCurrentPosition(searchData)
+				setSearchParams({
+					city: searchedCity, 
+					position: (searchData.lat, searchData.lng)
+				})
+				getData(searchedCity)
 
-		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(async(posi) => {
-				const pos = {
-				  lat: posi.coords.latitude,
-				  lng: posi.coords.longitude,
-				};
-				// setCurrentPosition(pos)
-				const address = await GoogleMapsAPI.getLatLng(pos.lat, pos.lng)
+				// show all restaurants
+				setCurrentFilter('All')
+				return 
+			}
+		}
+		handleSearch()
+
+	},[searchData, searchedCity, setSearchParams, setCurrentPosition])
+		
+
+	/* PLACE THE USER ON THE MAP (WHEN PLATSTJÄNSTER IS ACTIVE) */
+	const handleGeoLocation = async (pos) => {
+
+		if ('geolocation' in navigator) {
+			const positionCoords = {
+				lat: pos.coords.latitude,
+				lng: pos.coords.longitude,
+			}
+			setCurrentPosition(positionCoords)
+
+		}
+		console.log('current',currentPosition)
+
+
+		if (pos) {
+			// get address, position & city 
+			const address = await GoogleMapsAPI.getCity(pos.lat, pos.lng)
+
+			if (address) {
 				const position = address.results[0].geometry.location
 				const city = address.results[0].address_components[2].long_name
-				console.log('pos', city)
 
-				console.log('1')
+				console.log('address', address)
 
-				if (searchData === null) {
-					setSearchParams({city: city, position: (position.lat ,  position.lng)})
-					setCurrentPosition({lat: position.lat, lng: position.lng})
-					console.log('2')
-					return
+				setSearchParams({city: city, position: (position.lat ,  position.lng)})
+				setCurrentPosition({lat: position.lat ,  lng:position.lng})
+				getData(cityUrl)
 
-				}
-			})
+			}
+
+
+		
+
 		} else {
-			toast.warning('Sorry, browser doesn\'t support geolocation, please try searching for a specific city')
-		}
+			toast.warning('Sorry, we cannot fetch your position, please try searching for a specific city')
 
+		}
+	}	
+
+	/* IF PLATSTJÄNSTER IS ACTING UP */
+	const error = (err) => {
+		toast.warning(`Vi kunde inte hitta din position, vänligen sök på stad i sökfältet. ${err.message}`)
 	}
-	
-		
+
+	/* WHEN USER ENTERS THE PAGE, CHECK IF THEY WANT TO USE PLATSTJÄNSTER */
 	useEffect(() => {
-		
-		if (searchedCity) {
-			// searchData = {lng, lat}
-			setCurrentPosition(searchData)
-			setSearchParams({
-				city: searchedCity, 
-				position: (searchData.lat, searchData.lng)
-			})
-			console.log('3')
+		navigator.geolocation.getCurrentPosition(handleGeoLocation, error)
 
-			getData(searchedCity)
-
-			// show all restaurants
-			setCurrentFilter('All')
-		}
-
-	}, [searchData, searchedCity])
+	}, [searchData, searchedCity, setSearchParams, setCurrentPosition])
 
 	
-	// location 
-	useEffect(() => {
-		handleGeoLocation()
-	}, [])
-		
-
 	return (
 		<>
-
 			{restaurants && (
 				<RestaurantFilter 
 					currentFilter={currentFilter} 
@@ -180,7 +185,6 @@ const showMap = ({ searchData, searchedCity }) => {
 				zoom={13} 
 				center={currentPosition} 
 			>
-				
 
 				{loading && <p>Loading...</p>}
 
@@ -212,7 +216,7 @@ const showMap = ({ searchData, searchedCity }) => {
 				{filteredRest && (
 					<SidebarList restaurant={filteredRest} />
 				)}
- 
+
 			</GoogleMap>
 		</>
 	)

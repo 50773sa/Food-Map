@@ -120,10 +120,20 @@ a:hover {
 }
 
 .offcanvas {
-	margin-top: 100px;
+	margin-top: 300px;
 	position: absolute;
 	top: 0;
 	overflow-y: scroll;
+
+    @media only screen and (min-width: 768px) {
+        margin-top: 225px
+    }
+    @media only screen and (min-width: 1024px) {
+        margin-top: 225px
+    }
+    @media only screen and (min-width: 1440px) {
+        margin-top: 190px
+    }
 
 }
 
@@ -375,7 +385,6 @@ input::-webkit-inner-spin-button {
 // SIDEBAR SINGLE RESTAURANT
 
 .single-wrapper {
-    height: 100%;
     padding: 14px;
 
     outline: 2px solid rgb(33, 37, 41);
