@@ -1,4 +1,5 @@
 import { useState } from "react"
+import GoogleMapsAPI from "../services/GoogleMapsAPI"
 
 // styles
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -11,12 +12,12 @@ import Offcanvas from 'react-bootstrap/Offcanvas'
 import Image from 'react-bootstrap/Image'
 import defaultPhoto from '../assets/Images/defaultPhoto.jpg'
 import petFriendly from '../assets/Images/pet-friendly.png'
+import { useEffect } from "react"
 
 
-const SidebarList = ({restaurant }) => {
+const SidebarList = ({ restaurant, currentPosition }) => {
     const [show, setShow] = useState(false)
-	const linkGoogleMaps = "https://www.google.com/maps/search/?api=1&query="
-
+    const baseUrl = `https://www.google.com/maps/dir/${currentPosition?.lat},${currentPosition?.lng}/`
 
 	return (
         <>
@@ -49,15 +50,16 @@ const SidebarList = ({restaurant }) => {
                                 </Card.Subtitle>
 
                                 <Card.Text>
-                                    <a href={linkGoogleMaps + 
-                                        restaurant.position.latitude + ',' +
-                                        restaurant.position.longitude
+                                    <a href={baseUrl + 
+                                            restaurant.position.latitude + ',' +
+                                            restaurant.position.longitude
                                     }>
                                         {
                                             restaurant.address.street + ", " +
                                             restaurant.address.postcode + " " +
                                             restaurant.address.city
                                         }
+                                  
                                     </a>
                                 </Card.Text>
 

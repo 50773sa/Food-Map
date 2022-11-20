@@ -1,3 +1,6 @@
+import { useEffect, useState } from 'react'
+import { useSearchParams} from 'react-router-dom'
+
 // styles
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons'
@@ -8,10 +11,13 @@ import Offcanvas from 'react-bootstrap/Offcanvas'
 import Image from 'react-bootstrap/Image'
 import defaultPhoto from "../assets/Images/defaultPhoto.jpg"
 import petFriendly from '../assets/Images/pet-friendly.png'
+import GoogleMapsAPI from '../services/GoogleMapsAPI'
 
 
-const Sidebar = ({ show, closeInfoBox, selectedRestaurant }) => {
-	const linkGoogleMaps = "https://www.google.com/maps/search/?api=1&query="
+const Sidebar = ({ show, closeInfoBox, selectedRestaurant, currentPosition }) => {
+
+    const baseUrl = `https://www.google.com/maps/dir/${currentPosition?.lat},${currentPosition?.lng}/`
+
 
 	return (
 		
@@ -28,9 +34,10 @@ const Sidebar = ({ show, closeInfoBox, selectedRestaurant }) => {
                         <h3 className='single-title'>{selectedRestaurant.name}
                         </h3>
                         <p className='single-street'> 
-                            <a href={linkGoogleMaps + 
+                            <a href={baseUrl + 
                                 selectedRestaurant.position.latitude + ',' +
-                                selectedRestaurant.position.longitude
+                                selectedRestaurant.position.longitude 
+
                             }>
                                 {
                                     selectedRestaurant.address.street + ", " +
