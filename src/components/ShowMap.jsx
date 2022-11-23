@@ -17,6 +17,7 @@ import { Autocomplete } from '@react-google-maps/api'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import SearchBar from "./SearchBar"
+import { defaultColumn } from "react-table"
 
 
 
@@ -27,11 +28,12 @@ const showMap = ({ searchData, searchedCity }) => {
 	const [filteredRest, setFilteredRest] = useState([])
 	const [currentFilter, setCurrentFilter] = useState('All')
 	const [loading, setLoading] = useState(false)
-	const [currentPosition, setCurrentPosition] = useState({
-		lat: 55.603172135495065, 
-		lng: 13.001112428195901
-	})
+	const [currentPosition, setCurrentPosition] = useState({lat: 55.603172135495065, lng: 13.001112428195901})
 
+	console.log('currentPosition', currentPosition)
+	console.log('searchData', searchData)
+
+	// const defaultPosition = {lat: 55.603172135495065, lng: 13.001112428195901}
 
 	/* URL */
 	const [searchParams, setSearchParams] = useSearchParams({ 
@@ -83,7 +85,7 @@ const showMap = ({ searchData, searchedCity }) => {
 	/* GET ALL THE RESTAURANTS IN YOUR CITY */
 	const getData = (positionCity) => {
 		setLoading(true)
-		let newcity = positionCity.toLowerCase()
+		let newcity = positionCity
 		//fetch restaurants where city is the same as the setCity
 		const queryRef = query(
 			collection(db, 'restaurants'),
@@ -116,20 +118,23 @@ const showMap = ({ searchData, searchedCity }) => {
 				  lat: posi.coords.latitude,
 				  lng: posi.coords.longitude,
 				};
-				// setCurrentPosition(pos)
-				const address = await GoogleMapsAPI.getLatLng(pos.lat, pos.lng)
-				const position = address.results[0].geometry.location
-				const city = address.results[0].address_components[2].long_name
-				console.log('pos', city)
+				setCurrentPosition(pos)
 
-				console.log('1')
+				if(pos) {
 
-				if (searchData === null) {
+					const address = await GoogleMapsAPI.getLatLng(pos.lat, pos.lng)
+					const position = address.results[0].geometry.location
+					const city = address.results[0].address_components[2].long_name
+					console.log('pos', city)
+
+					console.log('1')
+
 					setSearchParams({city: city, position: (position.lat ,  position.lng)})
-					setCurrentPosition({lat: position.lat, lng: position.lng})
+					setCurrentPosition({lat: position?.lat, lng: position?.lng})
 					console.log('2')
-					return
+					getData('malmö')
 
+					return
 				}
 			})
 		} else {
@@ -143,10 +148,11 @@ const showMap = ({ searchData, searchedCity }) => {
 		
 		if (searchedCity) {
 			// searchData = {lng, lat}
+			setCurrentPosition(null)
 			setCurrentPosition(searchData)
 			setSearchParams({
 				city: searchedCity, 
-				position: (searchData.lat, searchData.lng)
+				position: (searchData?.lat, searchData?.lng)
 			})
 			console.log('3')
 
@@ -154,15 +160,19 @@ const showMap = ({ searchData, searchedCity }) => {
 
 			// show all restaurants
 			setCurrentFilter('All')
+			return
 		}
 
-	}, [searchData, searchedCity])
+	}, [searchData, searchedCity, searchParams, setSearchParams])
 
 	
 	// location 
 	useEffect(() => {
+
 		handleGeoLocation()
 	}, [])
+
+
 		
 
 	return (
@@ -206,11 +216,11 @@ const showMap = ({ searchData, searchedCity }) => {
 				))}
 
 				{selectedRestaurant && (
-					<Sidebar show={show} closeInfoBox={closeInfoBox} selectedRestaurant={selectedRestaurant}/>	
+					<Sidebar show={show} closeInfoBox={closeInfoBox} selectedRestaurant={selectedRestaurant} currentPosition={currentPosition}/>	
 				)}
 
 				{filteredRest && (
-					<SidebarList restaurant={filteredRest} />
+					<SidebarList restaurant={filteredRest} currentPosition={currentPosition} />
 				)}
  
 			</GoogleMap>

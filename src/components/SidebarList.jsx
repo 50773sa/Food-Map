@@ -19,6 +19,10 @@ const SidebarList = ({ restaurant, currentPosition }) => {
     const [show, setShow] = useState(false)
     const baseUrl = `https://www.google.com/maps/dir/${currentPosition?.lat},${currentPosition?.lng}/`
 
+    useEffect(() => {
+        
+    }, [baseUrl])
+
 	return (
         <>
             <div className="d-flex justify-content-center">

@@ -17,7 +17,10 @@ import GoogleMapsAPI from '../services/GoogleMapsAPI'
 const Sidebar = ({ show, closeInfoBox, selectedRestaurant, currentPosition }) => {
 
     const baseUrl = `https://www.google.com/maps/dir/${currentPosition?.lat},${currentPosition?.lng}/`
+    
+    useEffect(() => {
 
+    }, [baseUrl])
 
 	return (
 		
