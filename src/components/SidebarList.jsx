@@ -1,5 +1,6 @@
 import { useState } from "react"
 import GoogleMapsAPI from "../services/GoogleMapsAPI"
+import LoadingSpinner from "./LoadingSpinner"
 
 // styles
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -13,11 +14,27 @@ import Image from 'react-bootstrap/Image'
 import defaultPhoto from '../assets/Images/defaultPhoto.jpg'
 import petFriendly from '../assets/Images/pet-friendly.png'
 import { useEffect } from "react"
+import { useNavigate, useSearchParams } from "react-router-dom"
 
 
-const SidebarList = ({ restaurant, currentPosition }) => {
+const SidebarList = ({ restaurant, userPosition, setUserPosition, onGeoLocation}) => {
     const [show, setShow] = useState(false)
-    const baseUrl = `https://www.google.com/maps/dir/${currentPosition?.lat},${currentPosition?.lng}/`
+    const baseUrl = `https://www.google.com/maps/dir/${userPosition?.lat},${userPosition?.lng}/`
+
+    const { navigate } = useNavigate()
+
+    const handleFindUser = () => {
+
+        console.log('*', userPosition)
+        if(userPosition !== null) {
+
+           navigate(baseUrl + restaurant?.position?.latitude/restaurant?.position?.longitude)
+
+        }
+        onGeoLocation()
+
+
+    }
 
     useEffect(() => {
         
@@ -53,18 +70,18 @@ const SidebarList = ({ restaurant, currentPosition }) => {
                                     <Image className='dogIcon' src={petFriendly}/>
                                 </Card.Subtitle>
 
-                                <Card.Text>
-                                    <a href={baseUrl + 
+                                <Card.Text onClick={handleFindUser}>
+                                    {/* <a href={baseUrl + 
                                             restaurant.position.latitude + ',' +
                                             restaurant.position.longitude
-                                    }>
+                                    }> */}
                                         {
                                             restaurant.address.street + ", " +
                                             restaurant.address.postcode + " " +
                                             restaurant.address.city
                                         }
                                   
-                                    </a>
+                                    {/* </a> */}
                                 </Card.Text>
 
                                 <hr/>
