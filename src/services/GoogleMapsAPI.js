@@ -26,7 +26,7 @@ const getAddress = async (lat, lng) => {
 }
 
 const getCity = async (lat, lng) => {
-	return get(`json?latlng=${lat},${lng}&result_type=locality&key=${API_KEY}`)
+	return get(`json?latlng=${lat},${lng}&key=${API_KEY}`)
 }
 
 /* 

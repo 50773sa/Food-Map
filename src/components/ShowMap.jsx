@@ -27,10 +27,19 @@ const showMap = ({ searchData, searchedCity }) => {
 
 	/* URL */
 	const [searchParams, setSearchParams] = useSearchParams({ 
-		city: "",
+		city: "Malmö",
+		position: {
+			lat: 55.603075505110425,
+			lng: 13.00048440435288,
+		},
 	})
 	
-	const city = searchParams.get('city')
+	// const city = searchParams.get('city')
+
+	/* CLOSE INFO BOX */
+	const closeInfoBox = () => {
+		setShow(false)
+	}
 
 	/* FILTER THE PLACES DEPENDING ON WHICH BUTTON YOU PRESS */
 	const changeFilter = (newFilter) => {
@@ -93,70 +102,69 @@ const showMap = ({ searchData, searchedCity }) => {
 	}
 
 	/* PLACE THE USER ON THE MAP (WHEN PLATSTJÄNSTER IS ACTIVE) */
-	const onSuccess = async (pos) => {
-		const positionCords = {
-			lat: pos.coords.latitude,
-			lng: pos.coords.longitude,
+	const handleGeoLocation = () => {
+
+		if (!navigator.geolocation) {
+			console.log('Geolocation is not supported by your browser')
 		}
-		
-		setCurrentPosition(positionCords)
-		// get city from lat and lng
-		if(currentPosition) {
-			const res = await GoogleMapsAPI.getCity(positionCords.lat, positionCords.lng)
-			console.log(res)
-			if (res) {
-				const positionCity = res.results[0].address_components[0].long_name.toLowerCase()
-				getData(positionCity)
-			} else {
-				toast.warning('Sorry, we cannot fetch your position, please try searching for a specific city')
+
+		if (navigator.geolocation) {
+			try {
+				 navigator.geolocation.getCurrentPosition(async(pos) => {
+
+					const positionCoords = {
+						lat: pos.coords.latitude,
+						lng: pos.coords.longitude,
+					}
+			
+					// get lat and lng
+					const address = await GoogleMapsAPI.getCity(positionCoords.lat, positionCoords.lng)
+					const position = address.results[0].geometry.location
+
+					// get city from lat & lng
+					const city = address.results[0].address_components[2].long_name
+
+					setSearchParams({city: city, position: (position.lat, position.lng)})
+					setCurrentPosition({lat: position.lat, lng: position.lng})
+
+						
+					getData(searchParams.get('city'))
+				})
+
+			} catch {
+				toast.warning('Sorry, browser doesn\'t support geolocation, please try searching for a specific city')
 			}
-		} else {
-			toast.warning('Sorry, we cannot fetch your position, please try searching for a specific city')
 		}
 	}
 
-	if (!navigator.geolocation) {
-		console.log('Geolocation is not supported by your browser')
-	}
-
-	/* IF PLATSTJÄNSTER IS ACTING UP */
-	const error = (err) => {
-		toast.warning(`Vi kunde inte hitta din position, vänligen sök på stad i sökfältet. ${err.message}`)
-	}
-
-	/* CLOSE INFO BOX */
-	const closeInfoBox = () => {
-		setShow(false)
-	}
-
-	/* WHEN USER ENTERS THE PAGE, CHECK IF THEY WANT TO USE PLATSTJÄNSTER */
-	useEffect(() => {
-
-		//get position from platstjänster
-		navigator.geolocation.getCurrentPosition(onSuccess, error)
-	},[])
 
 	/* WHEN THE USER SEARCHES FOR A CITY - CHANGE THE POSITION AND THE MARKERS */
 	useEffect(() => {
-		if(searchData !== null) {
-			// searchData = {lng, lat}
-			setCurrentPosition(searchData)
-			setSearchParams({city: searchedCity})
-			
-			getData(searchedCity)
-			setCurrentFilter('All')
 
-		} else {
-			//if there is searchdata but it is null then we will place the user on default position (in malmö)
-			setCurrentPosition({
-				lat: 55.603075505110425, 
-				lng: 13.00048440435288,
-			})
-			getData('Malmö')
-			setSearchParams({city: currentPosition})// detta blir ej namn
+		const handleSearch = () => {
+			if(searchData !== null) {
+				// searchData = {lng, lat}
+				setCurrentPosition(searchData)
+				setSearchParams({
+					city: searchedCity,
+					position: (searchData.lat, searchData.lng)
+				})
+				
+				getData(searchedCity)
+				setCurrentFilter('All')
 
+			} else {
+			// 	setSearchParams({city: 'Malmö', position: (currentPosition.lat, currentPosition.lng)})
+				getData('Malmö')
+			}
 		}
-	}, [searchData, searchedCity, city])
+		handleSearch()
+		
+	}, [searchData, searchedCity, setSearchParams])
+
+	const handleGeo = () => {
+		handleGeoLocation()
+	}
 
 	return (
 		<>
