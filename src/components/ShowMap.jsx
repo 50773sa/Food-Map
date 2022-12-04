@@ -11,13 +11,6 @@ import RestaurantFilter from "../components/RestaurantFilter"
 // styles
 import { toast } from "react-toastify"
 import dogcation from '../assets/Images/location.png'
-import { Button } from "react-bootstrap"
-import Form from 'react-bootstrap/Form'
-import { Autocomplete } from '@react-google-maps/api'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import SearchBar from "./SearchBar"
-import Direction from "./Direction"
 
 
 const showMap = ({ searchData, searchedCity, position }) => {
@@ -131,14 +124,7 @@ const showMap = ({ searchData, searchedCity, position }) => {
 					const address = await GoogleMapsAPI.getCity(positionCoords.lat, positionCoords.lng)
 					const position = address.results[0].geometry.location
 
-					// get city from lat & lng
-					const city = address.results[0].address_components[2].long_name
-
-					// setSearchParams({city: city, position: (position.lat, position.lng)})
-					// setCurrentPosition({lat: position.lat, lng: position.lng})
 					setUserPosition({lat: position?.lat, lng: position?.lng})
-					console.log('userpos', userPosition)
-						
 					getData(searchParams.get('city'))
 				})
 
@@ -225,25 +211,18 @@ const showMap = ({ searchData, searchedCity, position }) => {
 						show={show} 
 						closeInfoBox={closeInfoBox} 
 						selectedRestaurant={selectedRestaurant} 
-						currentPosition={currentPosition}
 						userPosition={userPosition}
-						setUserPosition={setUserPosition}
+						onGeoLocation={handleGeoLocation}
 					/>	
 				)}	
 
 				{filteredRest && (
-					<>
-						<SidebarList 
-							restaurant={filteredRest} 
-							currentPosition={currentPosition} 
-							onGeoLocation={handleGeoLocation}
-							userPosition={userPosition}
-							loading={loading}
-							setLoading={setLoading}
-							
-						/>
-					</>
 					
+					<SidebarList 
+						restaurant={filteredRest} 
+						onGeoLocation={handleGeoLocation}
+						userPosition={userPosition}
+					/>
 				)}
 
 
