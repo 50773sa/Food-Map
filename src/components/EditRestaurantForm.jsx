@@ -267,8 +267,6 @@ const EditRestaurantForm = ({ restaurant }) => {
                                 </Col>
                             </Row>
 
-
-
                             <p className='mb-0'>Status: {restaurant.approved ? 'Godkänd' : 'Ej godkänd'}</p>
 
                             <div className='d-flex justify-content-between'>

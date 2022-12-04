@@ -67,7 +67,7 @@ const Sidebar = ({ show, closeInfoBox, selectedRestaurant, userPosition, onGeoLo
                             </Button>
                         )}
                     </div>
-                        <hr className='line'/>
+                    <hr className='line'/>
                     <div className="single-box">
                         <p className='single-text'>-{selectedRestaurant.restaurant_info.cuisine}</p>
                         <p className='single-text'>-{selectedRestaurant.restaurant_info.restaurantSort}</p>
