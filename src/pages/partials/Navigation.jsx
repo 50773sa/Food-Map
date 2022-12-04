@@ -2,13 +2,13 @@ import Container from 'react-bootstrap/Container'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Image from 'react-bootstrap/Image'
-import { Link, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { useAuthContext } from '../../contexts/AuthContext'
 import { NavDropdown } from 'react-bootstrap'
 import logo from '../../assets/Images/Classy_Petstauranger_white.svg'
 
 const Navigation = () => {
-	const { currentUser} = useAuthContext()
+	const { currentUser, userName, userEmail, userPhotoUrl } = useAuthContext()
     
 	return (
 		<Navbar bg="dark" variant="dark" expand="md">
@@ -27,7 +27,18 @@ const Navigation = () => {
 
                         {
                             currentUser ? ( 
-                                <NavDropdown id="navbar-dropdown"title={currentUser.email.charAt(0).toUpperCase()} align="end">
+                                <NavDropdown id="navbar-dropdown" title={
+                                    userPhotoUrl 
+                                    ? <Image
+                                        className="navbar-image"
+                                        src={userPhotoUrl}
+                                        height={40}
+                                        width={40}
+                                        // fluid
+                                        roundedCircle
+                                        />
+                                    : userName || userEmail
+                                }>
                                     <NavLink to="/admin">Admin page</NavLink>
                                     <NavDropdown.Divider />
                                     <NavLink to="/logout">Log Out</NavLink>
