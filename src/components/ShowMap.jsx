@@ -11,15 +11,23 @@ import RestaurantFilter from "../components/RestaurantFilter"
 // styles
 import { toast } from "react-toastify"
 import dogcation from '../assets/Images/location.png'
+import { Button } from "react-bootstrap"
+import Form from 'react-bootstrap/Form'
+import { Autocomplete } from '@react-google-maps/api'
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import SearchBar from "./SearchBar"
+import Direction from "./Direction"
 
 
-const showMap = ({ searchData, searchedCity }) => {
+const showMap = ({ searchData, searchedCity, position }) => {
 	const [show, setShow] = useState(false)
 	const [restaurants, setRestaurants] = useState([])
 	const [selectedRestaurant, setSelectedRestaurant] = useState(null)
 	const [filteredRest, setFilteredRest] = useState([])
 	const [currentFilter, setCurrentFilter] = useState('All')
 	const [loading, setLoading] = useState(false)
+	const [userPosition, setUserPosition] = useState({lat: null, lng: null})
 	const [currentPosition, setCurrentPosition] = useState({
 		lat: 55.603075505110425, 
 		lng: 13.00048440435288,
@@ -34,7 +42,8 @@ const showMap = ({ searchData, searchedCity }) => {
 		},
 	})
 	
-	// const city = searchParams.get('city')
+	const city = searchParams.get('city')
+
 
 	/* CLOSE INFO BOX */
 	const closeInfoBox = () => {
@@ -103,6 +112,7 @@ const showMap = ({ searchData, searchedCity }) => {
 
 	/* PLACE THE USER ON THE MAP (WHEN PLATSTJÄNSTER IS ACTIVE) */
 	const handleGeoLocation = () => {
+		setLoading(true)
 
 		if (!navigator.geolocation) {
 			console.log('Geolocation is not supported by your browser')
@@ -124,9 +134,10 @@ const showMap = ({ searchData, searchedCity }) => {
 					// get city from lat & lng
 					const city = address.results[0].address_components[2].long_name
 
-					setSearchParams({city: city, position: (position.lat, position.lng)})
-					setCurrentPosition({lat: position.lat, lng: position.lng})
-
+					// setSearchParams({city: city, position: (position.lat, position.lng)})
+					// setCurrentPosition({lat: position.lat, lng: position.lng})
+					setUserPosition({lat: position?.lat, lng: position?.lng})
+					console.log('userpos', userPosition)
 						
 					getData(searchParams.get('city'))
 				})
@@ -137,11 +148,11 @@ const showMap = ({ searchData, searchedCity }) => {
 		}
 	}
 
-
 	/* WHEN THE USER SEARCHES FOR A CITY - CHANGE THE POSITION AND THE MARKERS */
 	useEffect(() => {
 
-		const handleSearch = () => {
+		const handleSearch = async () => {
+
 			if(searchData !== null) {
 				// searchData = {lng, lat}
 				setCurrentPosition(searchData)
@@ -153,18 +164,23 @@ const showMap = ({ searchData, searchedCity }) => {
 				getData(searchedCity)
 				setCurrentFilter('All')
 
-			} else {
-			// 	setSearchParams({city: 'Malmö', position: (currentPosition.lat, currentPosition.lng)})
+			} else if (searchData === null) {
+				const getCoords = await GoogleMapsAPI.getCoordinates(city)
+				const coords = getCoords.results[0].geometry.location
+		
+			 	setCurrentPosition({lat: coords?.lat, lng: coords?.lng})
+			 	getData(city)
+			}
+			else {
+				setSearchParams({city: 'Malmö', position: (currentPosition.lat, currentPosition.lng)})
 				getData('Malmö')
 			}
 		}
 		handleSearch()
 		
-	}, [searchData, searchedCity, setSearchParams])
+	}, [searchData, searchedCity, setSearchParams, setCurrentPosition])
 
-	const handleGeo = () => {
-		handleGeoLocation()
-	}
+
 
 	return (
 		<>
@@ -189,6 +205,7 @@ const showMap = ({ searchData, searchedCity }) => {
 					/>
 				)}
 
+
 				{filteredRest && filteredRest.map((rest) => (
 					<MarkerF 
 						icon={dogcation}
@@ -204,12 +221,31 @@ const showMap = ({ searchData, searchedCity }) => {
 				))}
 
 				{selectedRestaurant && (
-					<Sidebar show={show} closeInfoBox={closeInfoBox} selectedRestaurant={selectedRestaurant}/>	
-				)}
+					<Sidebar 
+						show={show} 
+						closeInfoBox={closeInfoBox} 
+						selectedRestaurant={selectedRestaurant} 
+						currentPosition={currentPosition}
+						userPosition={userPosition}
+						setUserPosition={setUserPosition}
+					/>	
+				)}	
 
 				{filteredRest && (
-					<SidebarList restaurant={filteredRest} />
+					<>
+						<SidebarList 
+							restaurant={filteredRest} 
+							currentPosition={currentPosition} 
+							onGeoLocation={handleGeoLocation}
+							userPosition={userPosition}
+							loading={loading}
+							setLoading={setLoading}
+							
+						/>
+					</>
+					
 				)}
+
 
 			</GoogleMap>
 		</>
