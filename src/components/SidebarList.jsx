@@ -63,6 +63,7 @@ const SidebarList = ({ restaurant, userPosition, onGeoLocation }) => {
                                         restaurant.address.postcode + " " +
                                         restaurant.address.city
                                     }
+                                </Card.Text>   
 
                                     <br/>
                 
@@ -74,6 +75,7 @@ const SidebarList = ({ restaurant, userPosition, onGeoLocation }) => {
                             
                                     {userPosition.lat && (
                                         <Button 
+
                                             variant="success"
                                             onClick={onGeoLocation}
                                             target="_blank"
@@ -85,7 +87,6 @@ const SidebarList = ({ restaurant, userPosition, onGeoLocation }) => {
                                             > Ta mig dit nu!
                                         </Button>
                                     )}
-                                </Card.Text>   
                                 <hr/>
 
                                 <Card.Text className="d-flex justify-content-end" style={{ color: 'black'}}>

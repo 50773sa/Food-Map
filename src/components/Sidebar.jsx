@@ -23,6 +23,7 @@ const Sidebar = ({ show, closeInfoBox, selectedRestaurant, userPosition, onGeoLo
         }
         
     },[userPosition, url])
+    
 	return (
 		
 		<Offcanvas show={show} onHide={closeInfoBox}>
@@ -33,10 +34,10 @@ const Sidebar = ({ show, closeInfoBox, selectedRestaurant, userPosition, onGeoLo
                 <div className='single-img-wrapper'>
                     <img src={selectedRestaurant.url !== null ? selectedRestaurant.url : defaultPhoto} className="img-fluid single-img" alt="" />
                 </div>
+
                 <div className='single-content'>
-                <div className='single-header'>
-                        <h3 className='single-title'>{selectedRestaurant.name}
-                        </h3>
+                    <div className='single-header'>
+                        <h3 className='single-title'>{selectedRestaurant.name}</h3>
                         <p className='single-street'> 
                             {
                                 selectedRestaurant.address.street + ", " +
@@ -46,25 +47,25 @@ const Sidebar = ({ show, closeInfoBox, selectedRestaurant, userPosition, onGeoLo
                         </p>
                         <br/>
                 
-                {!userPosition.lat && (
-                    <Button onClick={onGeoLocation}>
-                        Vägbeskrivning          
-                    </Button>
-                )}
-        
-                {userPosition.lat && (
-                    <Button 
-                        variant="success"
-                        onClick={onGeoLocation}
-                        target="_blank"
-                        href={url 
-                            + selectedRestaurant?.position?.latitude 
-                            + ',' 
-                            + selectedRestaurant?.position?.longitude
-                        }
-                        > Ta mig dit nu!
-                    </Button>
-                )}
+                        {!userPosition.lat && (
+                            <Button onClick={onGeoLocation}>
+                                Vägbeskrivning          
+                            </Button>
+                        )}
+                
+                        {userPosition.lat && (
+                            <Button 
+                                variant="success"
+                                onClick={onGeoLocation}
+                                target="_blank"
+                                href={url 
+                                    + selectedRestaurant?.position?.latitude 
+                                    + ',' 
+                                    + selectedRestaurant?.position?.longitude
+                                }
+                                > Ta mig dit nu!
+                            </Button>
+                        )}
                     </div>
                         <hr className='line'/>
                     <div className="single-box">
