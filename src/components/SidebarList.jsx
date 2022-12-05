@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 // styles
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -13,9 +13,20 @@ import defaultPhoto from '../assets/Images/defaultPhoto.jpg'
 import petFriendly from '../assets/Images/pet-friendly.png'
 
 
-const SidebarList = ({restaurant }) => {
+
+const SidebarList = ({ restaurant, userPosition, onGeoLocation }) => {
     const [show, setShow] = useState(false)
-	const linkGoogleMaps = "https://www.google.com/maps/search/?api=1&query="
+    const [url, setUrl] = useState(null)
+
+    useEffect(() => {
+
+        if(!userPosition.lat) {
+            return
+        } else {
+            setUrl(`https://www.google.com/maps/dir/${userPosition?.lat},${userPosition?.lng}/`)
+        }
+        
+    },[userPosition, url])
 
 
 	return (
@@ -47,20 +58,36 @@ const SidebarList = ({restaurant }) => {
                                 <Card.Subtitle className="mb-3 cuisine">{restaurant.restaurant_info.cuisine}
                                     <Image className='dogIcon' src={petFriendly}/>
                                 </Card.Subtitle>
+                                <Card.Text >
+                                    {
+                                        restaurant.address.street + ", " +
+                                        restaurant.address.postcode + " " +
+                                        restaurant.address.city
+                                    }
+                                </Card.Text>   
 
-                                <Card.Text>
-                                    <a href={linkGoogleMaps + 
-                                        restaurant.position.latitude + ',' +
-                                        restaurant.position.longitude
-                                    }>
-                                        {
-                                            restaurant.address.street + ", " +
-                                            restaurant.address.postcode + " " +
-                                            restaurant.address.city
-                                        }
-                                    </a>
-                                </Card.Text>
+                                    <br/>
+                
+                                    {!userPosition.lat && (
+                                        <Button onClick={onGeoLocation}>
+                                            Vägbeskrivning          
+                                        </Button>
+                                    )}
+                            
+                                    {userPosition.lat && (
+                                        <Button 
 
+                                            variant="success"
+                                            onClick={onGeoLocation}
+                                            target="_blank"
+                                            href={url 
+                                                + restaurant?.position?.latitude 
+                                                + ',' 
+                                                + restaurant?.position?.longitude
+                                            }
+                                            > Ta mig dit nu!
+                                        </Button>
+                                    )}
                                 <hr/>
 
                                 <Card.Text className="d-flex justify-content-end" style={{ color: 'black'}}>

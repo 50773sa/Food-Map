@@ -1,18 +1,29 @@
+import { useEffect, useState } from 'react'
+
 // styles
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons'
 import { faEnvelope } from '@fortawesome/free-regular-svg-icons'
 import { faPhone, faGlobe } from '@fortawesome/free-solid-svg-icons'
-import Card from 'react-bootstrap/Card'
 import Offcanvas from 'react-bootstrap/Offcanvas'
-import Image from 'react-bootstrap/Image'
+import Button from "react-bootstrap/Button"
 import defaultPhoto from "../assets/Images/defaultPhoto.jpg"
 import petFriendly from '../assets/Images/pet-friendly.png'
 
 
-const Sidebar = ({ show, closeInfoBox, selectedRestaurant }) => {
-	const linkGoogleMaps = "https://www.google.com/maps/search/?api=1&query="
+const Sidebar = ({ show, closeInfoBox, selectedRestaurant, userPosition, onGeoLocation }) => {
+    const [url, setUrl] = useState(null)
 
+    useEffect(() => {
+
+        if(!userPosition.lat) {
+            return
+        } else {
+            setUrl(`https://www.google.com/maps/dir/${userPosition?.lat},${userPosition?.lng}/`)
+        }
+        
+    },[userPosition, url])
+    
 	return (
 		
 		<Offcanvas show={show} onHide={closeInfoBox}>
@@ -23,24 +34,40 @@ const Sidebar = ({ show, closeInfoBox, selectedRestaurant }) => {
                 <div className='single-img-wrapper'>
                     <img src={selectedRestaurant.url !== null ? selectedRestaurant.url : defaultPhoto} className="img-fluid single-img" alt="" />
                 </div>
+
                 <div className='single-content'>
                     <div className='single-header'>
-                        <h3 className='single-title'>{selectedRestaurant.name}
-                        </h3>
+                        <h3 className='single-title'>{selectedRestaurant.name}</h3>
                         <p className='single-street'> 
-                            <a href={linkGoogleMaps + 
-                                selectedRestaurant.position.latitude + ',' +
-                                selectedRestaurant.position.longitude
-                            }>
-                                {
-                                    selectedRestaurant.address.street + ", " +
-                                    selectedRestaurant.address.postcode + " " +
-                                    selectedRestaurant.address.city
-                                }
-                            </a>
+                            {
+                                selectedRestaurant.address.street + ", " +
+                                selectedRestaurant.address.postcode + " " +
+                                selectedRestaurant.address.city
+                            }
                         </p>
+                        <br/>
+                
+                        {!userPosition.lat && (
+                            <Button onClick={onGeoLocation}>
+                                Vägbeskrivning          
+                            </Button>
+                        )}
+                
+                        {userPosition.lat && (
+                            <Button 
+                                variant="success"
+                                onClick={onGeoLocation}
+                                target="_blank"
+                                href={url 
+                                    + selectedRestaurant?.position?.latitude 
+                                    + ',' 
+                                    + selectedRestaurant?.position?.longitude
+                                }
+                                > Ta mig dit nu!
+                            </Button>
+                        )}
                     </div>
-                        <hr className='line'/>
+                    <hr className='line'/>
                     <div className="single-box">
                         <p className='single-text'>-{selectedRestaurant.restaurant_info.cuisine}</p>
                         <p className='single-text'>-{selectedRestaurant.restaurant_info.restaurantSort}</p>

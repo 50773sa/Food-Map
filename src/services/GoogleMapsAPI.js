@@ -25,10 +25,9 @@ const getAddress = async (lat, lng) => {
 	return get(`json?latlng=${lat},${lng}&key=${API_KEY}`)
 }
 
-
-// const getCity = async (lat, lng) => {
-// 	return get(`json?latlng=${lat},${lng}&key=${API_KEY}`)
-// }
+const getCity = async (lat, lng) => {
+	return get(`json?latlng=${lat},${lng}&key=${API_KEY}`)
+}
 
 /* 
 *  GET the longitude and latitude from street and city
@@ -41,7 +40,7 @@ const getLatLng = async (street, city) => {
 *  GET the longitude and latitude from the city (with or without country)
  */
 const getCoordinates = async (city) => {
-	return get(`json?address=${city}&language=${language}&key=${API_KEY}`)
+	return get(`json?address=${city}&region=SE&language=${language}&key=${API_KEY}`)
 }
 
 
@@ -49,5 +48,5 @@ export default {
 	getAddress,
 	getLatLng,
 	getCoordinates,
-	// getCity,
+	getCity,
 }
