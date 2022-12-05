@@ -41,6 +41,10 @@ const UpdateAdmin = () => {
         try {
 			setLoading(true)
 
+            if (displayNameRef.current.value !== currentUser.displayName || photo) {
+                await setDisplayNameAndPhoto(displayNameRef.current.value, photo)
+            }
+
 			if (emailRef.current.value !== currentUser.email) {
 				await setEmail(emailRef.current.value)
 			}
