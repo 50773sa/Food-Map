@@ -158,12 +158,13 @@ const EditRestaurantForm = ({ restaurant }) => {
 
                             <Form.Group className="mb-3">
                                 <Form.Label>Vad är det för typ av ställe*</Form.Label>
-                                <Form.Select {...register("restaurantType")} value={restaurant.restaurant_info?.restaurantType}>
-                                    <option>Café</option>
-                                    <option>Restaurang</option>
-                                    <option>Snabbmat</option>
-                                    <option>Kiosk/Grill</option>
-                                    <option>Food truck</option>
+                                <Form.Select {...register("restaurantType")}>
+                                    <option>{restaurant.restaurant_info?.restaurantType}</option>
+                                    <option value="Café">Café</option>
+                                    <option value="Restaurang">Restaurang</option>
+                                    <option value="Snabbmat">Snabbmat</option>
+                                    <option value="Kioskt/Grill">Kiosk/Grill</option>
+                                    <option value="Food truck">Food truck</option>
                                 </Form.Select>
                                 {errors.restaurantType && <div className="invalid">{errors.restaurantType.message}</div>}
 
@@ -171,11 +172,12 @@ const EditRestaurantForm = ({ restaurant }) => {
 
                             <Form.Group className="mb-3">
                                 <Form.Label>Utbud*</Form.Label>
-                                <Form.Select {...register("restaurantSort")} value={restaurant.restaurant_info?.restaurantSort}>
-                                    <option>Lunch</option>
-                                    <option>After work</option>
-                                    <option>Á la carte</option>
-                                    <option>Bar</option>
+                                <Form.Select {...register("restaurantSort")}>
+                                    <option>{restaurant.restaurant_info?.restaurantSort}</option>
+                                    <option value="Lunch">Lunch</option>
+                                    <option value="After work">After work</option>
+                                    <option value="Á la carte">Á la carte</option>
+                                    <option value="Bar">Bar</option>
                                 </Form.Select>
                                 {errors.restaurantSort && <div className="invalid">{errors.restaurantSort.message}</div>}
                             </Form.Group>
