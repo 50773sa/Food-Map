@@ -10,13 +10,14 @@ const UpdateAdmin = () => {
     const displayNameRef = useRef();
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(false)
-    const [photo, setPhoto] = useState(false);
+    const [photo, setPhoto] = useState(null);
     const { 
         currentUser,
         reloadUser,
         setEmail,
         setPassword,
         setDisplayNameAndPhoto, 
+        updateAdmin
     } = useAuthContext()
 
     const handleFileChange = (e) => {
@@ -54,6 +55,8 @@ const UpdateAdmin = () => {
 			}
 
             await reloadUser()
+            
+            await updateAdmin()
 
             setLoading(false)
 

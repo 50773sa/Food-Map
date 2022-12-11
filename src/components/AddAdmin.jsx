@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import { useAuthContext } from "../contexts/AuthContext";
+import { useNavigate } from 'react-router-dom'
 
 const AddAdmin = () => {
     const emailRef = useRef();
@@ -11,6 +12,7 @@ const AddAdmin = () => {
     const [loading, setLoading] = useState(false);
     const [photo, setPhoto] = useState(false);
     const { signup, reloadUser } = useAuthContext();
+    const navigate = useNavigate()
 
     const handleFileChange = (e) => {
         if (!e.target.files.length) {
@@ -37,6 +39,8 @@ const AddAdmin = () => {
             setLoading(false);
 
             await reloadUser()
+
+            navigate('/')
         } catch (err) {
             setError(err.message);
             setLoading(false);
