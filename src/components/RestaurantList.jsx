@@ -8,8 +8,7 @@ const RestaurantList = ({ approvedRestaurants }) => {
     const [sortedData, setSortedData] = useState(approvedRestaurants); 
     const [order, setOrder] = useState("ASC");
     const [cities, setCities] = useState([])
-    console.log('approvedRestaurants', approvedRestaurants)
-    
+
     const sorting = (value) => {
         if (order === "ASC") {
             const sorted = [...approvedRestaurants].sort((a,b) =>
@@ -44,14 +43,21 @@ const RestaurantList = ({ approvedRestaurants }) => {
 
 	return (
         <>
-            <Row className="restaurant-wrapper">
-                <span className="sorterings-knapp" onClick={()=>sorting("name")}> Sortera på namn {order === "ASC" ? "↓" : "↑"}</span> 
-                    {sortedData.map((res, i) => (
-                    <Col lg={6} className="my-3" key={i}>
-                        <RestaurantListItem restaurant={res} />
-                    </Col>
-                ))}
-            </Row>
+            <span className="sorterings-knapp" onClick={()=>sorting("name")}> Sortera på namn {order === "ASC" ? "↓" : "↑"}</span> 
+            {cities && cities.map(city => (
+                <>
+                    <h2>{city}</h2>
+                    <Row className="restaurant-wrapper">
+                        {sortedData.map((res, i) => (
+                            <Col lg={6} className="my-3" key={i}>
+                                {city && city == res.address.city && (
+                                    <RestaurantListItem restaurant={res} />
+                                )}
+                            </Col>
+                        ))}
+                    </Row>
+                </>
+            ))}
         </>
 	)
 }
