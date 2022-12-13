@@ -15,7 +15,7 @@ const RestaurantListItem = ({ restaurant }) => {
                     <div className='text-box'>
                         <div className='info-header'>
                             <h4 className='info-title'>{restaurant.name}</h4>
-                            <p className='info-street'>{restaurant.address.street}</p>
+                            <p className='info-street'>{restaurant.address.street}, {restaurant.address.city}</p>
                         </div>
                         <div className="info-box">
                             <p className='info-text'>-{restaurant.restaurant_info.cuisine}</p>
