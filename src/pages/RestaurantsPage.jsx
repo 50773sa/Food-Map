@@ -10,7 +10,7 @@ const RestaurantsPage = () => {
 
 			{isLoading && (<p>Loading data...</p>)}
 
-			{!isLoading && data && <RestaurantList data={data} />}
+			{!isLoading && data && <RestaurantList approvedRestaurants={data} />}
 			
 		</Container>
 	)
