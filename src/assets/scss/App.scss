@@ -198,6 +198,19 @@ input::-webkit-inner-spin-button {
 }
 
 
+.restaurant-wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+
+    @media (min-width: 1000px) {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.restaurant__city {
+    margin-top: 2rem;
+}
 
 // CARDS ON RESTAURANT PAGE
 
@@ -209,6 +222,10 @@ input::-webkit-inner-spin-button {
     outline: 2px solid rgb(33, 37, 41);
     outline-offset: -7px;
     border-radius: 8px;
+/* 
+    grid-column: auto;
+    grid-row: auto; */
+    align-self: stretch;
 }
 
 .column-1 {

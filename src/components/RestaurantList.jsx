@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import RestaurantListItem from './RestaurantListItem'
 import { useEffect } from 'react'
 
@@ -46,16 +44,16 @@ const RestaurantList = ({ approvedRestaurants }) => {
             <span className="sorterings-knapp" onClick={()=>sorting("name")}> Sortera på namn {order === "ASC" ? "↓" : "↑"}</span> 
             {cities && cities.map(city => (
                 <>
-                    <h2>{city}</h2>
-                    <Row className="restaurant-wrapper">
+                    <h2 className='restaurant__city'>{city}</h2>
+                    <div className="restaurant-wrapper">
                         {sortedData.map((res, i) => (
-                            <Col lg={6} className="my-3" key={i}>
+                            <>
                                 {city && city == res.address.city && (
-                                    <RestaurantListItem restaurant={res} />
+                                    <RestaurantListItem key={i} restaurant={res} />
                                 )}
-                            </Col>
+                            </>
                         ))}
-                    </Row>
+                    </div>
                 </>
             ))}
         </>
